@@ -6,7 +6,16 @@ const nuevoUsuario = ({ nombre = '' } = {}) => ({
     nombre
 });
 
+const nuevaSala = ({ nombre = '' } = {}) => ({
+    id: uuidv4,
+    nombre
+});
+
 let usuarios = {};
+
+let salas = {};
+
+let salasAEnviar  = [];
 
 module.exports = (socket) => {
     console.log('Socket Id:', socket.id);
@@ -20,14 +29,29 @@ module.exports = (socket) => {
         } else {
             callback({ esUsuario: false, usuario: nuevoUsuario({ nombre: nombreUsuario })})
         }
-        console.log('callback', callback)
+    });
+
+    // Verificar sala
+    socket.on('verificarSala', (nombreSala, callback) => {
+        if (verificarSala(salas, nombreSala)) {
+            callback({ existeSala: true, sala: null})
+        } else {
+            callback({ existeSala: false, sala: nuevaSala({ nombre: nombreSala })})
+        }
     });
 
     // Agregar usuario
     socket.on('agregarUsuario', (nombreUsuario) => {
-        console.log('usuario?', nombreUsuario);
         usuarios = crearUsuario(usuarios, nombreUsuario);
         socket.usuario = nombreUsuario;
+    });
+
+    // Crear sala
+    socket.on('crearSala', (nombreSala) => {
+        salas = crearSala(salas, nombreSala);
+        socket.sala = nombreSala;
+        salasAEnviar.unshift(socket.sala)
+        socket.broadcast.emit('salasDisponibles', salasAEnviar);
     });
 
     // Compartir pantalla
@@ -43,6 +67,16 @@ function crearUsuario(listaUsuarios, usuario) {
     return nuevaLista;
 }
 
+function crearSala(listaSalas, sala) {
+    let nuevaSala = Object.assign({}, listaSalas);
+    nuevaSala[sala.nombre] = sala;
+    return nuevaSala;
+}
+
 function verificarUsuario(listaUsuarios, nombreUsuario) {
     return nombreUsuario in listaUsuarios;
+}
+
+function verificarSala(listaSalas, nombreSala) {
+    return nombreSala in listaSalas;
 }

@@ -12,12 +12,12 @@ class Login extends Component {
     }
 
     escucharCambiosFormulario = (evento) => {
-        this.setState({ usuario: evento.target.value })
+        this.setState({usuario: evento.target.value})
     };
 
     ingresar = (evento) => {
         const socket = io('http://localhost:8081');
-        const { usuario } = this.state;
+        const {usuario} = this.state;
 
         evento.preventDefault();
         socket.emit('verificarUsuario', usuario, this.setearUsuario)
@@ -27,10 +27,22 @@ class Login extends Component {
         if (esUsuario) {
             this.setearError('El nombre de usuario ya existe');
         } else {
+            const esAdmin = this.props.history.location.pathname.includes('admin');
             this.setearError('');
-            console.log('llego acá puta?')
             const socket = io('http://localhost:8081');
             socket.emit('agregarUsuario', usuario);
+
+            if (esAdmin) {
+                this.props.history.push({
+                    pathname: '/admin/menu',
+                    state: {usuario: usuario}
+                })
+            } else {
+                this.props.history.push({
+                    pathname: '/usuario/listar-salas',
+                    state: {usuario: usuario}
+                })
+            }
         }
     };
 
@@ -39,8 +51,8 @@ class Login extends Component {
     };
 
     render() {
-        const { usuario, error } = this.state;
-        return(
+        const {usuario, error} = this.state;
+        return (
             <div id="login">
                 <form id="formulario" onSubmit={this.ingresar}>
                     <label htmlFor="usuario">
@@ -52,7 +64,7 @@ class Login extends Component {
                            placeholder={'Ingrese usu nombre de usuario. EJ: Edison'}
                            onChange={this.escucharCambiosFormulario}
                     />
-                    <div>{ error ? error : null}</div>
+                    <div>{error ? error : null}</div>
                 </form>
             </div>
         )
