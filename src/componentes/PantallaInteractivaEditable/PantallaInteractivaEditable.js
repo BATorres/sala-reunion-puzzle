@@ -17,6 +17,7 @@ const socket = io('/');
 const $ = go.GraphObject.make;
 const crearSala = uuid().toString();
 const seUnioSala = {};
+const colores = ["lightgray", "lightblue", "lightgreen", "orange", "pink"];
 
 var diagramaEditable;
 var datosGuardados;
@@ -104,11 +105,27 @@ function crearDiagrama(id) {
                     click: editarTexto
                 },
                 $(
-                    go.TextBlock, 'T',
+                    go.TextBlock, 'A',
                     {
                         font: 'bold 13pt sans-serif',
                         desiredSize: new go.Size(15.5, 15.5),
                         textAlign: 'center'
+                    }
+                )
+            ),
+            $(
+                'Button',
+                {
+                    click: cambiarColor,
+                    '_buttonFillOver': 'transparent'
+                },
+                new go.Binding('ButtonBorder.fill', 'color', siguienteColor),
+                $(
+                    go.Shape,
+                    {
+                        fill: null,
+                        stroke: null,
+                        desiredSize: new go.Size(15.5, 15.5),
                     }
                 )
             ),
@@ -166,6 +183,23 @@ function crearDiagrama(id) {
         evento.diagram.commandHandler.editTextBlock(
             nodo.findObject('Texto')
         );
+    }
+
+    function cambiarColor(evento, boton) {
+        const nodo = boton.part.adornedPart;
+        var forma = nodo.findObject('Nodo');
+        if (forma === null) return;
+        nodo.diagram.startTransaction('Cambiar color');
+        forma.fill = siguienteColor(forma.fill);
+        boton['_buttonFillNormal'] = siguienteColor(forma.fill);
+        nodo.diagram.commitTransaction('Cambiar color');
+    }
+
+    function siguienteColor(color) {
+        var indice = colores.indexOf(color);
+        if (indice < 0) return 'lightgray';
+        if (indice >= colores.length - 1) indice = 0;
+        return colores[indice + 1];
     }
 
     function dibujarConexion(nodo, categoria) {

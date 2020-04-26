@@ -9,6 +9,7 @@ export function crearNodo(graphObject) {
             go.Shape,
             'RoundedRectangle',
             {
+                name: 'Nodo',
                 portId: '',
                 cursor: 'pointer',
                 fromSpot: go.Spot.AllSides,
