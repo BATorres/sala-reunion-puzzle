@@ -16,14 +16,14 @@ class Rutas extends Component {
         return (
             <Router>
                 <Route exact path="/" component={Inicio}/>
-                <Route exact path="/admin" component={PantallaInteractivaGlobal}/>
                 <Route exact path="/admin/login" component={Login}/>
                 <Route exact path="/admin/menu" component={MenuAdmin}/>
+                <Route exact path="/admin/sala/:idSala" component={PantallaInteractivaEditable}/>
                 <Route exact path="/admin/crear-sala" component={CrearSala}/>
                 <Route exact path="/admin/listar-salas" component={ListarSalas}/>
-                <Route exact path="/usuario" component={PantallaInteractivaEditable}/>
                 <Route exact path="/usuario/login" component={Login}/>
                 <Route exact path="/usuario/listar-salas" component={ListarSalas}/>
+                <Route exact path="/usuario/sala/:idSala" component={PantallaInteractivaEditable}/>
             </Router>
         )
     }

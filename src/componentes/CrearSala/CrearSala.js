@@ -6,6 +6,7 @@ class CrearSala extends Component {
         super(props);
 
         this.state = {
+            usuario: this.props.location.state.usuario,
             sala: '',
             error: ''
         }
@@ -24,15 +25,17 @@ class CrearSala extends Component {
     };
 
     setearSala = ({ existeSala, sala }) => {
+        const {usuario} = this.state;
         if (existeSala) {
             this.setearError('La sala que desea crear ya existe');
         } else {
             this.setearError('');
             const socket = io('http://localhost:8081');
             socket.emit('crearSala', sala);
-            /*this.props.history.push({
-                pathname: '/admin/listar-salas'
-            });*/
+            this.props.history.push({
+                pathname: '/admin/listar-salas',
+                state: {usuario: usuario}
+            });
         }
     };
 

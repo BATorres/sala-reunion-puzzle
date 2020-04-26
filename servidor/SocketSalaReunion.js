@@ -1,13 +1,13 @@
 const io = require('./servidor').io;
-const uuidv4 = require('uuidv4');
+const { uuid } = require('uuidv4');
 
 const nuevoUsuario = ({ nombre = '' } = {}) => ({
-    id: uuidv4,
+    id: uuid(),
     nombre
 });
 
 const nuevaSala = ({ nombre = '' } = {}) => ({
-    id: uuidv4,
+    id: uuid(),
     nombre
 });
 
