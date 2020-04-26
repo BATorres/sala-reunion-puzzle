@@ -10,8 +10,6 @@ import {GojsDiagram} from "react-gojs";
 import io from 'socket.io-client';
 import openSocket from "socket.io-client";
 import {Button, Col, Container, Row} from "react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser} from "@fortawesome/free-solid-svg-icons";
 import Paleta from "../Paleta/Paleta";
 import {uuid} from "uuidv4";
 

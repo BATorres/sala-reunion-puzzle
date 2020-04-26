@@ -8,14 +8,14 @@ class Inicio extends Component {
                 <Row>
                     <Button variant="primary"
                             block
-                            onClick={() => this.props.history.push('/admin')}
+                            onClick={() => this.props.history.push('/admin/login')}
                     >
                         Soy admin
                     </Button>
 
                     <Button variant="info"
                             block
-                            onClick={() => this.props.history.push('/usuario')}
+                            onClick={() => this.props.history.push('/usuario/login')}
                     >
                         Soy usuario
                     </Button>

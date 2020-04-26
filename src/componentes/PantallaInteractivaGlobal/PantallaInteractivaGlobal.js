@@ -11,8 +11,7 @@ import {crearConfirmacion} from "../../funciones/crear-confirmacion";
 import {crearContradiccion} from "../../funciones/crear-contradiccion";
 import {GojsDiagram} from "react-gojs";
 import {Button, Col, Container, Row} from "react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser} from "@fortawesome/free-solid-svg-icons";
+import { FaUserAlt } from "react-icons/fa";
 import Paleta from "../Paleta/Paleta";
 
 const socket = io('/');
@@ -145,7 +144,7 @@ class PantallaInteractivaGlobal extends Component {
 
                         <Button
                             onClick={cargarPantallaCompartida}>
-                            <FontAwesomeIcon icon={faUser}/>
+                            FaUserAlt
                         </Button>
                     </Row>
                 </div>
