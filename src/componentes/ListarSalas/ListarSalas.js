@@ -11,7 +11,7 @@ class ListarSalas extends Component {
             salas: ''
         };
 
-        const socket = io('http://localhost:8081');
+        const socket = io('/');
         socket.on('salasDisponibles', (salas) => {
                     console.log('salas', salas);
             this.setState({salas: salas});
