@@ -20,7 +20,24 @@ class Login extends Component {
         const {usuario} = this.state;
 
         evento.preventDefault();
-        socket.emit('verificarUsuario', usuario, this.setearUsuario)
+        // socket.emit('verificarUsuario', usuario, this.setearUsuario)
+        const esAdmin = this.props.history.location.pathname.includes('admin');
+        this.setearError('');
+
+        socket.emit('agregarUsuario', usuario);
+
+        if (esAdmin) {
+            this.props.history.push({
+                pathname: '/admin/menu',
+                state: {usuario: usuario}
+            })
+        } else {
+            this.props.history.push({
+                pathname: '/usuario/listar-salas',
+                state: { usuario: usuario}
+            })
+        }
+
     };
 
     setearUsuario = ({usuario, esUsuario}) => {
