@@ -8,12 +8,11 @@ class ListarSalas extends Component {
 
         this.state = {
             usuario: this.props.location.state.usuario,
-            salas: ''
+            salas: this.props.location.state.salas
         };
 
         const socket = io('http://localhost:8081');
         socket.on('salasDisponibles', (salas) => {
-                    console.log('salas', salas);
             this.setState({salas: salas});
         });
     }
@@ -37,7 +36,7 @@ class ListarSalas extends Component {
 
 
     render() {
-        const {usuario, salas, idSala} = this.state;
+        const {salas} = this.state;
         return (
             <div>
                 {
@@ -45,7 +44,7 @@ class ListarSalas extends Component {
                         <h2>No existen salas de reunión</h2> :
                         <Row>
                             <Col xs={3}></Col>
-                            <Col xs={3}>
+                            <Col xs={6}>
                                 {salas.map(sala => <Card>
                                     <Card.Body>
                                         <Card.Text>
