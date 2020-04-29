@@ -6,7 +6,7 @@ class CrearSala extends Component {
         super(props);
 
         this.state = {
-            usuario: this.props.location.state.usuario,
+            usuarioAdmin: localStorage.getItem('usuarioAdmin'),
             sala: '',
             error: ''
         }
@@ -32,6 +32,10 @@ class CrearSala extends Component {
             this.setearError('');
             const socket = io('http://localhost:8081');
             socket.emit('crearSala', sala);
+            socket.on('salasDisponibles', (salasDisponibles) => {
+                console.log('salas disponibles', salasDisponibles);
+                localStorage.setItem('salasDisponibles', JSON.stringify(salasDisponibles));
+            });
             this.props.history.push({
                 pathname: '/admin/listar-salas',
                 state: {usuario: usuario}

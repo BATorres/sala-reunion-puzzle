@@ -6,20 +6,19 @@ class MenuAdmin extends Component {
         super(props);
 
         this.state = {
-            usuario: this.props.location.state.usuario
+            usuarioAdmin: localStorage.getItem('usuarioAdmin'),
+            usuario: localStorage.getItem('usuario')
         };
     }
 
     render() {
-        const {usuario} = this.state;
         return(
             <Container>
                 <Row>
                     <Button variant="primary"
                             block
                             onClick={() => this.props.history.push({
-                                pathname: '/admin/crear-sala',
-                                state: { usuario: usuario }
+                                pathname: '/admin/crear-sala'
                             })}
                     >
                         Crear sala
@@ -28,8 +27,7 @@ class MenuAdmin extends Component {
                     <Button variant="info"
                             block
                             onClick={() => this.props.history.push({
-                                pathname: '/admin/listar-salas',
-                                state: { usuario: usuario }
+                                pathname: '/admin/listar-salas'
                             })}
                     >
                         Ver salas

@@ -7,6 +7,7 @@ class Login extends Component {
 
         this.state = {
             usuario: '',
+            usuarioAdmin: '',
             error: ''
         }
     }
@@ -29,13 +30,15 @@ class Login extends Component {
         if (esAdmin) {
             this.props.history.push({
                 pathname: '/admin/menu',
-                state: {usuario: usuario}
-            })
+                state: {usuarioAdmin: usuario}
+            });
+            localStorage.setItem('usuarioAdmin', usuario);
         } else {
             this.props.history.push({
                 pathname: '/usuario/listar-salas',
                 state: { usuario: usuario}
-            })
+            });
+            localStorage.setItem('usuario', usuario);
         }
 
     };

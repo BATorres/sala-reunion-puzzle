@@ -51,10 +51,9 @@ module.exports = (socket) => {
         salas = crearSala(salas, nombreSala);
         socket.sala = nombreSala;
         console.log('salas', salas);
-        salasAEnviar.unshift(socket.sala)
+        salasAEnviar.unshift(socket.sala);
+        socket.broadcast.emit('salasDisponibles', salasAEnviar);
     });
-
-    socket.broadcast.emit('salasDisponibles', salasAEnviar);
 
     // Compartir pantalla
     socket.on('compartirPantalla', (datosPantalla) => {

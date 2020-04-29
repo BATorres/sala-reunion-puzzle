@@ -175,6 +175,21 @@ function crearDiagrama(id) {
                     }
                 )
             ),
+            $(
+                'Button',
+                {
+                    click: eliminarNodo
+                },
+                $(
+                    go.TextBlock, 'X',
+                    {
+                        font: 'bold 13pt',
+                        stroke: 'red',
+                        desiredSize: new go.Size(15.5, 15.5),
+                        textAlign: 'center'
+                    }
+                )
+            ),
         )
     );
 
@@ -193,6 +208,13 @@ function crearDiagrama(id) {
         forma.fill = siguienteColor(forma.fill);
         boton['_buttonFillNormal'] = siguienteColor(forma.fill);
         nodo.diagram.commitTransaction('Cambiar color');
+    }
+
+    function eliminarNodo(evento, boton) {
+        const nodo = boton.part.adornedPart.findObject('Nodo');
+        nodo.diagram.startTransaction('Eliminar nodo');
+        nodo.diagram.remove(nodo);
+        nodo.diagram.commitTransaction('Eliminar nodo');
     }
 
     function siguienteColor(color) {
