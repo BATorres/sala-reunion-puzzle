@@ -10,14 +10,18 @@ import {GojsDiagram} from "react-gojs";
 import io from 'socket.io-client';
 import {Button, Col, Container, Row} from "react-bootstrap";
 import Paleta from "../Paleta/Paleta";
+import {FaLock, FaRegHandPaper, FaSatelliteDish} from "react-icons/fa";
+import divWithClassName from "react-bootstrap/esm/divWithClassName";
 
-const socket = io('/');
+const socket = io('http://localhost:8081');
 const $ = go.GraphObject.make;
 const colores = ["lightgray", "lightblue", "lightgreen", "orange", "pink"];
 
 var diagramaEditable;
 var datosGuardados;
 var datosCompartidos;
+var usuariosSeteados = [];
+var lleganDatos = false;
 
 function crearDiagrama(id) {
     diagramaEditable = $(
@@ -38,6 +42,10 @@ function crearDiagrama(id) {
             'undoManager.isEnabled': true, // permite realizar cambios ctrl + z
             "ModelChanged": function (e) {
                 if (e.isTransactionFinished) {
+                    socket.on('datosRecibidos', (datos) => {
+                        console.log('llegaron datos', datos)
+                        datosCompartidos = datos.diagrama;
+                    });
                     //document.getElementById("savedModel").textContent = diagrama.model.toJson();
                     // socket.emit('compartirPantalla', diagramaEditable.model.toJson())
                 }
@@ -278,11 +286,17 @@ function cargar() {
 }
 
 function compartirPantalla() {
-    socket.emit('compartirPantalla', diagramaEditable.model.toJson());
+    socket.emit('compartirPantalla', { usuario: localStorage.getItem('usuario'), diagrama: diagramaEditable.model.toJson()});
 }
 
 function cargarPantallaCompartida() {
-    diagramaEditable.model = go.Model.fromJson(datosCompartidos)
+    if (datosCompartidos) {
+        diagramaEditable.model = go.Model.fromJson(datosCompartidos)
+        return true;
+    } else {
+        return false;
+    }
+
 }
 
 class PantallaInteractivaEditable extends Component {
@@ -301,6 +315,7 @@ class PantallaInteractivaEditable extends Component {
         const usuariosEnSala = this.verificarUsuarioEnSala();
         const esAdmin = this.props.history.location.pathname.includes('admin');
 
+
         if (!esAdmin && !usuariosEnSala) {
             socket.emit('unirseSala', {sala: this.state.sala, usuario: this.state.usuario});
         }
@@ -315,6 +330,15 @@ class PantallaInteractivaEditable extends Component {
                 );
             localStorage.setItem(this.state.sala.idSala, JSON.stringify(datosAGuardar));
         });
+
+        const usuariosGuardados = JSON.parse(localStorage.getItem(this.state.sala.idSala));
+
+        if (usuariosGuardados) {
+            usuariosSeteados = usuariosGuardados;
+            return usuariosSeteados;
+        } else {
+            return [];
+        }
     }
 
     verificarUsuarioEnSala = () => {
@@ -327,23 +351,56 @@ class PantallaInteractivaEditable extends Component {
     };
 
     render() {
+        const esAdmin = this.props.history.location.pathname.includes('admin');
+        const usuariosGuardados = JSON.parse(localStorage.getItem(this.state.sala.idSala));
         return (
             <div id="contenedor">
                 <div id="area-paleta">
                     <Paleta/>
-                    <Row>
-                        <Button
-                            variant="success"
-                            onClick={guardar}>
-                            Guardar
-                        </Button>
+                    {!esAdmin ?
+                        <Row>
+                            <Button
+                                variant="success"
+                                onClick={guardar}>
+                                Pedir la palabra
+                            </Button>
 
-                        <Button
-                            variant="info"
-                            onClick={compartirPantalla}>
-                            Compartir
-                        </Button>
-                    </Row>
+                            <Button
+                                variant="info"
+                                onClick={compartirPantalla}>
+                                Compartir
+                            </Button>
+                        </Row> : (usuariosGuardados  ? usuariosGuardados.map((usuario, indice) => (
+                            <div>
+                                <Button key={indice}
+                                        disabled={
+                                            !lleganDatos
+                                        }
+                                >
+                                    <FaLock/>
+                                    {usuario}
+                                </Button>
+
+                                <Button key={indice}
+                                        disabled={
+                                            !lleganDatos
+                                        }
+                                >
+                                    <FaRegHandPaper/>
+                                    {usuario}
+                                </Button>
+
+                                <Button key={indice}
+                                        disabled={
+                                            !lleganDatos
+                                        }
+                                >
+                                    <FaSatelliteDish/>
+                                    {usuario}
+                                </Button>
+                            </div>)
+                        ) : 'No existen usuarios unidos a la sala')
+                    }
                 </div>
                 <Col id="diagrama">
                     <DiagramaEditable/>

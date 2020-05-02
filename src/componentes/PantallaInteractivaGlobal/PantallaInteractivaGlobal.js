@@ -138,28 +138,41 @@ class PantallaInteractivaGlobal extends Component {
     }
 
     componentDidMount() {
+        const socket = io('http://localhost:8081');
         const usuariosEnSala = JSON.parse(localStorage.getItem(this.state.sala.idSala));
 
+        socket.on('usuarioUnido', (datos) => {
+            const usuariosEnSalaSeteados = datos
+                .filter(
+                    datosSocket => datosSocket.sala.idSala === this.state.sala.idSala
+                )
+                .map(
+                    datosSocket => datosSocket.usuario
+                );
+            console.log('usuarios seteados', usuariosEnSalaSeteados)
+        });
+
         if (usuariosEnSala) {
-            return arregloUsuarios = usuariosEnSala;
+            arregloUsuarios = usuariosEnSala;
+            console.log('usuarios en sala', arregloUsuarios)
+            return arregloUsuarios;
         } else {
             return [];
         }
     }
 
     render() {
-        const {usuarios} = arregloUsuarios;
         return (
             <div id="contenedor">
                 <div id="area-paleta">
                     <Paleta/>
                     <Row>
-                        {usuarios ? usuarios.forEach(usuario =>
-                            <Button
+                        {arregloUsuarios ? arregloUsuarios.map((usuario, indice) => (
+                            <Button key={indice}
                                 onClick={cargarPantallaCompartida}>
-                                {usuario}
                                 <FaUserAlt/>
-                            </Button>
+                                {usuario}
+                            </Button>)
                         ) : 'No se han unido usuarios a la sala'
                         }
                     </Row>

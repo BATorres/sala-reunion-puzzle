@@ -22,8 +22,6 @@ const usuariosEnSala = [];
 module.exports = (socket) => {
     console.log('Socket Id:', socket.id);
 
-    var datosAEnviar;
-
     // Verificar usuario
     socket.on('verificarUsuario', (nombreUsuario, callback) => {
         if (verificarUsuario(usuarios, nombreUsuario)) {
@@ -60,14 +58,13 @@ module.exports = (socket) => {
     socket.on('unirseSala', (datos) => {
         socket.join(datos.sala.idSala);
         usuariosEnSala.unshift(datos);
-        console.log('usuario en sala', datos)
         io.to(datos.sala.idSala).emit('usuarioUnido', usuariosEnSala)
     });
 
     // Compartir pantalla
     socket.on('compartirPantalla', (datosPantalla) => {
-        datosAEnviar = datosPantalla;
-        socket.broadcast.emit('datosRecibidos', datosAEnviar)
+        console.log('datos pantalla', datosPantalla);
+        socket.broadcast.emit('datosRecibidos', datosPantalla)
     });
 };
 
