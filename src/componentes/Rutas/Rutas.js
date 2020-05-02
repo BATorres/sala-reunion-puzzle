@@ -18,7 +18,7 @@ class Rutas extends Component {
                 <Route exact path="/" component={Inicio}/>
                 <Route exact path="/admin/login" component={Login}/>
                 <Route exact path="/admin/menu" component={MenuAdmin}/>
-                <Route exact path="/admin/sala/:idSala" component={PantallaInteractivaEditable}/>
+                <Route exact path="/admin/sala/:idSala" component={PantallaInteractivaGlobal}/>
                 <Route exact path="/admin/crear-sala" component={CrearSala}/>
                 <Route exact path="/admin/listar-salas" component={ListarSalas}/>
                 <Route exact path="/usuario/login" component={Login}/>

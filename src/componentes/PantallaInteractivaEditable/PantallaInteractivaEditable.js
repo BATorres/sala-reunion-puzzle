@@ -8,15 +8,11 @@ import {crearConfirmacion} from "../../funciones/crear-confirmacion";
 import {crearContradiccion} from "../../funciones/crear-contradiccion";
 import {GojsDiagram} from "react-gojs";
 import io from 'socket.io-client';
-import openSocket from "socket.io-client";
 import {Button, Col, Container, Row} from "react-bootstrap";
 import Paleta from "../Paleta/Paleta";
-import {uuid} from "uuidv4";
 
 const socket = io('/');
 const $ = go.GraphObject.make;
-const crearSala = uuid().toString();
-const seUnioSala = {};
 const colores = ["lightgray", "lightblue", "lightgreen", "orange", "pink"];
 
 var diagramaEditable;
@@ -290,6 +286,46 @@ function cargarPantallaCompartida() {
 }
 
 class PantallaInteractivaEditable extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            sala: this.props.match.params,
+            usuarioAdmin: localStorage.getItem('usuarioAdmin'),
+            usuario: localStorage.getItem('usuario')
+        };
+    }
+
+    componentDidMount() {
+        const socket = io('http://localhost:8081');
+        const usuariosEnSala = this.verificarUsuarioEnSala();
+        const esAdmin = this.props.history.location.pathname.includes('admin');
+
+        if (!esAdmin && !usuariosEnSala) {
+            socket.emit('unirseSala', {sala: this.state.sala, usuario: this.state.usuario});
+        }
+
+        socket.on('usuarioUnido', (datos) => {
+            const datosAGuardar = datos
+                .filter(
+                    datosSocket => datosSocket.sala.idSala === this.state.sala.idSala
+                )
+                .map(
+                    datosSocket => datosSocket.usuario
+                );
+            localStorage.setItem(this.state.sala.idSala, JSON.stringify(datosAGuardar));
+        });
+    }
+
+    verificarUsuarioEnSala = () => {
+        const existenUsuariosGuardados = JSON.parse(localStorage.getItem(this.state.sala.idSala));
+        if (existenUsuariosGuardados) {
+            return existenUsuariosGuardados.some(usuario => usuario === this.state.usuario);
+        } else {
+            return false;
+        }
+    };
+
     render() {
         return (
             <div id="contenedor">

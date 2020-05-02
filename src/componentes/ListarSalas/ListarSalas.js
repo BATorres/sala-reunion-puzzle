@@ -9,18 +9,14 @@ class ListarSalas extends Component {
         this.state = {
             usuario: localStorage.getItem('usuario'),
             usuarioAdmin: localStorage.getItem('usuarioAdmin'),
-            salas: []
+            salas: JSON.parse(localStorage.getItem('salasDisponibles'))
         };
 
         const socket = io('http://localhost:8081');
         socket.on('salasDisponibles', (salas) => {
+            localStorage.setItem('salasDisponibles', JSON.stringify(salas));
             this.setState({salas: salas});
         });
-    }
-
-    componentDidMount() {
-        const salas = JSON.parse(localStorage.getItem('salasDisponibles'));
-        this.setState({salas: salas});
     }
 
     accederSala = (sala) => {
@@ -50,7 +46,7 @@ class ListarSalas extends Component {
                         <Row>
                             <Col xs={3}></Col>
                             <Col xs={6}>
-                                {salas.map(sala => <Card>
+                                {salas.map(sala => <Card key={sala.id}>
                                     <Card.Body>
                                         <Card.Text>
                                             {sala.nombre}

@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import openSocket from "socket.io-client";
 import io from 'socket.io-client';
 import * as go from "gojs";
-import {uuid} from "uuidv4";
 import {crearNodo} from "../../funciones/crear-nodo";
 import {crearGrupo} from "../../funciones/crear-grupo";
 import {crearConexion} from "../../funciones/crear-conexion";
@@ -11,19 +9,18 @@ import {crearConfirmacion} from "../../funciones/crear-confirmacion";
 import {crearContradiccion} from "../../funciones/crear-contradiccion";
 import {GojsDiagram} from "react-gojs";
 import {Button, Col, Container, Row} from "react-bootstrap";
-import { FaUserAlt } from "react-icons/fa";
+import {FaUserAlt} from "react-icons/fa";
 import Paleta from "../Paleta/Paleta";
 
 const socket = io('/');
 const $ = go.GraphObject.make;
-const crearSala = uuid().toString();
-const seUnioSala = {};
 
 var diagramaGlobal;
 var otroDiagrama;
 var datosGuardados;
 var datosCompartidos;
 var estadoBoton;
+var arregloUsuarios = [];
 
 function crearDiagrama(id) {
     diagramaGlobal = $(
@@ -130,22 +127,41 @@ function Diagrama() {
 }
 
 class PantallaInteractivaGlobal extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            sala: this.props.match.params,
+            usuarioAdmin: localStorage.getItem('usuarioAdmin'),
+            usuario: localStorage.getItem('usuario')
+        };
+    }
+
+    componentDidMount() {
+        const usuariosEnSala = JSON.parse(localStorage.getItem(this.state.sala.idSala));
+
+        if (usuariosEnSala) {
+            return arregloUsuarios = usuariosEnSala;
+        } else {
+            return [];
+        }
+    }
+
     render() {
+        const {usuarios} = arregloUsuarios;
         return (
             <div id="contenedor">
                 <div id="area-paleta">
                     <Paleta/>
                     <Row>
-                        <Button
-                            variant="success"
-                            onClick={guardar}>
-                            Guardar
-                        </Button>
-
-                        <Button
-                            onClick={cargarPantallaCompartida}>
-                            FaUserAlt
-                        </Button>
+                        {usuarios ? usuarios.forEach(usuario =>
+                            <Button
+                                onClick={cargarPantallaCompartida}>
+                                {usuario}
+                                <FaUserAlt/>
+                            </Button>
+                        ) : 'No se han unido usuarios a la sala'
+                        }
                     </Row>
                 </div>
                 <Col id="diagrama">
