@@ -17,10 +17,10 @@ let salas = {};
 
 let salasAEnviar  = [];
 
+const usuariosEnSala = [];
+
 module.exports = (socket) => {
     console.log('Socket Id:', socket.id);
-
-    var datosAEnviar;
 
     // Verificar usuario
     socket.on('verificarUsuario', (nombreUsuario, callback) => {
@@ -50,16 +50,21 @@ module.exports = (socket) => {
     socket.on('crearSala', (nombreSala) => {
         salas = crearSala(salas, nombreSala);
         socket.sala = nombreSala;
-        console.log('salas', salas);
-        salasAEnviar.unshift(socket.sala)
+        salasAEnviar.unshift(socket.sala);
+        socket.broadcast.emit('salasDisponibles', salasAEnviar);
     });
 
-    socket.broadcast.emit('salasDisponibles', salasAEnviar);
+    // Unirse a sala
+    socket.on('unirseSala', (datos) => {
+        socket.join(datos.sala.idSala);
+        usuariosEnSala.unshift(datos);
+        io.to(datos.sala.idSala).emit('usuarioUnido', usuariosEnSala)
+    });
 
     // Compartir pantalla
     socket.on('compartirPantalla', (datosPantalla) => {
-        datosAEnviar = datosPantalla;
-        socket.broadcast.emit('datosRecibidos', datosAEnviar)
+        console.log('datos pantalla', datosPantalla);
+        socket.broadcast.emit('datosRecibidos', datosPantalla)
     });
 };
 

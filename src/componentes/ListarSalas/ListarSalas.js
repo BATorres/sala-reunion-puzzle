@@ -7,24 +7,26 @@ class ListarSalas extends Component {
         super(props);
 
         this.state = {
-            usuario: this.props.location.state.usuario,
-            salas: this.props.location.state.salas
+            usuario: localStorage.getItem('usuario'),
+            usuarioAdmin: localStorage.getItem('usuarioAdmin'),
+            salas: JSON.parse(localStorage.getItem('salasDisponibles'))
         };
 
         const socket = io('/');
         socket.on('salasDisponibles', (salas) => {
+            localStorage.setItem('salasDisponibles', JSON.stringify(salas));
             this.setState({salas: salas});
         });
     }
 
     accederSala = (sala) => {
         const esAdmin = this.props.history.location.pathname.includes('admin');
-        const {usuario} = this.state;
+        const {usuario, usuarioAdmin} = this.state;
 
         if (esAdmin) {
             this.props.history.push({
                 pathname: `/admin/sala/${sala.id}`, 
-                state: { sala: sala, usuario: usuario }
+                state: { sala: sala, usuarioAdmin: usuarioAdmin }
             })
         } else {
             this.props.history.push({
@@ -33,7 +35,6 @@ class ListarSalas extends Component {
             })
         }
     };
-
 
     render() {
         const {salas} = this.state;
@@ -45,7 +46,7 @@ class ListarSalas extends Component {
                         <Row>
                             <Col xs={3}></Col>
                             <Col xs={6}>
-                                {salas.map(sala => <Card>
+                                {salas.map(sala => <Card key={sala.id}>
                                     <Card.Body>
                                         <Card.Text>
                                             {sala.nombre}

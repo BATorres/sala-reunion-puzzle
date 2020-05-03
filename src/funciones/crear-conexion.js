@@ -13,6 +13,6 @@ export function crearConexion(graphObject) {
       {
         strokeWidth: 2,
       },
-    ),
+    )
   )
 }

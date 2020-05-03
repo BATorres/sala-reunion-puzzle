@@ -6,7 +6,7 @@ class CrearSala extends Component {
         super(props);
 
         this.state = {
-            usuario: this.props.location.state.usuario,
+            usuarioAdmin: localStorage.getItem('usuarioAdmin'),
             sala: '',
             error: ''
         }
