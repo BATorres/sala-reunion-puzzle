@@ -11,13 +11,14 @@ import io from 'socket.io-client';
 import {Button, Col, Container, Row} from "react-bootstrap";
 import Paleta from "../Paleta/Paleta";
 import {FaLock, FaRegHandPaper, FaSatelliteDish} from "react-icons/fa";
-import divWithClassName from "react-bootstrap/esm/divWithClassName";
+import {crearEditarTexto} from "../../funciones/crear-editar-texto";
+import {eliminarNodoOConexion} from "../../funciones/eliminar-nodo-o-conexion";
 
 const socket = io('http://localhost:8081');
 const $ = go.GraphObject.make;
 const colores = ["lightgray", "lightblue", "lightgreen", "orange", "pink"];
 
-var diagramaEditable;
+export var diagramaEditable;
 var datosGuardados;
 var datosCompartidos;
 var usuariosSeteados = [];
@@ -29,8 +30,8 @@ function crearDiagrama(id) {
         id,
         {
             'linkingTool.isEnabled': false,
-            'allowDrop': true,
-            /*'clickCreatingTool.archetypeNodeData': {
+            /*'allowDrop': true,
+            'clickCreatingTool.archetypeNodeData': {
                 text: 'Nuevo',
                 color: 'white'
             },*/ // permite crear nuevos nodos con doble clic
@@ -81,7 +82,6 @@ function crearDiagrama(id) {
         crearContradiccion($)
     );
 
-
     // definir botones nodos
     diagramaEditable.nodeTemplate.selectionAdornmentTemplate = $(
         go.Adornment, 'Spot',
@@ -106,7 +106,7 @@ function crearDiagrama(id) {
             $(
                 'Button',
                 {
-                    click: editarTexto
+                    click: crearEditarTexto
                 },
                 $(
                     go.TextBlock, 'A',
@@ -182,7 +182,7 @@ function crearDiagrama(id) {
             $(
                 'Button',
                 {
-                    click: eliminarNodo
+                    click: eliminarNodoOConexion
                 },
                 $(
                     go.TextBlock, 'X',
@@ -197,13 +197,6 @@ function crearDiagrama(id) {
         )
     );
 
-    function editarTexto(evento, boton) {
-        var nodo = boton.part.adornedPart;
-        evento.diagram.commandHandler.editTextBlock(
-            nodo.findObject('Texto')
-        );
-    }
-
     function cambiarColor(evento, boton) {
         const nodo = boton.part.adornedPart;
         var forma = nodo.findObject('Nodo');
@@ -212,13 +205,6 @@ function crearDiagrama(id) {
         forma.fill = siguienteColor(forma.fill);
         boton['_buttonFillNormal'] = siguienteColor(forma.fill);
         nodo.diagram.commitTransaction('Cambiar color');
-    }
-
-    function eliminarNodo(evento, boton) {
-        const nodo = boton.part.adornedPart.findObject('Nodo');
-        nodo.diagram.startTransaction('Eliminar nodo');
-        nodo.diagram.remove(nodo);
-        nodo.diagram.commitTransaction('Eliminar nodo');
     }
 
     function siguienteColor(color) {
