@@ -14,7 +14,7 @@ import {FaLock, FaRegHandPaper, FaSatelliteDish} from "react-icons/fa";
 import {crearEditarTexto} from "../../funciones/crear-editar-texto";
 import {eliminarNodoOConexion} from "../../funciones/eliminar-nodo-o-conexion";
 
-const socket = io('http://localhost:8081');
+const socket = io('/');
 const $ = go.GraphObject.make;
 const colores = ["lightgray", "lightblue", "lightgreen", "orange", "pink"];
 
@@ -297,7 +297,7 @@ class PantallaInteractivaEditable extends Component {
     }
 
     componentDidMount() {
-        const socket = io('http://localhost:8081');
+        const socket = io('/');
         const usuariosEnSala = this.verificarUsuarioEnSala();
         const esAdmin = this.props.history.location.pathname.includes('admin');
 
