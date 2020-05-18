@@ -1,0 +1,6 @@
+endpoint: https://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev
+datamodel: datamodel.prisma
+
+generate:
+  - generator: typescript-client
+    output: ./generated/prisma-client/

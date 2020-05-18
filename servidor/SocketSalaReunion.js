@@ -1,4 +1,4 @@
-const io = require('./servidor').io;
+const io = require('./index').io;
 const { uuid } = require('uuidv4');
 
 const nuevoUsuario = ({ nombre = '' } = {}) => ({
