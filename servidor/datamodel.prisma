@@ -1,0 +1,40 @@
+type UsuarioSala {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  usuarios: [Usuario] @relation(link: TABLE)
+  salas: [Sala] @relation(link: TABLE)
+}
+
+type Sala {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  nombre: String!
+  usuarioSala: UsuarioSala
+}
+
+type Usuario {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  nombre: String!
+  esAdmin: Boolean! @default(value: false)
+  usuarioSala: UsuarioSala
+}
+
+type Diagrama {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  datos: String!
+  diagramaUsuario: DiagramaUsuario
+}
+
+type DiagramaUsuario {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  diagramas: [Diagrama] @relation(link: TABLE)
+  usuariosSala: [UsuarioSala] @relation(link: TABLE)
+}
