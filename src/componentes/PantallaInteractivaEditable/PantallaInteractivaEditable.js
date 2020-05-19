@@ -7,7 +7,9 @@ import {FaLock, FaRegHandPaper, FaSatelliteDish} from "react-icons/fa";
 import DiagramaEditable from "../DiagramaEditable/DiagramaEditable";
 import {diagramaEditable} from "../DiagramaEditable/DiagramaEditable";
 
-const socket = io('http://localhost:8081');
+const socket = io('/');
+const $ = go.GraphObject.make;
+const colores = ["lightgray", "lightblue", "lightgreen", "orange", "pink"];
 
 var datosGuardados;
 var datosCompartidos;
@@ -51,7 +53,7 @@ class PantallaInteractivaEditable extends Component {
     }
 
     componentDidMount() {
-        const socket = io('http://localhost:8081');
+        const socket = io('/');
         const usuariosEnSala = this.verificarUsuarioEnSala();
         const esAdmin = this.props.history.location.pathname.includes('admin');
 

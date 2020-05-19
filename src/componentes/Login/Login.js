@@ -17,7 +17,7 @@ class Login extends Component {
     };
 
     ingresar = (evento) => {
-        const socket = io('http://localhost:8081');
+        const socket = io('/');
         const {usuario} = this.state;
 
         evento.preventDefault();
@@ -49,7 +49,7 @@ class Login extends Component {
         } else {
             const esAdmin = this.props.history.location.pathname.includes('admin');
             this.setearError('');
-            const socket = io('http://localhost:8081');
+            const socket = io('/');
             socket.emit('agregarUsuario', usuario);
 
             if (esAdmin) {

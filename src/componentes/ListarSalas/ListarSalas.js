@@ -12,7 +12,7 @@ class ListarSalas extends Component {
             salas: JSON.parse(localStorage.getItem('salasDisponibles'))
         };
 
-        const socket = io('http://localhost:8081');
+        const socket = io('/');
         socket.on('salasDisponibles', (salas) => {
             localStorage.setItem('salasDisponibles', JSON.stringify(salas));
             this.setState({salas: salas});
