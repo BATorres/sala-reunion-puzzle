@@ -1,0 +1,10 @@
+projects:
+  app:
+    schemaPath: "servidor/schema.graphql"
+    extensions:
+      endpoints:
+        default: "https://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev"
+  database:
+    schemaPath: generated/prisma-client/prisma.graphql
+    extensions:
+      prisma: ./prisma.yml
