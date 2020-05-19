@@ -2,7 +2,23 @@
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-export const typeDefs = /* GraphQL */ `type AggregateUser {
+export const typeDefs = /* GraphQL */ `type AggregateDiagrama {
+  count: Int!
+}
+
+type AggregateDiagramaUsuario {
+  count: Int!
+}
+
+type AggregateSala {
+  count: Int!
+}
+
+type AggregateUsuario {
+  count: Int!
+}
+
+type AggregateUsuarioSala {
   count: Int!
 }
 
@@ -10,15 +26,397 @@ type BatchPayload {
   count: Long!
 }
 
+scalar DateTime
+
+type Diagrama {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  datos: String!
+  diagramaUsuario: DiagramaUsuario
+}
+
+type DiagramaConnection {
+  pageInfo: PageInfo!
+  edges: [DiagramaEdge]!
+  aggregate: AggregateDiagrama!
+}
+
+input DiagramaCreateInput {
+  id: ID
+  datos: String!
+  diagramaUsuario: DiagramaUsuarioCreateOneWithoutDiagramasInput
+}
+
+input DiagramaCreateManyWithoutDiagramaUsuarioInput {
+  create: [DiagramaCreateWithoutDiagramaUsuarioInput!]
+  connect: [DiagramaWhereUniqueInput!]
+}
+
+input DiagramaCreateWithoutDiagramaUsuarioInput {
+  id: ID
+  datos: String!
+}
+
+type DiagramaEdge {
+  node: Diagrama!
+  cursor: String!
+}
+
+enum DiagramaOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  datos_ASC
+  datos_DESC
+}
+
+type DiagramaPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  datos: String!
+}
+
+input DiagramaScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  datos: String
+  datos_not: String
+  datos_in: [String!]
+  datos_not_in: [String!]
+  datos_lt: String
+  datos_lte: String
+  datos_gt: String
+  datos_gte: String
+  datos_contains: String
+  datos_not_contains: String
+  datos_starts_with: String
+  datos_not_starts_with: String
+  datos_ends_with: String
+  datos_not_ends_with: String
+  AND: [DiagramaScalarWhereInput!]
+  OR: [DiagramaScalarWhereInput!]
+  NOT: [DiagramaScalarWhereInput!]
+}
+
+type DiagramaSubscriptionPayload {
+  mutation: MutationType!
+  node: Diagrama
+  updatedFields: [String!]
+  previousValues: DiagramaPreviousValues
+}
+
+input DiagramaSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: DiagramaWhereInput
+  AND: [DiagramaSubscriptionWhereInput!]
+  OR: [DiagramaSubscriptionWhereInput!]
+  NOT: [DiagramaSubscriptionWhereInput!]
+}
+
+input DiagramaUpdateInput {
+  datos: String
+  diagramaUsuario: DiagramaUsuarioUpdateOneWithoutDiagramasInput
+}
+
+input DiagramaUpdateManyDataInput {
+  datos: String
+}
+
+input DiagramaUpdateManyMutationInput {
+  datos: String
+}
+
+input DiagramaUpdateManyWithoutDiagramaUsuarioInput {
+  create: [DiagramaCreateWithoutDiagramaUsuarioInput!]
+  delete: [DiagramaWhereUniqueInput!]
+  connect: [DiagramaWhereUniqueInput!]
+  set: [DiagramaWhereUniqueInput!]
+  disconnect: [DiagramaWhereUniqueInput!]
+  update: [DiagramaUpdateWithWhereUniqueWithoutDiagramaUsuarioInput!]
+  upsert: [DiagramaUpsertWithWhereUniqueWithoutDiagramaUsuarioInput!]
+  deleteMany: [DiagramaScalarWhereInput!]
+  updateMany: [DiagramaUpdateManyWithWhereNestedInput!]
+}
+
+input DiagramaUpdateManyWithWhereNestedInput {
+  where: DiagramaScalarWhereInput!
+  data: DiagramaUpdateManyDataInput!
+}
+
+input DiagramaUpdateWithoutDiagramaUsuarioDataInput {
+  datos: String
+}
+
+input DiagramaUpdateWithWhereUniqueWithoutDiagramaUsuarioInput {
+  where: DiagramaWhereUniqueInput!
+  data: DiagramaUpdateWithoutDiagramaUsuarioDataInput!
+}
+
+input DiagramaUpsertWithWhereUniqueWithoutDiagramaUsuarioInput {
+  where: DiagramaWhereUniqueInput!
+  update: DiagramaUpdateWithoutDiagramaUsuarioDataInput!
+  create: DiagramaCreateWithoutDiagramaUsuarioInput!
+}
+
+type DiagramaUsuario {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  diagramas(where: DiagramaWhereInput, orderBy: DiagramaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Diagrama!]
+  usuariosSala(where: UsuarioSalaWhereInput, orderBy: UsuarioSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UsuarioSala!]
+}
+
+type DiagramaUsuarioConnection {
+  pageInfo: PageInfo!
+  edges: [DiagramaUsuarioEdge]!
+  aggregate: AggregateDiagramaUsuario!
+}
+
+input DiagramaUsuarioCreateInput {
+  id: ID
+  diagramas: DiagramaCreateManyWithoutDiagramaUsuarioInput
+  usuariosSala: UsuarioSalaCreateManyInput
+}
+
+input DiagramaUsuarioCreateOneWithoutDiagramasInput {
+  create: DiagramaUsuarioCreateWithoutDiagramasInput
+  connect: DiagramaUsuarioWhereUniqueInput
+}
+
+input DiagramaUsuarioCreateWithoutDiagramasInput {
+  id: ID
+  usuariosSala: UsuarioSalaCreateManyInput
+}
+
+type DiagramaUsuarioEdge {
+  node: DiagramaUsuario!
+  cursor: String!
+}
+
+enum DiagramaUsuarioOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type DiagramaUsuarioPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type DiagramaUsuarioSubscriptionPayload {
+  mutation: MutationType!
+  node: DiagramaUsuario
+  updatedFields: [String!]
+  previousValues: DiagramaUsuarioPreviousValues
+}
+
+input DiagramaUsuarioSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: DiagramaUsuarioWhereInput
+  AND: [DiagramaUsuarioSubscriptionWhereInput!]
+  OR: [DiagramaUsuarioSubscriptionWhereInput!]
+  NOT: [DiagramaUsuarioSubscriptionWhereInput!]
+}
+
+input DiagramaUsuarioUpdateInput {
+  diagramas: DiagramaUpdateManyWithoutDiagramaUsuarioInput
+  usuariosSala: UsuarioSalaUpdateManyInput
+}
+
+input DiagramaUsuarioUpdateOneWithoutDiagramasInput {
+  create: DiagramaUsuarioCreateWithoutDiagramasInput
+  update: DiagramaUsuarioUpdateWithoutDiagramasDataInput
+  upsert: DiagramaUsuarioUpsertWithoutDiagramasInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: DiagramaUsuarioWhereUniqueInput
+}
+
+input DiagramaUsuarioUpdateWithoutDiagramasDataInput {
+  usuariosSala: UsuarioSalaUpdateManyInput
+}
+
+input DiagramaUsuarioUpsertWithoutDiagramasInput {
+  update: DiagramaUsuarioUpdateWithoutDiagramasDataInput!
+  create: DiagramaUsuarioCreateWithoutDiagramasInput!
+}
+
+input DiagramaUsuarioWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  diagramas_every: DiagramaWhereInput
+  diagramas_some: DiagramaWhereInput
+  diagramas_none: DiagramaWhereInput
+  usuariosSala_every: UsuarioSalaWhereInput
+  usuariosSala_some: UsuarioSalaWhereInput
+  usuariosSala_none: UsuarioSalaWhereInput
+  AND: [DiagramaUsuarioWhereInput!]
+  OR: [DiagramaUsuarioWhereInput!]
+  NOT: [DiagramaUsuarioWhereInput!]
+}
+
+input DiagramaUsuarioWhereUniqueInput {
+  id: ID
+}
+
+input DiagramaWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  datos: String
+  datos_not: String
+  datos_in: [String!]
+  datos_not_in: [String!]
+  datos_lt: String
+  datos_lte: String
+  datos_gt: String
+  datos_gte: String
+  datos_contains: String
+  datos_not_contains: String
+  datos_starts_with: String
+  datos_not_starts_with: String
+  datos_ends_with: String
+  datos_not_ends_with: String
+  diagramaUsuario: DiagramaUsuarioWhereInput
+  AND: [DiagramaWhereInput!]
+  OR: [DiagramaWhereInput!]
+  NOT: [DiagramaWhereInput!]
+}
+
+input DiagramaWhereUniqueInput {
+  id: ID
+}
+
 scalar Long
 
 type Mutation {
-  createUser(data: UserCreateInput!): User!
-  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  deleteUser(where: UserWhereUniqueInput!): User
-  deleteManyUsers(where: UserWhereInput): BatchPayload!
+  createDiagrama(data: DiagramaCreateInput!): Diagrama!
+  updateDiagrama(data: DiagramaUpdateInput!, where: DiagramaWhereUniqueInput!): Diagrama
+  updateManyDiagramas(data: DiagramaUpdateManyMutationInput!, where: DiagramaWhereInput): BatchPayload!
+  upsertDiagrama(where: DiagramaWhereUniqueInput!, create: DiagramaCreateInput!, update: DiagramaUpdateInput!): Diagrama!
+  deleteDiagrama(where: DiagramaWhereUniqueInput!): Diagrama
+  deleteManyDiagramas(where: DiagramaWhereInput): BatchPayload!
+  createDiagramaUsuario(data: DiagramaUsuarioCreateInput!): DiagramaUsuario!
+  updateDiagramaUsuario(data: DiagramaUsuarioUpdateInput!, where: DiagramaUsuarioWhereUniqueInput!): DiagramaUsuario
+  upsertDiagramaUsuario(where: DiagramaUsuarioWhereUniqueInput!, create: DiagramaUsuarioCreateInput!, update: DiagramaUsuarioUpdateInput!): DiagramaUsuario!
+  deleteDiagramaUsuario(where: DiagramaUsuarioWhereUniqueInput!): DiagramaUsuario
+  deleteManyDiagramaUsuarios(where: DiagramaUsuarioWhereInput): BatchPayload!
+  createSala(data: SalaCreateInput!): Sala!
+  updateSala(data: SalaUpdateInput!, where: SalaWhereUniqueInput!): Sala
+  updateManySalas(data: SalaUpdateManyMutationInput!, where: SalaWhereInput): BatchPayload!
+  upsertSala(where: SalaWhereUniqueInput!, create: SalaCreateInput!, update: SalaUpdateInput!): Sala!
+  deleteSala(where: SalaWhereUniqueInput!): Sala
+  deleteManySalas(where: SalaWhereInput): BatchPayload!
+  createUsuario(data: UsuarioCreateInput!): Usuario!
+  updateUsuario(data: UsuarioUpdateInput!, where: UsuarioWhereUniqueInput!): Usuario
+  updateManyUsuarios(data: UsuarioUpdateManyMutationInput!, where: UsuarioWhereInput): BatchPayload!
+  upsertUsuario(where: UsuarioWhereUniqueInput!, create: UsuarioCreateInput!, update: UsuarioUpdateInput!): Usuario!
+  deleteUsuario(where: UsuarioWhereUniqueInput!): Usuario
+  deleteManyUsuarios(where: UsuarioWhereInput): BatchPayload!
+  createUsuarioSala(data: UsuarioSalaCreateInput!): UsuarioSala!
+  updateUsuarioSala(data: UsuarioSalaUpdateInput!, where: UsuarioSalaWhereUniqueInput!): UsuarioSala
+  upsertUsuarioSala(where: UsuarioSalaWhereUniqueInput!, create: UsuarioSalaCreateInput!, update: UsuarioSalaUpdateInput!): UsuarioSala!
+  deleteUsuarioSala(where: UsuarioSalaWhereUniqueInput!): UsuarioSala
+  deleteManyUsuarioSalas(where: UsuarioSalaWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -39,76 +437,78 @@ type PageInfo {
 }
 
 type Query {
-  user(where: UserWhereUniqueInput!): User
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  diagrama(where: DiagramaWhereUniqueInput!): Diagrama
+  diagramas(where: DiagramaWhereInput, orderBy: DiagramaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Diagrama]!
+  diagramasConnection(where: DiagramaWhereInput, orderBy: DiagramaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DiagramaConnection!
+  diagramaUsuario(where: DiagramaUsuarioWhereUniqueInput!): DiagramaUsuario
+  diagramaUsuarios(where: DiagramaUsuarioWhereInput, orderBy: DiagramaUsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DiagramaUsuario]!
+  diagramaUsuariosConnection(where: DiagramaUsuarioWhereInput, orderBy: DiagramaUsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DiagramaUsuarioConnection!
+  sala(where: SalaWhereUniqueInput!): Sala
+  salas(where: SalaWhereInput, orderBy: SalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Sala]!
+  salasConnection(where: SalaWhereInput, orderBy: SalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SalaConnection!
+  usuario(where: UsuarioWhereUniqueInput!): Usuario
+  usuarios(where: UsuarioWhereInput, orderBy: UsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Usuario]!
+  usuariosConnection(where: UsuarioWhereInput, orderBy: UsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UsuarioConnection!
+  usuarioSala(where: UsuarioSalaWhereUniqueInput!): UsuarioSala
+  usuarioSalas(where: UsuarioSalaWhereInput, orderBy: UsuarioSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UsuarioSala]!
+  usuarioSalasConnection(where: UsuarioSalaWhereInput, orderBy: UsuarioSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UsuarioSalaConnection!
   node(id: ID!): Node
 }
 
-type Subscription {
-  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-}
-
-type User {
+type Sala {
   id: ID!
-  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  nombre: String!
+  usuarioSala: UsuarioSala
 }
 
-type UserConnection {
+type SalaConnection {
   pageInfo: PageInfo!
-  edges: [UserEdge]!
-  aggregate: AggregateUser!
+  edges: [SalaEdge]!
+  aggregate: AggregateSala!
 }
 
-input UserCreateInput {
+input SalaCreateInput {
   id: ID
-  name: String!
+  nombre: String!
+  usuarioSala: UsuarioSalaCreateOneWithoutSalasInput
 }
 
-type UserEdge {
-  node: User!
+input SalaCreateManyWithoutUsuarioSalaInput {
+  create: [SalaCreateWithoutUsuarioSalaInput!]
+  connect: [SalaWhereUniqueInput!]
+}
+
+input SalaCreateWithoutUsuarioSalaInput {
+  id: ID
+  nombre: String!
+}
+
+type SalaEdge {
+  node: Sala!
   cursor: String!
 }
 
-enum UserOrderByInput {
+enum SalaOrderByInput {
   id_ASC
   id_DESC
-  name_ASC
-  name_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  nombre_ASC
+  nombre_DESC
 }
 
-type UserPreviousValues {
+type SalaPreviousValues {
   id: ID!
-  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  nombre: String!
 }
 
-type UserSubscriptionPayload {
-  mutation: MutationType!
-  node: User
-  updatedFields: [String!]
-  previousValues: UserPreviousValues
-}
-
-input UserSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: UserWhereInput
-  AND: [UserSubscriptionWhereInput!]
-  OR: [UserSubscriptionWhereInput!]
-  NOT: [UserSubscriptionWhereInput!]
-}
-
-input UserUpdateInput {
-  name: String
-}
-
-input UserUpdateManyMutationInput {
-  name: String
-}
-
-input UserWhereInput {
+input SalaScalarWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -123,26 +523,633 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  AND: [UserWhereInput!]
-  OR: [UserWhereInput!]
-  NOT: [UserWhereInput!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  nombre: String
+  nombre_not: String
+  nombre_in: [String!]
+  nombre_not_in: [String!]
+  nombre_lt: String
+  nombre_lte: String
+  nombre_gt: String
+  nombre_gte: String
+  nombre_contains: String
+  nombre_not_contains: String
+  nombre_starts_with: String
+  nombre_not_starts_with: String
+  nombre_ends_with: String
+  nombre_not_ends_with: String
+  AND: [SalaScalarWhereInput!]
+  OR: [SalaScalarWhereInput!]
+  NOT: [SalaScalarWhereInput!]
 }
 
-input UserWhereUniqueInput {
+type SalaSubscriptionPayload {
+  mutation: MutationType!
+  node: Sala
+  updatedFields: [String!]
+  previousValues: SalaPreviousValues
+}
+
+input SalaSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: SalaWhereInput
+  AND: [SalaSubscriptionWhereInput!]
+  OR: [SalaSubscriptionWhereInput!]
+  NOT: [SalaSubscriptionWhereInput!]
+}
+
+input SalaUpdateInput {
+  nombre: String
+  usuarioSala: UsuarioSalaUpdateOneWithoutSalasInput
+}
+
+input SalaUpdateManyDataInput {
+  nombre: String
+}
+
+input SalaUpdateManyMutationInput {
+  nombre: String
+}
+
+input SalaUpdateManyWithoutUsuarioSalaInput {
+  create: [SalaCreateWithoutUsuarioSalaInput!]
+  delete: [SalaWhereUniqueInput!]
+  connect: [SalaWhereUniqueInput!]
+  set: [SalaWhereUniqueInput!]
+  disconnect: [SalaWhereUniqueInput!]
+  update: [SalaUpdateWithWhereUniqueWithoutUsuarioSalaInput!]
+  upsert: [SalaUpsertWithWhereUniqueWithoutUsuarioSalaInput!]
+  deleteMany: [SalaScalarWhereInput!]
+  updateMany: [SalaUpdateManyWithWhereNestedInput!]
+}
+
+input SalaUpdateManyWithWhereNestedInput {
+  where: SalaScalarWhereInput!
+  data: SalaUpdateManyDataInput!
+}
+
+input SalaUpdateWithoutUsuarioSalaDataInput {
+  nombre: String
+}
+
+input SalaUpdateWithWhereUniqueWithoutUsuarioSalaInput {
+  where: SalaWhereUniqueInput!
+  data: SalaUpdateWithoutUsuarioSalaDataInput!
+}
+
+input SalaUpsertWithWhereUniqueWithoutUsuarioSalaInput {
+  where: SalaWhereUniqueInput!
+  update: SalaUpdateWithoutUsuarioSalaDataInput!
+  create: SalaCreateWithoutUsuarioSalaInput!
+}
+
+input SalaWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  nombre: String
+  nombre_not: String
+  nombre_in: [String!]
+  nombre_not_in: [String!]
+  nombre_lt: String
+  nombre_lte: String
+  nombre_gt: String
+  nombre_gte: String
+  nombre_contains: String
+  nombre_not_contains: String
+  nombre_starts_with: String
+  nombre_not_starts_with: String
+  nombre_ends_with: String
+  nombre_not_ends_with: String
+  usuarioSala: UsuarioSalaWhereInput
+  AND: [SalaWhereInput!]
+  OR: [SalaWhereInput!]
+  NOT: [SalaWhereInput!]
+}
+
+input SalaWhereUniqueInput {
+  id: ID
+  nombre: String
+}
+
+type Subscription {
+  diagrama(where: DiagramaSubscriptionWhereInput): DiagramaSubscriptionPayload
+  diagramaUsuario(where: DiagramaUsuarioSubscriptionWhereInput): DiagramaUsuarioSubscriptionPayload
+  sala(where: SalaSubscriptionWhereInput): SalaSubscriptionPayload
+  usuario(where: UsuarioSubscriptionWhereInput): UsuarioSubscriptionPayload
+  usuarioSala(where: UsuarioSalaSubscriptionWhereInput): UsuarioSalaSubscriptionPayload
+}
+
+type Usuario {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  nombre: String!
+  esAdmin: Boolean!
+  usuarioSala: UsuarioSala
+}
+
+type UsuarioConnection {
+  pageInfo: PageInfo!
+  edges: [UsuarioEdge]!
+  aggregate: AggregateUsuario!
+}
+
+input UsuarioCreateInput {
+  id: ID
+  nombre: String!
+  esAdmin: Boolean
+  usuarioSala: UsuarioSalaCreateOneWithoutUsuariosInput
+}
+
+input UsuarioCreateManyWithoutUsuarioSalaInput {
+  create: [UsuarioCreateWithoutUsuarioSalaInput!]
+  connect: [UsuarioWhereUniqueInput!]
+}
+
+input UsuarioCreateWithoutUsuarioSalaInput {
+  id: ID
+  nombre: String!
+  esAdmin: Boolean
+}
+
+type UsuarioEdge {
+  node: Usuario!
+  cursor: String!
+}
+
+enum UsuarioOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  nombre_ASC
+  nombre_DESC
+  esAdmin_ASC
+  esAdmin_DESC
+}
+
+type UsuarioPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  nombre: String!
+  esAdmin: Boolean!
+}
+
+type UsuarioSala {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  usuarios(where: UsuarioWhereInput, orderBy: UsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Usuario!]
+  salas(where: SalaWhereInput, orderBy: SalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Sala!]
+}
+
+type UsuarioSalaConnection {
+  pageInfo: PageInfo!
+  edges: [UsuarioSalaEdge]!
+  aggregate: AggregateUsuarioSala!
+}
+
+input UsuarioSalaCreateInput {
+  id: ID
+  usuarios: UsuarioCreateManyWithoutUsuarioSalaInput
+  salas: SalaCreateManyWithoutUsuarioSalaInput
+}
+
+input UsuarioSalaCreateManyInput {
+  create: [UsuarioSalaCreateInput!]
+  connect: [UsuarioSalaWhereUniqueInput!]
+}
+
+input UsuarioSalaCreateOneWithoutSalasInput {
+  create: UsuarioSalaCreateWithoutSalasInput
+  connect: UsuarioSalaWhereUniqueInput
+}
+
+input UsuarioSalaCreateOneWithoutUsuariosInput {
+  create: UsuarioSalaCreateWithoutUsuariosInput
+  connect: UsuarioSalaWhereUniqueInput
+}
+
+input UsuarioSalaCreateWithoutSalasInput {
+  id: ID
+  usuarios: UsuarioCreateManyWithoutUsuarioSalaInput
+}
+
+input UsuarioSalaCreateWithoutUsuariosInput {
+  id: ID
+  salas: SalaCreateManyWithoutUsuarioSalaInput
+}
+
+type UsuarioSalaEdge {
+  node: UsuarioSala!
+  cursor: String!
+}
+
+enum UsuarioSalaOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type UsuarioSalaPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input UsuarioSalaScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [UsuarioSalaScalarWhereInput!]
+  OR: [UsuarioSalaScalarWhereInput!]
+  NOT: [UsuarioSalaScalarWhereInput!]
+}
+
+type UsuarioSalaSubscriptionPayload {
+  mutation: MutationType!
+  node: UsuarioSala
+  updatedFields: [String!]
+  previousValues: UsuarioSalaPreviousValues
+}
+
+input UsuarioSalaSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UsuarioSalaWhereInput
+  AND: [UsuarioSalaSubscriptionWhereInput!]
+  OR: [UsuarioSalaSubscriptionWhereInput!]
+  NOT: [UsuarioSalaSubscriptionWhereInput!]
+}
+
+input UsuarioSalaUpdateDataInput {
+  usuarios: UsuarioUpdateManyWithoutUsuarioSalaInput
+  salas: SalaUpdateManyWithoutUsuarioSalaInput
+}
+
+input UsuarioSalaUpdateInput {
+  usuarios: UsuarioUpdateManyWithoutUsuarioSalaInput
+  salas: SalaUpdateManyWithoutUsuarioSalaInput
+}
+
+input UsuarioSalaUpdateManyInput {
+  create: [UsuarioSalaCreateInput!]
+  update: [UsuarioSalaUpdateWithWhereUniqueNestedInput!]
+  upsert: [UsuarioSalaUpsertWithWhereUniqueNestedInput!]
+  delete: [UsuarioSalaWhereUniqueInput!]
+  connect: [UsuarioSalaWhereUniqueInput!]
+  set: [UsuarioSalaWhereUniqueInput!]
+  disconnect: [UsuarioSalaWhereUniqueInput!]
+  deleteMany: [UsuarioSalaScalarWhereInput!]
+}
+
+input UsuarioSalaUpdateOneWithoutSalasInput {
+  create: UsuarioSalaCreateWithoutSalasInput
+  update: UsuarioSalaUpdateWithoutSalasDataInput
+  upsert: UsuarioSalaUpsertWithoutSalasInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UsuarioSalaWhereUniqueInput
+}
+
+input UsuarioSalaUpdateOneWithoutUsuariosInput {
+  create: UsuarioSalaCreateWithoutUsuariosInput
+  update: UsuarioSalaUpdateWithoutUsuariosDataInput
+  upsert: UsuarioSalaUpsertWithoutUsuariosInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UsuarioSalaWhereUniqueInput
+}
+
+input UsuarioSalaUpdateWithoutSalasDataInput {
+  usuarios: UsuarioUpdateManyWithoutUsuarioSalaInput
+}
+
+input UsuarioSalaUpdateWithoutUsuariosDataInput {
+  salas: SalaUpdateManyWithoutUsuarioSalaInput
+}
+
+input UsuarioSalaUpdateWithWhereUniqueNestedInput {
+  where: UsuarioSalaWhereUniqueInput!
+  data: UsuarioSalaUpdateDataInput!
+}
+
+input UsuarioSalaUpsertWithoutSalasInput {
+  update: UsuarioSalaUpdateWithoutSalasDataInput!
+  create: UsuarioSalaCreateWithoutSalasInput!
+}
+
+input UsuarioSalaUpsertWithoutUsuariosInput {
+  update: UsuarioSalaUpdateWithoutUsuariosDataInput!
+  create: UsuarioSalaCreateWithoutUsuariosInput!
+}
+
+input UsuarioSalaUpsertWithWhereUniqueNestedInput {
+  where: UsuarioSalaWhereUniqueInput!
+  update: UsuarioSalaUpdateDataInput!
+  create: UsuarioSalaCreateInput!
+}
+
+input UsuarioSalaWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  usuarios_every: UsuarioWhereInput
+  usuarios_some: UsuarioWhereInput
+  usuarios_none: UsuarioWhereInput
+  salas_every: SalaWhereInput
+  salas_some: SalaWhereInput
+  salas_none: SalaWhereInput
+  AND: [UsuarioSalaWhereInput!]
+  OR: [UsuarioSalaWhereInput!]
+  NOT: [UsuarioSalaWhereInput!]
+}
+
+input UsuarioSalaWhereUniqueInput {
+  id: ID
+}
+
+input UsuarioScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  nombre: String
+  nombre_not: String
+  nombre_in: [String!]
+  nombre_not_in: [String!]
+  nombre_lt: String
+  nombre_lte: String
+  nombre_gt: String
+  nombre_gte: String
+  nombre_contains: String
+  nombre_not_contains: String
+  nombre_starts_with: String
+  nombre_not_starts_with: String
+  nombre_ends_with: String
+  nombre_not_ends_with: String
+  esAdmin: Boolean
+  esAdmin_not: Boolean
+  AND: [UsuarioScalarWhereInput!]
+  OR: [UsuarioScalarWhereInput!]
+  NOT: [UsuarioScalarWhereInput!]
+}
+
+type UsuarioSubscriptionPayload {
+  mutation: MutationType!
+  node: Usuario
+  updatedFields: [String!]
+  previousValues: UsuarioPreviousValues
+}
+
+input UsuarioSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UsuarioWhereInput
+  AND: [UsuarioSubscriptionWhereInput!]
+  OR: [UsuarioSubscriptionWhereInput!]
+  NOT: [UsuarioSubscriptionWhereInput!]
+}
+
+input UsuarioUpdateInput {
+  nombre: String
+  esAdmin: Boolean
+  usuarioSala: UsuarioSalaUpdateOneWithoutUsuariosInput
+}
+
+input UsuarioUpdateManyDataInput {
+  nombre: String
+  esAdmin: Boolean
+}
+
+input UsuarioUpdateManyMutationInput {
+  nombre: String
+  esAdmin: Boolean
+}
+
+input UsuarioUpdateManyWithoutUsuarioSalaInput {
+  create: [UsuarioCreateWithoutUsuarioSalaInput!]
+  delete: [UsuarioWhereUniqueInput!]
+  connect: [UsuarioWhereUniqueInput!]
+  set: [UsuarioWhereUniqueInput!]
+  disconnect: [UsuarioWhereUniqueInput!]
+  update: [UsuarioUpdateWithWhereUniqueWithoutUsuarioSalaInput!]
+  upsert: [UsuarioUpsertWithWhereUniqueWithoutUsuarioSalaInput!]
+  deleteMany: [UsuarioScalarWhereInput!]
+  updateMany: [UsuarioUpdateManyWithWhereNestedInput!]
+}
+
+input UsuarioUpdateManyWithWhereNestedInput {
+  where: UsuarioScalarWhereInput!
+  data: UsuarioUpdateManyDataInput!
+}
+
+input UsuarioUpdateWithoutUsuarioSalaDataInput {
+  nombre: String
+  esAdmin: Boolean
+}
+
+input UsuarioUpdateWithWhereUniqueWithoutUsuarioSalaInput {
+  where: UsuarioWhereUniqueInput!
+  data: UsuarioUpdateWithoutUsuarioSalaDataInput!
+}
+
+input UsuarioUpsertWithWhereUniqueWithoutUsuarioSalaInput {
+  where: UsuarioWhereUniqueInput!
+  update: UsuarioUpdateWithoutUsuarioSalaDataInput!
+  create: UsuarioCreateWithoutUsuarioSalaInput!
+}
+
+input UsuarioWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  nombre: String
+  nombre_not: String
+  nombre_in: [String!]
+  nombre_not_in: [String!]
+  nombre_lt: String
+  nombre_lte: String
+  nombre_gt: String
+  nombre_gte: String
+  nombre_contains: String
+  nombre_not_contains: String
+  nombre_starts_with: String
+  nombre_not_starts_with: String
+  nombre_ends_with: String
+  nombre_not_ends_with: String
+  esAdmin: Boolean
+  esAdmin_not: Boolean
+  usuarioSala: UsuarioSalaWhereInput
+  AND: [UsuarioWhereInput!]
+  OR: [UsuarioWhereInput!]
+  NOT: [UsuarioWhereInput!]
+}
+
+input UsuarioWhereUniqueInput {
   id: ID
 }
 `

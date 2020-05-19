@@ -1,19 +1,30 @@
 import {GraphQLServer} from 'graphql-yoga'
 import {Prisma} from './generated/prisma-client/index'
-import {typeDefs} from './generated/prisma-client/prisma-schema';
+import {querySalas} from './resolvers/query/query-salas';
+import {mutationSalas} from './resolvers/mutation/mutation-salas';
 
 const puerto = process.env.PORT || 8081;
 const express = require('express');
 
 const servidor = new GraphQLServer({
-    typeDefs: typeDefs,
-    resolvers: {},
+    typeDefs: 'servidor/schema.graphql',
+    resolvers: {
+        Query: {
+            ...querySalas
+        },
+        Mutation: {
+            ...mutationSalas
+        }
+    },
     resolverValidationOptions: {
         requireResolversForResolveType: false
     },
     context: request => ({
         ...request,
-        db: Prisma
+        db: new Prisma({
+            endpoint: "https://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev",
+            debug: true
+        })
     }),
 });
 
