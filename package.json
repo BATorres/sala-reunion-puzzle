@@ -36,7 +36,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postinstall": "tsc"
+    "tsc": "tsc",
+    "postinstall": "npm run tsc"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -60,5 +61,8 @@
     "nodemon": "^1.19.4",
     "ts-node": "^8.10.1",
     "typescript": "^3.9.2"
+  },
+  "engines": {
+    "node": "^10.16.2"
   }
 }
