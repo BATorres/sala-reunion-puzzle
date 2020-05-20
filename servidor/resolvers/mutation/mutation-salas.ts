@@ -1,11 +1,12 @@
 import {ContextoInterface} from '../../interfaces/contexto.interface';
+import {SalaCreateInput} from '../../generated/prisma-client';
 
 export const mutationSalas = {
     async crearSala(
-        padre,
-        {nombre},
+        padre: any,
+        {nombre}: SalaCreateInput,
         contexto: ContextoInterface,
-        informacion
+        informacion: any
     ) {
         return contexto.db.createSala(
             {
