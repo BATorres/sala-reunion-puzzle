@@ -1,9 +1,10 @@
 type Query {
-    buscarSala: [Sala]
+    findAllSalas: [Sala]
 }
 
 type Mutation {
-    crearSala(nombre: String!): Sala
+    crearSala(nombre: String!): Sala!
+    crearUsuario(nombre: String!, esAdmin: Boolean): Usuario!
 }
 
 type UsuarioSala {

@@ -1,5 +1,5 @@
 # source: https://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev
-# timestamp: Tue May 19 2020 16:56:58 GMT-0500 (GMT-05:00)
+# timestamp: Wed May 20 2020 18:14:30 GMT-0500 (GMT-05:00)
 
 type AggregateDiagrama {
   count: Int!
@@ -1173,7 +1173,6 @@ input SalaWhereInput {
 
 input SalaWhereUniqueInput {
   id: ID
-  nombre: String
 }
 
 type Subscription {

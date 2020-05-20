@@ -2,6 +2,7 @@ import {GraphQLServer} from 'graphql-yoga'
 import {Prisma} from './generated/prisma-client/index'
 import {querySalas} from './resolvers/query/query-salas';
 import {mutationSalas} from './resolvers/mutation/mutation-salas';
+import {mutationUsuarios} from './resolvers/mutation/mutation-usuarios';
 
 const puerto = process.env.PORT || 8081;
 const express = require('express');
@@ -13,7 +14,8 @@ const servidor = new GraphQLServer({
             ...querySalas
         },
         Mutation: {
-            ...mutationSalas
+            ...mutationSalas,
+            ...mutationUsuarios
         }
     },
     resolverValidationOptions: {
@@ -31,7 +33,7 @@ const servidor = new GraphQLServer({
 servidor.express.use(express.static(__dirname + '/../build'));
 
 servidor.start({
-    port: puerto
+    port: puerto,
 }, () => {
     console.log(`Servidor corriendo en el puerto ${puerto}`);
 });

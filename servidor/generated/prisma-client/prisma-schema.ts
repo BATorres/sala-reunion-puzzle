@@ -674,7 +674,6 @@ input SalaWhereInput {
 
 input SalaWhereUniqueInput {
   id: ID
-  nombre: String
 }
 
 type Subscription {

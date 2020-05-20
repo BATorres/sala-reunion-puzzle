@@ -1,7 +1,7 @@
 import {ContextoInterface} from '../../interfaces/contexto.interface';
 
 export const querySalas = {
-    buscarSala(
+    findAllSalas(
         padre: any,
         argumentos: any,
         contexto: ContextoInterface,
