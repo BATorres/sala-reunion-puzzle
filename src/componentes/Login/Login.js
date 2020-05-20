@@ -1,5 +1,15 @@
 import React, {Component} from 'react';
 import io from "socket.io-client";
+import {Mutation} from 'react-apollo';
+import gql from "graphql-tag";
+
+const CREAR_USUARIO = gql`
+    mutation CrearUsuario($nombre: String!, $esAdmin: Boolean) {
+        crearUsuario(nombre: $nombre, esAdmin: $esAdmin) {
+            id
+            nombre
+        }
+    }`;
 
 class Login extends Component {
     constructor(props) {
@@ -17,7 +27,7 @@ class Login extends Component {
     };
 
     ingresar = (evento) => {
-        const socket = io('/');
+        // const socket = io('/');
         const {usuario} = this.state;
 
         evento.preventDefault();
@@ -25,7 +35,7 @@ class Login extends Component {
         const esAdmin = this.props.history.location.pathname.includes('admin');
         this.setearError('');
 
-        socket.emit('agregarUsuario', usuario);
+        // socket.emit('agregarUsuario', usuario);
 
         if (esAdmin) {
             this.props.history.push({
@@ -36,7 +46,7 @@ class Login extends Component {
         } else {
             this.props.history.push({
                 pathname: '/usuario/listar-salas',
-                state: { usuario: usuario}
+                state: {usuario: usuario}
             });
             localStorage.setItem('usuario', usuario);
         }
@@ -74,18 +84,44 @@ class Login extends Component {
         const {usuario, error} = this.state;
         return (
             <div id="login">
-                <form id="formulario" onSubmit={this.ingresar}>
-                    <label htmlFor="usuario">
-                        <h2>Ingrese su nombre de usuario</h2>
-                    </label>
-                    <input type="text"
-                           id="usuario"
-                           value={usuario}
-                           placeholder={'Ingrese usu nombre de usuario. EJ: Edison'}
-                           onChange={this.escucharCambiosFormulario}
-                    />
-                    <div>{error ? error : null}</div>
-                </form>
+                <Mutation mutation={CREAR_USUARIO}>
+                    {(crearUsuario, {data}) => (
+                        <form id="formulario" onSubmit={
+                            evento => {
+                                evento.preventDefault();
+                                const esAdmin = this.props.history.location.pathname.includes('admin');
+                                this.setearError('');
+
+                                if (esAdmin) {
+                                    this.props.history.push({
+                                        pathname: '/admin/menu',
+                                        state: {usuarioAdmin: usuario}
+                                    });
+                                    crearUsuario({variables: {nombre: usuario, esAdmin: true}});
+                                    localStorage.setItem('usuarioAdmin', usuario);
+                                } else {
+                                    this.props.history.push({
+                                        pathname: '/usuario/listar-salas',
+                                        state: {usuario: usuario}
+                                    });
+                                    crearUsuario({variables: {nombre: usuario}});
+                                    localStorage.setItem('usuario', usuario);
+                                }
+                            }
+                        }>
+                            <label htmlFor="usuario">
+                                <h2>Ingrese su nombre de usuario</h2>
+                            </label>
+                            <input type="text"
+                                   id="usuario"
+                                   value={usuario}
+                                   placeholder={'Ingrese usu nombre de usuario. EJ: Edison'}
+                                   onChange={this.escucharCambiosFormulario}
+                            />
+                            <div>{error ? error : null}</div>
+                        </form>
+                    )}
+                </Mutation>
             </div>
         )
     }
