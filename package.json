@@ -29,7 +29,7 @@
     "uuidv4": "^6.0.7"
   },
   "scripts": {
-    "start": "node servidor/servidor.ts",
+    "start": "node servidor/servidor.js",
     "dev": "concurrently 'npm run react' 'npm run server'",
     "react": "react-scripts start",
     "server": "nodemon servidor/servidor.ts",
