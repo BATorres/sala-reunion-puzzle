@@ -6,7 +6,6 @@ export const mutationUsuarios = {
         padre: any,
         {nombre, esAdmin}: UsuarioCreateInput,
         contexto: ContextoInterface,
-        informacion: any
     ) {
         return contexto.db.createUsuario(
             {

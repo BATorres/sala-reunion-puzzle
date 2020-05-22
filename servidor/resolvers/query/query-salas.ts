@@ -4,8 +4,7 @@ export const querySalas = {
     findAllSalas(
         padre: any,
         argumentos: any,
-        contexto: ContextoInterface,
-        informacion: any
+        contexto: ContextoInterface
     ) {
         return contexto.db.salas({
             skip: 0
