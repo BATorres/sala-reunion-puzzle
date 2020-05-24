@@ -6,7 +6,6 @@ export const mutationSalas = {
         padre: any,
         {nombre}: SalaCreateInput,
         contexto: ContextoInterface,
-        informacion: any
     ) {
         return contexto.db.createSala(
             {

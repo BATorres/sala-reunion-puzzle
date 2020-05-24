@@ -11,7 +11,7 @@ import {eliminarNodoOConexion} from "../../funciones/eliminar-nodo-o-conexion";
 import io from "socket.io-client";
 import {GojsDiagram} from "react-gojs";
 
-const socket = io('http://localhost:8081');
+// const socket = io('http://localhost:8081');
 const $ = go.GraphObject.make;
 const colores = ["lightgray", "lightblue", "lightgreen", "orange", "pink"];
 
@@ -40,10 +40,10 @@ function crearDiagrama(id) {
             'undoManager.isEnabled': true, // permite realizar cambios ctrl + z
             "ModelChanged": function (e) {
                 if (e.isTransactionFinished) {
-                    socket.on('datosRecibidos', (datos) => {
+                    /*socket.on('datosRecibidos', (datos) => {
                         console.log('llegaron datos', datos)
                         datosCompartidos = datos.diagrama;
-                    });
+                    });*/
                     //document.getElementById("savedModel").textContent = diagrama.model.toJson();
                     // socket.emit('compartirPantalla', diagramaEditable.model.toJson())
                 }

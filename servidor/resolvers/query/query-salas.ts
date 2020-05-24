@@ -1,14 +1,11 @@
 import {ContextoInterface} from '../../interfaces/contexto.interface';
 
 export const querySalas = {
-    buscarSala(
+    findAllSalas(
         padre: any,
         argumentos: any,
-        contexto: ContextoInterface,
-        informacion: any
+        contexto: ContextoInterface
     ) {
-        return contexto.db.salas({
-            skip: 0
-        });
+        return contexto.db.salas({});
     }
 };

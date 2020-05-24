@@ -12,7 +12,7 @@ import {Button, Col, Container, Row} from "react-bootstrap";
 import {FaUserAlt} from "react-icons/fa";
 import Paleta from "../Paleta/Paleta";
 
-const socket = io('/');
+// const socket = io('/');
 const $ = go.GraphObject.make;
 
 var diagramaGlobal;
@@ -42,10 +42,10 @@ function crearDiagrama(id) {
             "ModelChanged": function (e) {
                 if (e.isTransactionFinished) {
                     //document.getElementById("savedModel").textContent = diagrama.model.toJson();
-                    socket.on('datosRecibidos', (datos) => {
+                    /*socket.on('datosRecibidos', (datos) => {
                         console.log('llegaron datos', datos)
                         datosCompartidos = datos;
-                    })
+                    })*/
                     // socket.emit('enviarDatosGenerales', diagrama.model.toJson())
                 }
             },
@@ -103,7 +103,7 @@ function cargar() {
 }
 
 function compartirPantalla() {
-    socket.emit('compartirPantalla', otroDiagrama.model.toJson());
+    // socket.emit('compartirPantalla', otroDiagrama.model.toJson());
 }
 
 function cargarPantallaCompartida() {
@@ -138,10 +138,10 @@ class PantallaInteractivaGlobal extends Component {
     }
 
     componentDidMount() {
-        const socket = io('http://localhost:8081');
+        // const socket = io('http://localhost:8081');
         const usuariosEnSala = JSON.parse(localStorage.getItem(this.state.sala.idSala));
 
-        socket.on('usuarioUnido', (datos) => {
+        /*socket.on('usuarioUnido', (datos) => {
             const usuariosEnSalaSeteados = datos
                 .filter(
                     datosSocket => datosSocket.sala.idSala === this.state.sala.idSala
@@ -150,7 +150,7 @@ class PantallaInteractivaGlobal extends Component {
                     datosSocket => datosSocket.usuario
                 );
             console.log('usuarios seteados', usuariosEnSalaSeteados)
-        });
+        });*/
 
         if (usuariosEnSala) {
             arregloUsuarios = usuariosEnSala;

@@ -10,7 +10,7 @@ type Sala {
   id: ID! @id
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
-  nombre: String! @unique
+  nombre: String!
   usuarioSala: UsuarioSala
 }
 

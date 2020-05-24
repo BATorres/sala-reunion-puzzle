@@ -573,7 +573,6 @@ export interface UsuarioUpdateManyWithoutUsuarioSalaInput {
 
 export type SalaWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  nombre?: Maybe<String>;
 }>;
 
 export interface UsuarioUpdateWithWhereUniqueWithoutUsuarioSalaInput {
