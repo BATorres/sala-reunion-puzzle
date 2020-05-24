@@ -2,7 +2,7 @@ import {GraphQLServer} from 'graphql-yoga'
 import {Prisma} from './generated/prisma-client/index'
 import resolvers from './constantes/resolvers'
 
-const puerto = process.env.PORT || 8081;
+const puerto = process.env.PORT || 4000;
 const express = require('express');
 
 const servidor = new GraphQLServer({

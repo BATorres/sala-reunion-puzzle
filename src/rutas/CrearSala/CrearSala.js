@@ -26,11 +26,11 @@ class CrearSala extends Component {
     };
 
     crearSala = (evento) => {
-        const socket = io('/');
+        // const socket = io('/');
         const {sala} = this.state;
 
         evento.preventDefault();
-        socket.emit('verificarSala', sala, this.setearSala);
+        // socket.emit('verificarSala', sala, this.setearSala);
     };
 
     setearSala = ({existeSala, sala}) => {
@@ -39,8 +39,8 @@ class CrearSala extends Component {
             this.setearError('La sala que desea crear ya existe');
         } else {
             this.setearError('');
-            const socket = io('/');
-            socket.emit('crearSala', sala);
+            /*const socket = io('/');
+            socket.emit('crearSala', sala);*/
             this.props.history.push({
                 pathname: '/admin/listar-salas',
                 state: {usuario: usuario}

@@ -7,7 +7,7 @@ import {FaLock, FaRegHandPaper, FaSatelliteDish} from "react-icons/fa";
 import DiagramaEditable from "../DiagramaEditable/DiagramaEditable";
 import {diagramaEditable} from "../DiagramaEditable/DiagramaEditable";
 
-const socket = io('/');
+// const socket = io('/');
 const $ = go.GraphObject.make;
 const colores = ["lightgray", "lightblue", "lightgreen", "orange", "pink"];
 
@@ -29,7 +29,7 @@ function cargar() {
 }
 
 function compartirPantalla() {
-    socket.emit('compartirPantalla', { usuario: localStorage.getItem('usuario'), diagrama: diagramaEditable.model.toJson()});
+    // socket.emit('compartirPantalla', { usuario: localStorage.getItem('usuario'), diagrama: diagramaEditable.model.toJson()});
 }
 
 function cargarPantallaCompartida() {
@@ -53,16 +53,16 @@ class PantallaInteractivaEditable extends Component {
     }
 
     componentDidMount() {
-        const socket = io('/');
+        // const socket = io('/');
         const usuariosEnSala = this.verificarUsuarioEnSala();
         const esAdmin = this.props.history.location.pathname.includes('admin');
 
 
         if (!esAdmin && !usuariosEnSala) {
-            socket.emit('unirseSala', {sala: this.state.sala, usuario: this.state.usuario});
+            // socket.emit('unirseSala', {sala: this.state.sala, usuario: this.state.usuario});
         }
 
-        socket.on('usuarioUnido', (datos) => {
+        /*socket.on('usuarioUnido', (datos) => {
             const datosAGuardar = datos
                 .filter(
                     datosSocket => datosSocket.sala.idSala === this.state.sala.idSala
@@ -71,7 +71,7 @@ class PantallaInteractivaEditable extends Component {
                     datosSocket => datosSocket.usuario
                 );
             localStorage.setItem(this.state.sala.idSala, JSON.stringify(datosAGuardar));
-        });
+        });*/
 
         const usuariosGuardados = JSON.parse(localStorage.getItem(this.state.sala.idSala));
 

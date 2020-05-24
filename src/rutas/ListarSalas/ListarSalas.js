@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import io from "socket.io-client";
 import {Container, Button, Col, Row, Card} from "react-bootstrap";
-import {Query} from 'react-apollo';
+import {Query, Subscription} from 'react-apollo';
 import gql from "graphql-tag";
 
 const LISTAR_SALAS = gql`
@@ -12,6 +12,16 @@ const LISTAR_SALAS = gql`
         }
     }`;
 
+const NUEVA_SALA = gql`
+    subscription {
+        salaCreada {
+            id
+            nombre
+        }
+    }`;
+
+let unsubscribe;
+
 class ListarSalas extends Component {
     constructor(props) {
         super(props);
@@ -21,12 +31,22 @@ class ListarSalas extends Component {
             usuarioAdmin: localStorage.getItem('usuarioAdmin'),
         };
 
-        const socket = io('/');
+        /*const socket = io('/');
         socket.on('salasDisponibles', (salas) => {
             localStorage.setItem('salasDisponibles', JSON.stringify(salas));
             this.setState({salas: salas});
-        });
+        });*/
     }
+
+    subscribeNuevaSala = subscribeToMore => {
+        subscribeToMore({
+            document: NUEVA_SALA,
+            updateQuery: (salasExistentes, {subscriptionDatos}) => {
+                // if (!subscriptionDatos.data) return salasExistentes;
+                console.log('datos', {subscriptionDatos})
+            }
+        })
+    };
 
     accederSala = (sala) => {
         const esAdmin = this.props.history.location.pathname.includes('admin');
@@ -48,10 +68,25 @@ class ListarSalas extends Component {
     render() {
         return (
             <Query query={LISTAR_SALAS}>
-                {({loading, error, data}) => {
+                {({loading, error, data, subscribeToMore}) => {
                     if (loading) return <p>Cargando ...</p>;
                     if (error) return <p>Error ...</p>;
 
+                    if (!unsubscribe) {
+                        unsubscribe = subscribeToMore({
+                            document: NUEVA_SALA,
+                            updateQuery: (salasExistentes, {subscriptionDatos}) => {
+                                if (!subscriptionDatos.data) return salasExistentes;
+                                const {nuevaSala} = subscriptionDatos.data;
+                                return {
+                                    ...salasExistentes,
+                                    LISTAR_SALAS: [...salasExistentes.findAllSalas, nuevaSala]
+                                }
+                                // console.log('datos', { subscriptionDatos })
+                            }
+                        })
+                    }
+                    // this.subscribeNuevaSala(subscribeToMore);
                     const salasDisponibles = data.findAllSalas;
                     const existenSalasDisponibles = salasDisponibles.length > 0;
                     return (

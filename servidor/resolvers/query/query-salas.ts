@@ -6,8 +6,6 @@ export const querySalas = {
         argumentos: any,
         contexto: ContextoInterface
     ) {
-        return contexto.db.salas({
-            skip: 0
-        });
+        return contexto.db.salas({});
     }
 };

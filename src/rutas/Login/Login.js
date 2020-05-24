@@ -59,8 +59,8 @@ class Login extends Component {
         } else {
             const esAdmin = this.props.history.location.pathname.includes('admin');
             this.setearError('');
-            const socket = io('/');
-            socket.emit('agregarUsuario', usuario);
+            /*const socket = io('/');
+            socket.emit('agregarUsuario', usuario);*/
 
             if (esAdmin) {
                 this.props.history.push({
