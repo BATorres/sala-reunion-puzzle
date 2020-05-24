@@ -8,7 +8,7 @@ import {getMainDefinition} from "apollo-utilities";
 import {HttpLink} from "apollo-link-http";
 
 const webSocketLink = new WebSocketLink({
-    uri: `ws://${window.location.host}`,
+    uri: `wss://${window.location.host}`,
     options: {
         reconnect: true
     }
