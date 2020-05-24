@@ -8,14 +8,14 @@ import {getMainDefinition} from "apollo-utilities";
 import {HttpLink} from "apollo-link-http";
 
 const webSocketLink = new WebSocketLink({
-    uri: `ws://localhost:4000`,
+    uri: `/`,
     options: {
         reconnect: true
     }
 });
 
 const httpLink = new HttpLink({
-    uri: 'http://localhost:4000'
+    uri: '/'
 });
 
 const link = split(
