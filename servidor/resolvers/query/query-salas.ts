@@ -6,6 +6,8 @@ export const querySalas = {
         argumentos: any,
         contexto: ContextoInterface
     ) {
-        return contexto.db.salas({});
+        return contexto.db.salas({
+            orderBy: 'createdAt_DESC'
+        });
     }
 };
