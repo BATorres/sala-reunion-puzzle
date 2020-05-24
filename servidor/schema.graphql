@@ -1,0 +1,15 @@
+# import Sala, UsuarioSala, Usuario, Diagrama, DiagramaUsuario from './generated/prisma-client/prisma.graphql'
+
+type Query {
+    findAllSalas: [Sala]
+}
+
+type Mutation {
+    crearSala(nombre: String!): Sala!
+    crearUsuario(nombre: String!, esAdmin: Boolean): Usuario!
+}
+
+type Subscription {
+    usuarioCreadoSubs: Usuario
+    salaCreada: Sala
+}
