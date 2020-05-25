@@ -7,8 +7,10 @@ import {WebSocketLink} from "apollo-link-ws";
 import {getMainDefinition} from "apollo-utilities";
 import {HttpLink} from "apollo-link-http";
 
+const PUERTO = process.env.PORT;
+
 const webSocketLink = new WebSocketLink({
-    uri: `wss://${process.env.HOST}:${process.env.PORT}`,
+    uri: PUERTO ? `wss://localhost:${PUERTO}` : `ws://localhost:4000`,
     options: {
         reconnect: true
     }
