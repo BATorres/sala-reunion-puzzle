@@ -2,8 +2,8 @@ type UsuarioSala {
   id: ID! @id
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
-  usuarios: [Usuario] @relation(link: TABLE)
-  salas: [Sala] @relation(link: TABLE)
+  usuario: Usuario!
+  sala: Sala!
 }
 
 type Sala {
@@ -11,7 +11,8 @@ type Sala {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   nombre: String!
-  usuarioSala: UsuarioSala
+  usuariosEnSala: [UsuarioSala] @relation
+  diagramasPorUsuario: [DiagramaUsuario] @relation
 }
 
 type Usuario {
@@ -20,7 +21,8 @@ type Usuario {
   updatedAt: DateTime! @updatedAt
   nombre: String!
   esAdmin: Boolean! @default(value: false)
-  usuarioSala: UsuarioSala
+  usuariosEnSala: [UsuarioSala] @relation
+  diagramasPorUsuario: [DiagramaUsuario] @relation
 }
 
 type Diagrama {
@@ -28,13 +30,14 @@ type Diagrama {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   datos: String!
-  diagramaUsuario: DiagramaUsuario
+  diagramasPorUsuario: [DiagramaUsuario] @relation
 }
 
 type DiagramaUsuario {
   id: ID! @id
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
-  diagramas: [Diagrama] @relation(link: TABLE)
-  usuariosSala: [UsuarioSala] @relation(link: TABLE)
+  diagrama: Diagrama!
+  sala: Sala!
+  usuario: Usuario!
 }

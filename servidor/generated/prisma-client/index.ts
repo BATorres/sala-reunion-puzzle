@@ -261,6 +261,22 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type DiagramaUsuarioOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type UsuarioSalaOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
 export type DiagramaOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -271,13 +287,15 @@ export type DiagramaOrderByInput =
   | "datos_ASC"
   | "datos_DESC";
 
-export type UsuarioSalaOrderByInput =
+export type SalaOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | "updatedAt_DESC"
+  | "nombre_ASC"
+  | "nombre_DESC";
 
 export type UsuarioOrderByInput =
   | "id_ASC"
@@ -291,55 +309,37 @@ export type UsuarioOrderByInput =
   | "esAdmin_ASC"
   | "esAdmin_DESC";
 
-export type SalaOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC"
-  | "nombre_ASC"
-  | "nombre_DESC";
-
-export type DiagramaUsuarioOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface UsuarioUpsertWithWhereUniqueWithoutUsuarioSalaInput {
-  where: UsuarioWhereUniqueInput;
-  update: UsuarioUpdateWithoutUsuarioSalaDataInput;
-  create: UsuarioCreateWithoutUsuarioSalaInput;
+export interface DiagramaUsuarioUpdateWithWhereUniqueWithoutDiagramaInput {
+  where: DiagramaUsuarioWhereUniqueInput;
+  data: DiagramaUsuarioUpdateWithoutDiagramaDataInput;
 }
 
 export type DiagramaWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface SalaUpdateManyWithoutUsuarioSalaInput {
+export interface UsuarioSalaUpdateManyWithoutSalaInput {
   create?: Maybe<
-    SalaCreateWithoutUsuarioSalaInput[] | SalaCreateWithoutUsuarioSalaInput
+    UsuarioSalaCreateWithoutSalaInput[] | UsuarioSalaCreateWithoutSalaInput
   >;
-  delete?: Maybe<SalaWhereUniqueInput[] | SalaWhereUniqueInput>;
-  connect?: Maybe<SalaWhereUniqueInput[] | SalaWhereUniqueInput>;
-  set?: Maybe<SalaWhereUniqueInput[] | SalaWhereUniqueInput>;
-  disconnect?: Maybe<SalaWhereUniqueInput[] | SalaWhereUniqueInput>;
+  delete?: Maybe<UsuarioSalaWhereUniqueInput[] | UsuarioSalaWhereUniqueInput>;
+  connect?: Maybe<UsuarioSalaWhereUniqueInput[] | UsuarioSalaWhereUniqueInput>;
+  set?: Maybe<UsuarioSalaWhereUniqueInput[] | UsuarioSalaWhereUniqueInput>;
+  disconnect?: Maybe<
+    UsuarioSalaWhereUniqueInput[] | UsuarioSalaWhereUniqueInput
+  >;
   update?: Maybe<
-    | SalaUpdateWithWhereUniqueWithoutUsuarioSalaInput[]
-    | SalaUpdateWithWhereUniqueWithoutUsuarioSalaInput
+    | UsuarioSalaUpdateWithWhereUniqueWithoutSalaInput[]
+    | UsuarioSalaUpdateWithWhereUniqueWithoutSalaInput
   >;
   upsert?: Maybe<
-    | SalaUpsertWithWhereUniqueWithoutUsuarioSalaInput[]
-    | SalaUpsertWithWhereUniqueWithoutUsuarioSalaInput
+    | UsuarioSalaUpsertWithWhereUniqueWithoutSalaInput[]
+    | UsuarioSalaUpsertWithWhereUniqueWithoutSalaInput
   >;
-  deleteMany?: Maybe<SalaScalarWhereInput[] | SalaScalarWhereInput>;
-  updateMany?: Maybe<
-    SalaUpdateManyWithWhereNestedInput[] | SalaUpdateManyWithWhereNestedInput
+  deleteMany?: Maybe<
+    UsuarioSalaScalarWhereInput[] | UsuarioSalaScalarWhereInput
   >;
 }
 
@@ -374,67 +374,37 @@ export interface UsuarioSalaWhereInput {
   updatedAt_lte?: Maybe<DateTimeInput>;
   updatedAt_gt?: Maybe<DateTimeInput>;
   updatedAt_gte?: Maybe<DateTimeInput>;
-  usuarios_every?: Maybe<UsuarioWhereInput>;
-  usuarios_some?: Maybe<UsuarioWhereInput>;
-  usuarios_none?: Maybe<UsuarioWhereInput>;
-  salas_every?: Maybe<SalaWhereInput>;
-  salas_some?: Maybe<SalaWhereInput>;
-  salas_none?: Maybe<SalaWhereInput>;
+  usuario?: Maybe<UsuarioWhereInput>;
+  sala?: Maybe<SalaWhereInput>;
   AND?: Maybe<UsuarioSalaWhereInput[] | UsuarioSalaWhereInput>;
   OR?: Maybe<UsuarioSalaWhereInput[] | UsuarioSalaWhereInput>;
   NOT?: Maybe<UsuarioSalaWhereInput[] | UsuarioSalaWhereInput>;
 }
 
-export interface UsuarioCreateManyWithoutUsuarioSalaInput {
-  create?: Maybe<
-    | UsuarioCreateWithoutUsuarioSalaInput[]
-    | UsuarioCreateWithoutUsuarioSalaInput
-  >;
-  connect?: Maybe<UsuarioWhereUniqueInput[] | UsuarioWhereUniqueInput>;
-}
-
-export interface DiagramaUpdateWithoutDiagramaUsuarioDataInput {
-  datos?: Maybe<String>;
-}
-
-export interface UsuarioCreateWithoutUsuarioSalaInput {
+export interface DiagramaUsuarioCreateWithoutUsuarioInput {
   id?: Maybe<ID_Input>;
-  nombre: String;
-  esAdmin?: Maybe<Boolean>;
+  diagrama: DiagramaCreateOneWithoutDiagramasPorUsuarioInput;
+  sala: SalaCreateOneWithoutDiagramasPorUsuarioInput;
 }
 
-export interface SalaUpdateWithWhereUniqueWithoutUsuarioSalaInput {
-  where: SalaWhereUniqueInput;
-  data: SalaUpdateWithoutUsuarioSalaDataInput;
+export interface SalaUpdateWithoutUsuariosEnSalaDataInput {
+  nombre?: Maybe<String>;
+  diagramasPorUsuario?: Maybe<DiagramaUsuarioUpdateManyWithoutSalaInput>;
 }
 
-export interface SalaCreateManyWithoutUsuarioSalaInput {
-  create?: Maybe<
-    SalaCreateWithoutUsuarioSalaInput[] | SalaCreateWithoutUsuarioSalaInput
-  >;
-  connect?: Maybe<SalaWhereUniqueInput[] | SalaWhereUniqueInput>;
+export interface DiagramaCreateOneWithoutDiagramasPorUsuarioInput {
+  create?: Maybe<DiagramaCreateWithoutDiagramasPorUsuarioInput>;
+  connect?: Maybe<DiagramaWhereUniqueInput>;
 }
 
-export interface UsuarioSalaSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<UsuarioSalaWhereInput>;
-  AND?: Maybe<
-    UsuarioSalaSubscriptionWhereInput[] | UsuarioSalaSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    UsuarioSalaSubscriptionWhereInput[] | UsuarioSalaSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    UsuarioSalaSubscriptionWhereInput[] | UsuarioSalaSubscriptionWhereInput
-  >;
+export interface UsuarioSalaUpdateWithWhereUniqueWithoutSalaInput {
+  where: UsuarioSalaWhereUniqueInput;
+  data: UsuarioSalaUpdateWithoutSalaDataInput;
 }
 
-export interface SalaCreateWithoutUsuarioSalaInput {
+export interface DiagramaCreateWithoutDiagramasPorUsuarioInput {
   id?: Maybe<ID_Input>;
-  nombre: String;
+  datos: String;
 }
 
 export interface UsuarioSubscriptionWhereInput {
@@ -448,163 +418,12 @@ export interface UsuarioSubscriptionWhereInput {
   NOT?: Maybe<UsuarioSubscriptionWhereInput[] | UsuarioSubscriptionWhereInput>;
 }
 
-export interface DiagramaUpdateInput {
-  datos?: Maybe<String>;
-  diagramaUsuario?: Maybe<DiagramaUsuarioUpdateOneWithoutDiagramasInput>;
+export interface UsuarioCreateOneWithoutDiagramasPorUsuarioInput {
+  create?: Maybe<UsuarioCreateWithoutDiagramasPorUsuarioInput>;
+  connect?: Maybe<UsuarioWhereUniqueInput>;
 }
 
-export interface DiagramaUsuarioSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<DiagramaUsuarioWhereInput>;
-  AND?: Maybe<
-    | DiagramaUsuarioSubscriptionWhereInput[]
-    | DiagramaUsuarioSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    | DiagramaUsuarioSubscriptionWhereInput[]
-    | DiagramaUsuarioSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    | DiagramaUsuarioSubscriptionWhereInput[]
-    | DiagramaUsuarioSubscriptionWhereInput
-  >;
-}
-
-export interface DiagramaUsuarioUpdateOneWithoutDiagramasInput {
-  create?: Maybe<DiagramaUsuarioCreateWithoutDiagramasInput>;
-  update?: Maybe<DiagramaUsuarioUpdateWithoutDiagramasDataInput>;
-  upsert?: Maybe<DiagramaUsuarioUpsertWithoutDiagramasInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<DiagramaUsuarioWhereUniqueInput>;
-}
-
-export interface UsuarioSalaUpdateInput {
-  usuarios?: Maybe<UsuarioUpdateManyWithoutUsuarioSalaInput>;
-  salas?: Maybe<SalaUpdateManyWithoutUsuarioSalaInput>;
-}
-
-export interface DiagramaUsuarioUpdateWithoutDiagramasDataInput {
-  usuariosSala?: Maybe<UsuarioSalaUpdateManyInput>;
-}
-
-export interface UsuarioSalaUpsertWithoutUsuariosInput {
-  update: UsuarioSalaUpdateWithoutUsuariosDataInput;
-  create: UsuarioSalaCreateWithoutUsuariosInput;
-}
-
-export interface UsuarioSalaUpdateManyInput {
-  create?: Maybe<UsuarioSalaCreateInput[] | UsuarioSalaCreateInput>;
-  update?: Maybe<
-    | UsuarioSalaUpdateWithWhereUniqueNestedInput[]
-    | UsuarioSalaUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | UsuarioSalaUpsertWithWhereUniqueNestedInput[]
-    | UsuarioSalaUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<UsuarioSalaWhereUniqueInput[] | UsuarioSalaWhereUniqueInput>;
-  connect?: Maybe<UsuarioSalaWhereUniqueInput[] | UsuarioSalaWhereUniqueInput>;
-  set?: Maybe<UsuarioSalaWhereUniqueInput[] | UsuarioSalaWhereUniqueInput>;
-  disconnect?: Maybe<
-    UsuarioSalaWhereUniqueInput[] | UsuarioSalaWhereUniqueInput
-  >;
-  deleteMany?: Maybe<
-    UsuarioSalaScalarWhereInput[] | UsuarioSalaScalarWhereInput
-  >;
-}
-
-export interface UsuarioSalaUpdateOneWithoutUsuariosInput {
-  create?: Maybe<UsuarioSalaCreateWithoutUsuariosInput>;
-  update?: Maybe<UsuarioSalaUpdateWithoutUsuariosDataInput>;
-  upsert?: Maybe<UsuarioSalaUpsertWithoutUsuariosInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<UsuarioSalaWhereUniqueInput>;
-}
-
-export interface UsuarioSalaUpdateWithWhereUniqueNestedInput {
-  where: UsuarioSalaWhereUniqueInput;
-  data: UsuarioSalaUpdateDataInput;
-}
-
-export interface UsuarioUpdateInput {
-  nombre?: Maybe<String>;
-  esAdmin?: Maybe<Boolean>;
-  usuarioSala?: Maybe<UsuarioSalaUpdateOneWithoutUsuariosInput>;
-}
-
-export interface UsuarioSalaUpdateDataInput {
-  usuarios?: Maybe<UsuarioUpdateManyWithoutUsuarioSalaInput>;
-  salas?: Maybe<SalaUpdateManyWithoutUsuarioSalaInput>;
-}
-
-export interface UsuarioSalaCreateOneWithoutUsuariosInput {
-  create?: Maybe<UsuarioSalaCreateWithoutUsuariosInput>;
-  connect?: Maybe<UsuarioSalaWhereUniqueInput>;
-}
-
-export interface UsuarioUpdateManyWithoutUsuarioSalaInput {
-  create?: Maybe<
-    | UsuarioCreateWithoutUsuarioSalaInput[]
-    | UsuarioCreateWithoutUsuarioSalaInput
-  >;
-  delete?: Maybe<UsuarioWhereUniqueInput[] | UsuarioWhereUniqueInput>;
-  connect?: Maybe<UsuarioWhereUniqueInput[] | UsuarioWhereUniqueInput>;
-  set?: Maybe<UsuarioWhereUniqueInput[] | UsuarioWhereUniqueInput>;
-  disconnect?: Maybe<UsuarioWhereUniqueInput[] | UsuarioWhereUniqueInput>;
-  update?: Maybe<
-    | UsuarioUpdateWithWhereUniqueWithoutUsuarioSalaInput[]
-    | UsuarioUpdateWithWhereUniqueWithoutUsuarioSalaInput
-  >;
-  upsert?: Maybe<
-    | UsuarioUpsertWithWhereUniqueWithoutUsuarioSalaInput[]
-    | UsuarioUpsertWithWhereUniqueWithoutUsuarioSalaInput
-  >;
-  deleteMany?: Maybe<UsuarioScalarWhereInput[] | UsuarioScalarWhereInput>;
-  updateMany?: Maybe<
-    | UsuarioUpdateManyWithWhereNestedInput[]
-    | UsuarioUpdateManyWithWhereNestedInput
-  >;
-}
-
-export type SalaWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface UsuarioUpdateWithWhereUniqueWithoutUsuarioSalaInput {
-  where: UsuarioWhereUniqueInput;
-  data: UsuarioUpdateWithoutUsuarioSalaDataInput;
-}
-
-export interface UsuarioSalaUpsertWithoutSalasInput {
-  update: UsuarioSalaUpdateWithoutSalasDataInput;
-  create: UsuarioSalaCreateWithoutSalasInput;
-}
-
-export interface UsuarioUpdateWithoutUsuarioSalaDataInput {
-  nombre?: Maybe<String>;
-  esAdmin?: Maybe<Boolean>;
-}
-
-export type UsuarioWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface DiagramaUpdateManyWithWhereNestedInput {
-  where: DiagramaScalarWhereInput;
-  data: DiagramaUpdateManyDataInput;
-}
-
-export interface SalaUpdateInput {
-  nombre?: Maybe<String>;
-  usuarioSala?: Maybe<UsuarioSalaUpdateOneWithoutSalasInput>;
-}
-
-export interface UsuarioScalarWhereInput {
+export interface DiagramaWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -635,50 +454,233 @@ export interface UsuarioScalarWhereInput {
   updatedAt_lte?: Maybe<DateTimeInput>;
   updatedAt_gt?: Maybe<DateTimeInput>;
   updatedAt_gte?: Maybe<DateTimeInput>;
-  nombre?: Maybe<String>;
-  nombre_not?: Maybe<String>;
-  nombre_in?: Maybe<String[] | String>;
-  nombre_not_in?: Maybe<String[] | String>;
-  nombre_lt?: Maybe<String>;
-  nombre_lte?: Maybe<String>;
-  nombre_gt?: Maybe<String>;
-  nombre_gte?: Maybe<String>;
-  nombre_contains?: Maybe<String>;
-  nombre_not_contains?: Maybe<String>;
-  nombre_starts_with?: Maybe<String>;
-  nombre_not_starts_with?: Maybe<String>;
-  nombre_ends_with?: Maybe<String>;
-  nombre_not_ends_with?: Maybe<String>;
+  datos?: Maybe<String>;
+  datos_not?: Maybe<String>;
+  datos_in?: Maybe<String[] | String>;
+  datos_not_in?: Maybe<String[] | String>;
+  datos_lt?: Maybe<String>;
+  datos_lte?: Maybe<String>;
+  datos_gt?: Maybe<String>;
+  datos_gte?: Maybe<String>;
+  datos_contains?: Maybe<String>;
+  datos_not_contains?: Maybe<String>;
+  datos_starts_with?: Maybe<String>;
+  datos_not_starts_with?: Maybe<String>;
+  datos_ends_with?: Maybe<String>;
+  datos_not_ends_with?: Maybe<String>;
+  diagramasPorUsuario_every?: Maybe<DiagramaUsuarioWhereInput>;
+  diagramasPorUsuario_some?: Maybe<DiagramaUsuarioWhereInput>;
+  diagramasPorUsuario_none?: Maybe<DiagramaUsuarioWhereInput>;
+  AND?: Maybe<DiagramaWhereInput[] | DiagramaWhereInput>;
+  OR?: Maybe<DiagramaWhereInput[] | DiagramaWhereInput>;
+  NOT?: Maybe<DiagramaWhereInput[] | DiagramaWhereInput>;
+}
+
+export interface UsuarioCreateWithoutDiagramasPorUsuarioInput {
+  id?: Maybe<ID_Input>;
+  nombre: String;
   esAdmin?: Maybe<Boolean>;
-  esAdmin_not?: Maybe<Boolean>;
-  AND?: Maybe<UsuarioScalarWhereInput[] | UsuarioScalarWhereInput>;
-  OR?: Maybe<UsuarioScalarWhereInput[] | UsuarioScalarWhereInput>;
-  NOT?: Maybe<UsuarioScalarWhereInput[] | UsuarioScalarWhereInput>;
+  usuariosEnSala?: Maybe<UsuarioSalaCreateManyWithoutUsuarioInput>;
+}
+
+export interface DiagramaSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<DiagramaWhereInput>;
+  AND?: Maybe<
+    DiagramaSubscriptionWhereInput[] | DiagramaSubscriptionWhereInput
+  >;
+  OR?: Maybe<DiagramaSubscriptionWhereInput[] | DiagramaSubscriptionWhereInput>;
+  NOT?: Maybe<
+    DiagramaSubscriptionWhereInput[] | DiagramaSubscriptionWhereInput
+  >;
+}
+
+export interface UsuarioSalaCreateManyWithoutUsuarioInput {
+  create?: Maybe<
+    | UsuarioSalaCreateWithoutUsuarioInput[]
+    | UsuarioSalaCreateWithoutUsuarioInput
+  >;
+  connect?: Maybe<UsuarioSalaWhereUniqueInput[] | UsuarioSalaWhereUniqueInput>;
+}
+
+export interface UsuarioSalaUpdateInput {
+  usuario?: Maybe<UsuarioUpdateOneRequiredWithoutUsuariosEnSalaInput>;
+  sala?: Maybe<SalaUpdateOneRequiredWithoutUsuariosEnSalaInput>;
+}
+
+export interface UsuarioSalaCreateWithoutUsuarioInput {
+  id?: Maybe<ID_Input>;
+  sala: SalaCreateOneWithoutUsuariosEnSalaInput;
+}
+
+export interface UsuarioUpdateManyMutationInput {
+  nombre?: Maybe<String>;
+  esAdmin?: Maybe<Boolean>;
+}
+
+export interface SalaCreateOneWithoutUsuariosEnSalaInput {
+  create?: Maybe<SalaCreateWithoutUsuariosEnSalaInput>;
+  connect?: Maybe<SalaWhereUniqueInput>;
+}
+
+export type DiagramaUsuarioWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface SalaCreateWithoutUsuariosEnSalaInput {
+  id?: Maybe<ID_Input>;
+  nombre: String;
+  diagramasPorUsuario?: Maybe<DiagramaUsuarioCreateManyWithoutSalaInput>;
+}
+
+export interface SalaUpdateManyMutationInput {
+  nombre?: Maybe<String>;
+}
+
+export interface DiagramaUsuarioCreateManyWithoutSalaInput {
+  create?: Maybe<
+    | DiagramaUsuarioCreateWithoutSalaInput[]
+    | DiagramaUsuarioCreateWithoutSalaInput
+  >;
+  connect?: Maybe<
+    DiagramaUsuarioWhereUniqueInput[] | DiagramaUsuarioWhereUniqueInput
+  >;
+}
+
+export type SalaWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface DiagramaUsuarioCreateWithoutSalaInput {
+  id?: Maybe<ID_Input>;
+  diagrama: DiagramaCreateOneWithoutDiagramasPorUsuarioInput;
+  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput;
+}
+
+export interface DiagramaUsuarioUpdateInput {
+  diagrama?: Maybe<DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
+  sala?: Maybe<SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
+  usuario?: Maybe<UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
+}
+
+export interface DiagramaUpdateInput {
+  datos?: Maybe<String>;
+  diagramasPorUsuario?: Maybe<DiagramaUsuarioUpdateManyWithoutDiagramaInput>;
+}
+
+export interface DiagramaUpdateManyMutationInput {
+  datos?: Maybe<String>;
+}
+
+export interface DiagramaUsuarioUpdateManyWithoutDiagramaInput {
+  create?: Maybe<
+    | DiagramaUsuarioCreateWithoutDiagramaInput[]
+    | DiagramaUsuarioCreateWithoutDiagramaInput
+  >;
+  delete?: Maybe<
+    DiagramaUsuarioWhereUniqueInput[] | DiagramaUsuarioWhereUniqueInput
+  >;
+  connect?: Maybe<
+    DiagramaUsuarioWhereUniqueInput[] | DiagramaUsuarioWhereUniqueInput
+  >;
+  set?: Maybe<
+    DiagramaUsuarioWhereUniqueInput[] | DiagramaUsuarioWhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    DiagramaUsuarioWhereUniqueInput[] | DiagramaUsuarioWhereUniqueInput
+  >;
+  update?: Maybe<
+    | DiagramaUsuarioUpdateWithWhereUniqueWithoutDiagramaInput[]
+    | DiagramaUsuarioUpdateWithWhereUniqueWithoutDiagramaInput
+  >;
+  upsert?: Maybe<
+    | DiagramaUsuarioUpsertWithWhereUniqueWithoutDiagramaInput[]
+    | DiagramaUsuarioUpsertWithWhereUniqueWithoutDiagramaInput
+  >;
+  deleteMany?: Maybe<
+    DiagramaUsuarioScalarWhereInput[] | DiagramaUsuarioScalarWhereInput
+  >;
+}
+
+export interface DiagramaUsuarioUpsertWithWhereUniqueWithoutDiagramaInput {
+  where: DiagramaUsuarioWhereUniqueInput;
+  update: DiagramaUsuarioUpdateWithoutDiagramaDataInput;
+  create: DiagramaUsuarioCreateWithoutDiagramaInput;
+}
+
+export interface DiagramaUsuarioUpdateManyWithoutSalaInput {
+  create?: Maybe<
+    | DiagramaUsuarioCreateWithoutSalaInput[]
+    | DiagramaUsuarioCreateWithoutSalaInput
+  >;
+  delete?: Maybe<
+    DiagramaUsuarioWhereUniqueInput[] | DiagramaUsuarioWhereUniqueInput
+  >;
+  connect?: Maybe<
+    DiagramaUsuarioWhereUniqueInput[] | DiagramaUsuarioWhereUniqueInput
+  >;
+  set?: Maybe<
+    DiagramaUsuarioWhereUniqueInput[] | DiagramaUsuarioWhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    DiagramaUsuarioWhereUniqueInput[] | DiagramaUsuarioWhereUniqueInput
+  >;
+  update?: Maybe<
+    | DiagramaUsuarioUpdateWithWhereUniqueWithoutSalaInput[]
+    | DiagramaUsuarioUpdateWithWhereUniqueWithoutSalaInput
+  >;
+  upsert?: Maybe<
+    | DiagramaUsuarioUpsertWithWhereUniqueWithoutSalaInput[]
+    | DiagramaUsuarioUpsertWithWhereUniqueWithoutSalaInput
+  >;
+  deleteMany?: Maybe<
+    DiagramaUsuarioScalarWhereInput[] | DiagramaUsuarioScalarWhereInput
+  >;
+}
+
+export interface UsuarioSalaUpsertWithWhereUniqueWithoutUsuarioInput {
+  where: UsuarioSalaWhereUniqueInput;
+  update: UsuarioSalaUpdateWithoutUsuarioDataInput;
+  create: UsuarioSalaCreateWithoutUsuarioInput;
+}
+
+export interface DiagramaUsuarioUpdateWithoutDiagramaDataInput {
+  sala?: Maybe<SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
+  usuario?: Maybe<UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
 }
 
 export type UsuarioSalaWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface UsuarioUpdateManyWithWhereNestedInput {
-  where: UsuarioScalarWhereInput;
-  data: UsuarioUpdateManyDataInput;
+export interface SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput {
+  create?: Maybe<SalaCreateWithoutDiagramasPorUsuarioInput>;
+  update?: Maybe<SalaUpdateWithoutDiagramasPorUsuarioDataInput>;
+  upsert?: Maybe<SalaUpsertWithoutDiagramasPorUsuarioInput>;
+  connect?: Maybe<SalaWhereUniqueInput>;
 }
 
-export interface SalaCreateInput {
-  id?: Maybe<ID_Input>;
-  nombre: String;
-  usuarioSala?: Maybe<UsuarioSalaCreateOneWithoutSalasInput>;
+export interface DiagramaUsuarioUpdateWithoutSalaDataInput {
+  diagrama?: Maybe<DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
+  usuario?: Maybe<UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
 }
 
-export interface UsuarioUpdateManyDataInput {
+export interface SalaUpdateWithoutDiagramasPorUsuarioDataInput {
   nombre?: Maybe<String>;
-  esAdmin?: Maybe<Boolean>;
+  usuariosEnSala?: Maybe<UsuarioSalaUpdateManyWithoutSalaInput>;
 }
 
-export interface DiagramaUsuarioCreateOneWithoutDiagramasInput {
-  create?: Maybe<DiagramaUsuarioCreateWithoutDiagramasInput>;
-  connect?: Maybe<DiagramaUsuarioWhereUniqueInput>;
+export interface DiagramaUsuarioCreateManyWithoutDiagramaInput {
+  create?: Maybe<
+    | DiagramaUsuarioCreateWithoutDiagramaInput[]
+    | DiagramaUsuarioCreateWithoutDiagramaInput
+  >;
+  connect?: Maybe<
+    DiagramaUsuarioWhereUniqueInput[] | DiagramaUsuarioWhereUniqueInput
+  >;
 }
 
 export interface UsuarioWhereInput {
@@ -728,15 +730,20 @@ export interface UsuarioWhereInput {
   nombre_not_ends_with?: Maybe<String>;
   esAdmin?: Maybe<Boolean>;
   esAdmin_not?: Maybe<Boolean>;
-  usuarioSala?: Maybe<UsuarioSalaWhereInput>;
+  usuariosEnSala_every?: Maybe<UsuarioSalaWhereInput>;
+  usuariosEnSala_some?: Maybe<UsuarioSalaWhereInput>;
+  usuariosEnSala_none?: Maybe<UsuarioSalaWhereInput>;
+  diagramasPorUsuario_every?: Maybe<DiagramaUsuarioWhereInput>;
+  diagramasPorUsuario_some?: Maybe<DiagramaUsuarioWhereInput>;
+  diagramasPorUsuario_none?: Maybe<DiagramaUsuarioWhereInput>;
   AND?: Maybe<UsuarioWhereInput[] | UsuarioWhereInput>;
   OR?: Maybe<UsuarioWhereInput[] | UsuarioWhereInput>;
   NOT?: Maybe<UsuarioWhereInput[] | UsuarioWhereInput>;
 }
 
-export interface UsuarioSalaCreateManyInput {
-  create?: Maybe<UsuarioSalaCreateInput[] | UsuarioSalaCreateInput>;
-  connect?: Maybe<UsuarioSalaWhereUniqueInput[] | UsuarioSalaWhereUniqueInput>;
+export interface SalaCreateOneWithoutDiagramasPorUsuarioInput {
+  create?: Maybe<SalaCreateWithoutDiagramasPorUsuarioInput>;
+  connect?: Maybe<SalaWhereUniqueInput>;
 }
 
 export interface SalaWhereInput {
@@ -784,10 +791,95 @@ export interface SalaWhereInput {
   nombre_not_starts_with?: Maybe<String>;
   nombre_ends_with?: Maybe<String>;
   nombre_not_ends_with?: Maybe<String>;
-  usuarioSala?: Maybe<UsuarioSalaWhereInput>;
+  usuariosEnSala_every?: Maybe<UsuarioSalaWhereInput>;
+  usuariosEnSala_some?: Maybe<UsuarioSalaWhereInput>;
+  usuariosEnSala_none?: Maybe<UsuarioSalaWhereInput>;
+  diagramasPorUsuario_every?: Maybe<DiagramaUsuarioWhereInput>;
+  diagramasPorUsuario_some?: Maybe<DiagramaUsuarioWhereInput>;
+  diagramasPorUsuario_none?: Maybe<DiagramaUsuarioWhereInput>;
   AND?: Maybe<SalaWhereInput[] | SalaWhereInput>;
   OR?: Maybe<SalaWhereInput[] | SalaWhereInput>;
   NOT?: Maybe<SalaWhereInput[] | SalaWhereInput>;
+}
+
+export interface UsuarioSalaCreateManyWithoutSalaInput {
+  create?: Maybe<
+    UsuarioSalaCreateWithoutSalaInput[] | UsuarioSalaCreateWithoutSalaInput
+  >;
+  connect?: Maybe<UsuarioSalaWhereUniqueInput[] | UsuarioSalaWhereUniqueInput>;
+}
+
+export interface UsuarioSalaUpdateWithoutSalaDataInput {
+  usuario?: Maybe<UsuarioUpdateOneRequiredWithoutUsuariosEnSalaInput>;
+}
+
+export interface UsuarioCreateOneWithoutUsuariosEnSalaInput {
+  create?: Maybe<UsuarioCreateWithoutUsuariosEnSalaInput>;
+  connect?: Maybe<UsuarioWhereUniqueInput>;
+}
+
+export interface UsuarioUpdateOneRequiredWithoutUsuariosEnSalaInput {
+  create?: Maybe<UsuarioCreateWithoutUsuariosEnSalaInput>;
+  update?: Maybe<UsuarioUpdateWithoutUsuariosEnSalaDataInput>;
+  upsert?: Maybe<UsuarioUpsertWithoutUsuariosEnSalaInput>;
+  connect?: Maybe<UsuarioWhereUniqueInput>;
+}
+
+export interface DiagramaUsuarioCreateManyWithoutUsuarioInput {
+  create?: Maybe<
+    | DiagramaUsuarioCreateWithoutUsuarioInput[]
+    | DiagramaUsuarioCreateWithoutUsuarioInput
+  >;
+  connect?: Maybe<
+    DiagramaUsuarioWhereUniqueInput[] | DiagramaUsuarioWhereUniqueInput
+  >;
+}
+
+export interface UsuarioUpdateWithoutUsuariosEnSalaDataInput {
+  nombre?: Maybe<String>;
+  esAdmin?: Maybe<Boolean>;
+  diagramasPorUsuario?: Maybe<DiagramaUsuarioUpdateManyWithoutUsuarioInput>;
+}
+
+export interface SalaSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<SalaWhereInput>;
+  AND?: Maybe<SalaSubscriptionWhereInput[] | SalaSubscriptionWhereInput>;
+  OR?: Maybe<SalaSubscriptionWhereInput[] | SalaSubscriptionWhereInput>;
+  NOT?: Maybe<SalaSubscriptionWhereInput[] | SalaSubscriptionWhereInput>;
+}
+
+export interface DiagramaUsuarioUpdateManyWithoutUsuarioInput {
+  create?: Maybe<
+    | DiagramaUsuarioCreateWithoutUsuarioInput[]
+    | DiagramaUsuarioCreateWithoutUsuarioInput
+  >;
+  delete?: Maybe<
+    DiagramaUsuarioWhereUniqueInput[] | DiagramaUsuarioWhereUniqueInput
+  >;
+  connect?: Maybe<
+    DiagramaUsuarioWhereUniqueInput[] | DiagramaUsuarioWhereUniqueInput
+  >;
+  set?: Maybe<
+    DiagramaUsuarioWhereUniqueInput[] | DiagramaUsuarioWhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    DiagramaUsuarioWhereUniqueInput[] | DiagramaUsuarioWhereUniqueInput
+  >;
+  update?: Maybe<
+    | DiagramaUsuarioUpdateWithWhereUniqueWithoutUsuarioInput[]
+    | DiagramaUsuarioUpdateWithWhereUniqueWithoutUsuarioInput
+  >;
+  upsert?: Maybe<
+    | DiagramaUsuarioUpsertWithWhereUniqueWithoutUsuarioInput[]
+    | DiagramaUsuarioUpsertWithWhereUniqueWithoutUsuarioInput
+  >;
+  deleteMany?: Maybe<
+    DiagramaUsuarioScalarWhereInput[] | DiagramaUsuarioScalarWhereInput
+  >;
 }
 
 export interface DiagramaUsuarioWhereInput {
@@ -821,44 +913,84 @@ export interface DiagramaUsuarioWhereInput {
   updatedAt_lte?: Maybe<DateTimeInput>;
   updatedAt_gt?: Maybe<DateTimeInput>;
   updatedAt_gte?: Maybe<DateTimeInput>;
-  diagramas_every?: Maybe<DiagramaWhereInput>;
-  diagramas_some?: Maybe<DiagramaWhereInput>;
-  diagramas_none?: Maybe<DiagramaWhereInput>;
-  usuariosSala_every?: Maybe<UsuarioSalaWhereInput>;
-  usuariosSala_some?: Maybe<UsuarioSalaWhereInput>;
-  usuariosSala_none?: Maybe<UsuarioSalaWhereInput>;
+  diagrama?: Maybe<DiagramaWhereInput>;
+  sala?: Maybe<SalaWhereInput>;
+  usuario?: Maybe<UsuarioWhereInput>;
   AND?: Maybe<DiagramaUsuarioWhereInput[] | DiagramaUsuarioWhereInput>;
   OR?: Maybe<DiagramaUsuarioWhereInput[] | DiagramaUsuarioWhereInput>;
   NOT?: Maybe<DiagramaUsuarioWhereInput[] | DiagramaUsuarioWhereInput>;
 }
 
-export interface SalaUpdateWithoutUsuarioSalaDataInput {
-  nombre?: Maybe<String>;
+export interface DiagramaUsuarioUpdateWithWhereUniqueWithoutUsuarioInput {
+  where: DiagramaUsuarioWhereUniqueInput;
+  data: DiagramaUsuarioUpdateWithoutUsuarioDataInput;
 }
 
-export interface SalaSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<SalaWhereInput>;
-  AND?: Maybe<SalaSubscriptionWhereInput[] | SalaSubscriptionWhereInput>;
-  OR?: Maybe<SalaSubscriptionWhereInput[] | SalaSubscriptionWhereInput>;
-  NOT?: Maybe<SalaSubscriptionWhereInput[] | SalaSubscriptionWhereInput>;
-}
-
-export interface SalaUpsertWithWhereUniqueWithoutUsuarioSalaInput {
-  where: SalaWhereUniqueInput;
-  update: SalaUpdateWithoutUsuarioSalaDataInput;
-  create: SalaCreateWithoutUsuarioSalaInput;
-}
-
-export interface UsuarioUpdateManyMutationInput {
+export interface UsuarioUpdateInput {
   nombre?: Maybe<String>;
   esAdmin?: Maybe<Boolean>;
+  usuariosEnSala?: Maybe<UsuarioSalaUpdateManyWithoutUsuarioInput>;
+  diagramasPorUsuario?: Maybe<DiagramaUsuarioUpdateManyWithoutUsuarioInput>;
 }
 
-export interface SalaScalarWhereInput {
+export interface DiagramaUsuarioUpdateWithoutUsuarioDataInput {
+  diagrama?: Maybe<DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
+  sala?: Maybe<SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
+}
+
+export interface SalaUpdateInput {
+  nombre?: Maybe<String>;
+  usuariosEnSala?: Maybe<UsuarioSalaUpdateManyWithoutSalaInput>;
+  diagramasPorUsuario?: Maybe<DiagramaUsuarioUpdateManyWithoutSalaInput>;
+}
+
+export interface DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput {
+  create?: Maybe<DiagramaCreateWithoutDiagramasPorUsuarioInput>;
+  update?: Maybe<DiagramaUpdateWithoutDiagramasPorUsuarioDataInput>;
+  upsert?: Maybe<DiagramaUpsertWithoutDiagramasPorUsuarioInput>;
+  connect?: Maybe<DiagramaWhereUniqueInput>;
+}
+
+export interface DiagramaUsuarioCreateInput {
+  id?: Maybe<ID_Input>;
+  diagrama: DiagramaCreateOneWithoutDiagramasPorUsuarioInput;
+  sala: SalaCreateOneWithoutDiagramasPorUsuarioInput;
+  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput;
+}
+
+export interface DiagramaUpdateWithoutDiagramasPorUsuarioDataInput {
+  datos?: Maybe<String>;
+}
+
+export interface UsuarioUpsertWithoutDiagramasPorUsuarioInput {
+  update: UsuarioUpdateWithoutDiagramasPorUsuarioDataInput;
+  create: UsuarioCreateWithoutDiagramasPorUsuarioInput;
+}
+
+export interface DiagramaUpsertWithoutDiagramasPorUsuarioInput {
+  update: DiagramaUpdateWithoutDiagramasPorUsuarioDataInput;
+  create: DiagramaCreateWithoutDiagramasPorUsuarioInput;
+}
+
+export interface DiagramaUsuarioUpsertWithWhereUniqueWithoutSalaInput {
+  where: DiagramaUsuarioWhereUniqueInput;
+  update: DiagramaUsuarioUpdateWithoutSalaDataInput;
+  create: DiagramaUsuarioCreateWithoutSalaInput;
+}
+
+export interface DiagramaUsuarioUpsertWithWhereUniqueWithoutUsuarioInput {
+  where: DiagramaUsuarioWhereUniqueInput;
+  update: DiagramaUsuarioUpdateWithoutUsuarioDataInput;
+  create: DiagramaUsuarioCreateWithoutUsuarioInput;
+}
+
+export interface DiagramaCreateInput {
+  id?: Maybe<ID_Input>;
+  datos: String;
+  diagramasPorUsuario?: Maybe<DiagramaUsuarioCreateManyWithoutDiagramaInput>;
+}
+
+export interface DiagramaUsuarioScalarWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -889,58 +1021,59 @@ export interface SalaScalarWhereInput {
   updatedAt_lte?: Maybe<DateTimeInput>;
   updatedAt_gt?: Maybe<DateTimeInput>;
   updatedAt_gte?: Maybe<DateTimeInput>;
-  nombre?: Maybe<String>;
-  nombre_not?: Maybe<String>;
-  nombre_in?: Maybe<String[] | String>;
-  nombre_not_in?: Maybe<String[] | String>;
-  nombre_lt?: Maybe<String>;
-  nombre_lte?: Maybe<String>;
-  nombre_gt?: Maybe<String>;
-  nombre_gte?: Maybe<String>;
-  nombre_contains?: Maybe<String>;
-  nombre_not_contains?: Maybe<String>;
-  nombre_starts_with?: Maybe<String>;
-  nombre_not_starts_with?: Maybe<String>;
-  nombre_ends_with?: Maybe<String>;
-  nombre_not_ends_with?: Maybe<String>;
-  AND?: Maybe<SalaScalarWhereInput[] | SalaScalarWhereInput>;
-  OR?: Maybe<SalaScalarWhereInput[] | SalaScalarWhereInput>;
-  NOT?: Maybe<SalaScalarWhereInput[] | SalaScalarWhereInput>;
+  AND?: Maybe<
+    DiagramaUsuarioScalarWhereInput[] | DiagramaUsuarioScalarWhereInput
+  >;
+  OR?: Maybe<
+    DiagramaUsuarioScalarWhereInput[] | DiagramaUsuarioScalarWhereInput
+  >;
+  NOT?: Maybe<
+    DiagramaUsuarioScalarWhereInput[] | DiagramaUsuarioScalarWhereInput
+  >;
 }
 
-export type DiagramaUsuarioWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface SalaUpdateManyWithWhereNestedInput {
-  where: SalaScalarWhereInput;
-  data: SalaUpdateManyDataInput;
+export interface SalaCreateWithoutDiagramasPorUsuarioInput {
+  id?: Maybe<ID_Input>;
+  nombre: String;
+  usuariosEnSala?: Maybe<UsuarioSalaCreateManyWithoutSalaInput>;
 }
 
-export interface UsuarioCreateInput {
+export interface UsuarioUpsertWithoutUsuariosEnSalaInput {
+  update: UsuarioUpdateWithoutUsuariosEnSalaDataInput;
+  create: UsuarioCreateWithoutUsuariosEnSalaInput;
+}
+
+export interface UsuarioCreateWithoutUsuariosEnSalaInput {
   id?: Maybe<ID_Input>;
   nombre: String;
   esAdmin?: Maybe<Boolean>;
-  usuarioSala?: Maybe<UsuarioSalaCreateOneWithoutUsuariosInput>;
+  diagramasPorUsuario?: Maybe<DiagramaUsuarioCreateManyWithoutUsuarioInput>;
 }
 
-export interface SalaUpdateManyDataInput {
-  nombre?: Maybe<String>;
-}
-
-export interface UsuarioSalaUpdateWithoutSalasDataInput {
-  usuarios?: Maybe<UsuarioUpdateManyWithoutUsuarioSalaInput>;
-}
-
-export interface UsuarioSalaUpsertWithWhereUniqueNestedInput {
+export interface UsuarioSalaUpsertWithWhereUniqueWithoutSalaInput {
   where: UsuarioSalaWhereUniqueInput;
-  update: UsuarioSalaUpdateDataInput;
-  create: UsuarioSalaCreateInput;
+  update: UsuarioSalaUpdateWithoutSalaDataInput;
+  create: UsuarioSalaCreateWithoutSalaInput;
 }
 
-export interface UsuarioSalaCreateWithoutSalasInput {
-  id?: Maybe<ID_Input>;
-  usuarios?: Maybe<UsuarioCreateManyWithoutUsuarioSalaInput>;
+export interface DiagramaUsuarioSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<DiagramaUsuarioWhereInput>;
+  AND?: Maybe<
+    | DiagramaUsuarioSubscriptionWhereInput[]
+    | DiagramaUsuarioSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | DiagramaUsuarioSubscriptionWhereInput[]
+    | DiagramaUsuarioSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | DiagramaUsuarioSubscriptionWhereInput[]
+    | DiagramaUsuarioSubscriptionWhereInput
+  >;
 }
 
 export interface UsuarioSalaScalarWhereInput {
@@ -979,236 +1112,125 @@ export interface UsuarioSalaScalarWhereInput {
   NOT?: Maybe<UsuarioSalaScalarWhereInput[] | UsuarioSalaScalarWhereInput>;
 }
 
-export interface DiagramaUpdateManyDataInput {
-  datos?: Maybe<String>;
-}
-
-export interface DiagramaUsuarioUpsertWithoutDiagramasInput {
-  update: DiagramaUsuarioUpdateWithoutDiagramasDataInput;
-  create: DiagramaUsuarioCreateWithoutDiagramasInput;
-}
-
-export interface DiagramaUsuarioCreateWithoutDiagramasInput {
+export interface UsuarioCreateInput {
   id?: Maybe<ID_Input>;
-  usuariosSala?: Maybe<UsuarioSalaCreateManyInput>;
+  nombre: String;
+  esAdmin?: Maybe<Boolean>;
+  usuariosEnSala?: Maybe<UsuarioSalaCreateManyWithoutUsuarioInput>;
+  diagramasPorUsuario?: Maybe<DiagramaUsuarioCreateManyWithoutUsuarioInput>;
 }
 
-export interface DiagramaUpdateManyMutationInput {
-  datos?: Maybe<String>;
+export interface SalaUpsertWithoutDiagramasPorUsuarioInput {
+  update: SalaUpdateWithoutDiagramasPorUsuarioDataInput;
+  create: SalaCreateWithoutDiagramasPorUsuarioInput;
 }
 
-export interface DiagramaWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  datos?: Maybe<String>;
-  datos_not?: Maybe<String>;
-  datos_in?: Maybe<String[] | String>;
-  datos_not_in?: Maybe<String[] | String>;
-  datos_lt?: Maybe<String>;
-  datos_lte?: Maybe<String>;
-  datos_gt?: Maybe<String>;
-  datos_gte?: Maybe<String>;
-  datos_contains?: Maybe<String>;
-  datos_not_contains?: Maybe<String>;
-  datos_starts_with?: Maybe<String>;
-  datos_not_starts_with?: Maybe<String>;
-  datos_ends_with?: Maybe<String>;
-  datos_not_ends_with?: Maybe<String>;
-  diagramaUsuario?: Maybe<DiagramaUsuarioWhereInput>;
-  AND?: Maybe<DiagramaWhereInput[] | DiagramaWhereInput>;
-  OR?: Maybe<DiagramaWhereInput[] | DiagramaWhereInput>;
-  NOT?: Maybe<DiagramaWhereInput[] | DiagramaWhereInput>;
+export type UsuarioWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput {
+  create?: Maybe<UsuarioCreateWithoutDiagramasPorUsuarioInput>;
+  update?: Maybe<UsuarioUpdateWithoutDiagramasPorUsuarioDataInput>;
+  upsert?: Maybe<UsuarioUpsertWithoutDiagramasPorUsuarioInput>;
+  connect?: Maybe<UsuarioWhereUniqueInput>;
 }
 
-export interface DiagramaScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  datos?: Maybe<String>;
-  datos_not?: Maybe<String>;
-  datos_in?: Maybe<String[] | String>;
-  datos_not_in?: Maybe<String[] | String>;
-  datos_lt?: Maybe<String>;
-  datos_lte?: Maybe<String>;
-  datos_gt?: Maybe<String>;
-  datos_gte?: Maybe<String>;
-  datos_contains?: Maybe<String>;
-  datos_not_contains?: Maybe<String>;
-  datos_starts_with?: Maybe<String>;
-  datos_not_starts_with?: Maybe<String>;
-  datos_ends_with?: Maybe<String>;
-  datos_not_ends_with?: Maybe<String>;
-  AND?: Maybe<DiagramaScalarWhereInput[] | DiagramaScalarWhereInput>;
-  OR?: Maybe<DiagramaScalarWhereInput[] | DiagramaScalarWhereInput>;
-  NOT?: Maybe<DiagramaScalarWhereInput[] | DiagramaScalarWhereInput>;
+export interface DiagramaUsuarioUpdateWithWhereUniqueWithoutSalaInput {
+  where: DiagramaUsuarioWhereUniqueInput;
+  data: DiagramaUsuarioUpdateWithoutSalaDataInput;
 }
 
-export interface UsuarioSalaUpdateWithoutUsuariosDataInput {
-  salas?: Maybe<SalaUpdateManyWithoutUsuarioSalaInput>;
-}
-
-export interface DiagramaUpsertWithWhereUniqueWithoutDiagramaUsuarioInput {
-  where: DiagramaWhereUniqueInput;
-  update: DiagramaUpdateWithoutDiagramaUsuarioDataInput;
-  create: DiagramaCreateWithoutDiagramaUsuarioInput;
-}
-
-export interface SalaUpdateManyMutationInput {
+export interface UsuarioUpdateWithoutDiagramasPorUsuarioDataInput {
   nombre?: Maybe<String>;
+  esAdmin?: Maybe<Boolean>;
+  usuariosEnSala?: Maybe<UsuarioSalaUpdateManyWithoutUsuarioInput>;
 }
 
-export interface DiagramaUsuarioCreateInput {
+export interface UsuarioSalaCreateWithoutSalaInput {
   id?: Maybe<ID_Input>;
-  diagramas?: Maybe<DiagramaCreateManyWithoutDiagramaUsuarioInput>;
-  usuariosSala?: Maybe<UsuarioSalaCreateManyInput>;
+  usuario: UsuarioCreateOneWithoutUsuariosEnSalaInput;
 }
 
-export interface UsuarioSalaCreateOneWithoutSalasInput {
-  create?: Maybe<UsuarioSalaCreateWithoutSalasInput>;
-  connect?: Maybe<UsuarioSalaWhereUniqueInput>;
+export interface SalaUpdateOneRequiredWithoutUsuariosEnSalaInput {
+  create?: Maybe<SalaCreateWithoutUsuariosEnSalaInput>;
+  update?: Maybe<SalaUpdateWithoutUsuariosEnSalaDataInput>;
+  upsert?: Maybe<SalaUpsertWithoutUsuariosEnSalaInput>;
+  connect?: Maybe<SalaWhereUniqueInput>;
 }
 
-export interface DiagramaCreateManyWithoutDiagramaUsuarioInput {
+export interface UsuarioSalaUpdateWithoutUsuarioDataInput {
+  sala?: Maybe<SalaUpdateOneRequiredWithoutUsuariosEnSalaInput>;
+}
+
+export interface UsuarioSalaUpdateWithWhereUniqueWithoutUsuarioInput {
+  where: UsuarioSalaWhereUniqueInput;
+  data: UsuarioSalaUpdateWithoutUsuarioDataInput;
+}
+
+export interface UsuarioSalaUpdateManyWithoutUsuarioInput {
   create?: Maybe<
-    | DiagramaCreateWithoutDiagramaUsuarioInput[]
-    | DiagramaCreateWithoutDiagramaUsuarioInput
+    | UsuarioSalaCreateWithoutUsuarioInput[]
+    | UsuarioSalaCreateWithoutUsuarioInput
   >;
-  connect?: Maybe<DiagramaWhereUniqueInput[] | DiagramaWhereUniqueInput>;
-}
-
-export interface UsuarioSalaCreateInput {
-  id?: Maybe<ID_Input>;
-  usuarios?: Maybe<UsuarioCreateManyWithoutUsuarioSalaInput>;
-  salas?: Maybe<SalaCreateManyWithoutUsuarioSalaInput>;
-}
-
-export interface DiagramaUpdateWithWhereUniqueWithoutDiagramaUsuarioInput {
-  where: DiagramaWhereUniqueInput;
-  data: DiagramaUpdateWithoutDiagramaUsuarioDataInput;
-}
-
-export interface DiagramaUpdateManyWithoutDiagramaUsuarioInput {
-  create?: Maybe<
-    | DiagramaCreateWithoutDiagramaUsuarioInput[]
-    | DiagramaCreateWithoutDiagramaUsuarioInput
+  delete?: Maybe<UsuarioSalaWhereUniqueInput[] | UsuarioSalaWhereUniqueInput>;
+  connect?: Maybe<UsuarioSalaWhereUniqueInput[] | UsuarioSalaWhereUniqueInput>;
+  set?: Maybe<UsuarioSalaWhereUniqueInput[] | UsuarioSalaWhereUniqueInput>;
+  disconnect?: Maybe<
+    UsuarioSalaWhereUniqueInput[] | UsuarioSalaWhereUniqueInput
   >;
-  delete?: Maybe<DiagramaWhereUniqueInput[] | DiagramaWhereUniqueInput>;
-  connect?: Maybe<DiagramaWhereUniqueInput[] | DiagramaWhereUniqueInput>;
-  set?: Maybe<DiagramaWhereUniqueInput[] | DiagramaWhereUniqueInput>;
-  disconnect?: Maybe<DiagramaWhereUniqueInput[] | DiagramaWhereUniqueInput>;
   update?: Maybe<
-    | DiagramaUpdateWithWhereUniqueWithoutDiagramaUsuarioInput[]
-    | DiagramaUpdateWithWhereUniqueWithoutDiagramaUsuarioInput
+    | UsuarioSalaUpdateWithWhereUniqueWithoutUsuarioInput[]
+    | UsuarioSalaUpdateWithWhereUniqueWithoutUsuarioInput
   >;
   upsert?: Maybe<
-    | DiagramaUpsertWithWhereUniqueWithoutDiagramaUsuarioInput[]
-    | DiagramaUpsertWithWhereUniqueWithoutDiagramaUsuarioInput
+    | UsuarioSalaUpsertWithWhereUniqueWithoutUsuarioInput[]
+    | UsuarioSalaUpsertWithWhereUniqueWithoutUsuarioInput
   >;
-  deleteMany?: Maybe<DiagramaScalarWhereInput[] | DiagramaScalarWhereInput>;
-  updateMany?: Maybe<
-    | DiagramaUpdateManyWithWhereNestedInput[]
-    | DiagramaUpdateManyWithWhereNestedInput
+  deleteMany?: Maybe<
+    UsuarioSalaScalarWhereInput[] | UsuarioSalaScalarWhereInput
   >;
 }
 
-export interface DiagramaUsuarioUpdateInput {
-  diagramas?: Maybe<DiagramaUpdateManyWithoutDiagramaUsuarioInput>;
-  usuariosSala?: Maybe<UsuarioSalaUpdateManyInput>;
-}
-
-export interface DiagramaCreateWithoutDiagramaUsuarioInput {
-  id?: Maybe<ID_Input>;
-  datos: String;
-}
-
-export interface DiagramaSubscriptionWhereInput {
+export interface UsuarioSalaSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<DiagramaWhereInput>;
+  node?: Maybe<UsuarioSalaWhereInput>;
   AND?: Maybe<
-    DiagramaSubscriptionWhereInput[] | DiagramaSubscriptionWhereInput
+    UsuarioSalaSubscriptionWhereInput[] | UsuarioSalaSubscriptionWhereInput
   >;
-  OR?: Maybe<DiagramaSubscriptionWhereInput[] | DiagramaSubscriptionWhereInput>;
+  OR?: Maybe<
+    UsuarioSalaSubscriptionWhereInput[] | UsuarioSalaSubscriptionWhereInput
+  >;
   NOT?: Maybe<
-    DiagramaSubscriptionWhereInput[] | DiagramaSubscriptionWhereInput
+    UsuarioSalaSubscriptionWhereInput[] | UsuarioSalaSubscriptionWhereInput
   >;
 }
 
-export interface DiagramaCreateInput {
+export interface DiagramaUsuarioCreateWithoutDiagramaInput {
   id?: Maybe<ID_Input>;
-  datos: String;
-  diagramaUsuario?: Maybe<DiagramaUsuarioCreateOneWithoutDiagramasInput>;
+  sala: SalaCreateOneWithoutDiagramasPorUsuarioInput;
+  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput;
 }
 
-export interface UsuarioSalaUpdateOneWithoutSalasInput {
-  create?: Maybe<UsuarioSalaCreateWithoutSalasInput>;
-  update?: Maybe<UsuarioSalaUpdateWithoutSalasDataInput>;
-  upsert?: Maybe<UsuarioSalaUpsertWithoutSalasInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<UsuarioSalaWhereUniqueInput>;
+export interface SalaUpsertWithoutUsuariosEnSalaInput {
+  update: SalaUpdateWithoutUsuariosEnSalaDataInput;
+  create: SalaCreateWithoutUsuariosEnSalaInput;
 }
 
-export interface UsuarioSalaCreateWithoutUsuariosInput {
+export interface SalaCreateInput {
   id?: Maybe<ID_Input>;
-  salas?: Maybe<SalaCreateManyWithoutUsuarioSalaInput>;
+  nombre: String;
+  usuariosEnSala?: Maybe<UsuarioSalaCreateManyWithoutSalaInput>;
+  diagramasPorUsuario?: Maybe<DiagramaUsuarioCreateManyWithoutSalaInput>;
+}
+
+export interface UsuarioSalaCreateInput {
+  id?: Maybe<ID_Input>;
+  usuario: UsuarioCreateOneWithoutUsuariosEnSalaInput;
+  sala: SalaCreateOneWithoutUsuariosEnSalaInput;
 }
 
 export interface NodeNode {
@@ -1237,6 +1259,66 @@ export interface UsuarioSalaPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
+export interface DiagramaUsuarioConnection {
+  pageInfo: PageInfo;
+  edges: DiagramaUsuarioEdge[];
+}
+
+export interface DiagramaUsuarioConnectionPromise
+  extends Promise<DiagramaUsuarioConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<DiagramaUsuarioEdge>>() => T;
+  aggregate: <T = AggregateDiagramaUsuarioPromise>() => T;
+}
+
+export interface DiagramaUsuarioConnectionSubscription
+  extends Promise<AsyncIterator<DiagramaUsuarioConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<DiagramaUsuarioEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateDiagramaUsuarioSubscription>() => T;
+}
+
+export interface DiagramaUsuario {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface DiagramaUsuarioPromise
+  extends Promise<DiagramaUsuario>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  diagrama: <T = DiagramaPromise>() => T;
+  sala: <T = SalaPromise>() => T;
+  usuario: <T = UsuarioPromise>() => T;
+}
+
+export interface DiagramaUsuarioSubscription
+  extends Promise<AsyncIterator<DiagramaUsuario>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  diagrama: <T = DiagramaSubscription>() => T;
+  sala: <T = SalaSubscription>() => T;
+  usuario: <T = UsuarioSubscription>() => T;
+}
+
+export interface DiagramaUsuarioNullablePromise
+  extends Promise<DiagramaUsuario | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  diagrama: <T = DiagramaPromise>() => T;
+  sala: <T = SalaPromise>() => T;
+  usuario: <T = UsuarioPromise>() => T;
+}
+
 export interface AggregateDiagrama {
   count: Int;
 }
@@ -1251,88 +1333,6 @@ export interface AggregateDiagramaSubscription
   extends Promise<AsyncIterator<AggregateDiagrama>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface UsuarioSala {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-}
-
-export interface UsuarioSalaPromise extends Promise<UsuarioSala>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  usuarios: <T = FragmentableArray<Usuario>>(args?: {
-    where?: UsuarioWhereInput;
-    orderBy?: UsuarioOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  salas: <T = FragmentableArray<Sala>>(args?: {
-    where?: SalaWhereInput;
-    orderBy?: SalaOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface UsuarioSalaSubscription
-  extends Promise<AsyncIterator<UsuarioSala>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  usuarios: <T = Promise<AsyncIterator<UsuarioSubscription>>>(args?: {
-    where?: UsuarioWhereInput;
-    orderBy?: UsuarioOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  salas: <T = Promise<AsyncIterator<SalaSubscription>>>(args?: {
-    where?: SalaWhereInput;
-    orderBy?: SalaOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface UsuarioSalaNullablePromise
-  extends Promise<UsuarioSala | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  usuarios: <T = FragmentableArray<Usuario>>(args?: {
-    where?: UsuarioWhereInput;
-    orderBy?: UsuarioOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  salas: <T = FragmentableArray<Sala>>(args?: {
-    where?: SalaWhereInput;
-    orderBy?: SalaOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
 }
 
 export interface DiagramaEdge {
@@ -1352,6 +1352,43 @@ export interface DiagramaEdgeSubscription
     Fragmentable {
   node: <T = DiagramaSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateUsuarioSala {
+  count: Int;
+}
+
+export interface AggregateUsuarioSalaPromise
+  extends Promise<AggregateUsuarioSala>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUsuarioSalaSubscription
+  extends Promise<AsyncIterator<AggregateUsuarioSala>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UsuarioSalaConnection {
+  pageInfo: PageInfo;
+  edges: UsuarioSalaEdge[];
+}
+
+export interface UsuarioSalaConnectionPromise
+  extends Promise<UsuarioSalaConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UsuarioSalaEdge>>() => T;
+  aggregate: <T = AggregateUsuarioSalaPromise>() => T;
+}
+
+export interface UsuarioSalaConnectionSubscription
+  extends Promise<AsyncIterator<UsuarioSalaConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UsuarioSalaEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUsuarioSalaSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -1377,36 +1414,21 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface BatchPayload {
-  count: Long;
+export interface UsuarioEdge {
+  node: Usuario;
+  cursor: String;
 }
 
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
+export interface UsuarioEdgePromise extends Promise<UsuarioEdge>, Fragmentable {
+  node: <T = UsuarioPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UsuarioEdgeSubscription
+  extends Promise<AsyncIterator<UsuarioEdge>>,
     Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface AggregateUsuarioSala {
-  count: Int;
-}
-
-export interface AggregateUsuarioSalaPromise
-  extends Promise<AggregateUsuarioSala>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUsuarioSalaSubscription
-  extends Promise<AsyncIterator<AggregateUsuarioSala>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  node: <T = UsuarioSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface DiagramaConnection {
@@ -1430,118 +1452,137 @@ export interface DiagramaConnectionSubscription
   aggregate: <T = AggregateDiagramaSubscription>() => T;
 }
 
-export interface UsuarioSalaConnection {
-  pageInfo: PageInfo;
-  edges: UsuarioSalaEdge[];
+export interface UsuarioSalaSubscriptionPayload {
+  mutation: MutationType;
+  node: UsuarioSala;
+  updatedFields: String[];
+  previousValues: UsuarioSalaPreviousValues;
 }
 
-export interface UsuarioSalaConnectionPromise
-  extends Promise<UsuarioSalaConnection>,
+export interface UsuarioSalaSubscriptionPayloadPromise
+  extends Promise<UsuarioSalaSubscriptionPayload>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UsuarioSalaEdge>>() => T;
-  aggregate: <T = AggregateUsuarioSalaPromise>() => T;
+  mutation: () => Promise<MutationType>;
+  node: <T = UsuarioSalaPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UsuarioSalaPreviousValuesPromise>() => T;
 }
 
-export interface UsuarioSalaConnectionSubscription
-  extends Promise<AsyncIterator<UsuarioSalaConnection>>,
+export interface UsuarioSalaSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UsuarioSalaSubscriptionPayload>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UsuarioSalaEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUsuarioSalaSubscription>() => T;
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UsuarioSalaSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UsuarioSalaPreviousValuesSubscription>() => T;
 }
 
-export interface Sala {
+export interface Usuario {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   nombre: String;
+  esAdmin: Boolean;
 }
 
-export interface SalaPromise extends Promise<Sala>, Fragmentable {
+export interface UsuarioPromise extends Promise<Usuario>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   nombre: () => Promise<String>;
-  usuarioSala: <T = UsuarioSalaPromise>() => T;
+  esAdmin: () => Promise<Boolean>;
+  usuariosEnSala: <T = FragmentableArray<UsuarioSala>>(args?: {
+    where?: UsuarioSalaWhereInput;
+    orderBy?: UsuarioSalaOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  diagramasPorUsuario: <T = FragmentableArray<DiagramaUsuario>>(args?: {
+    where?: DiagramaUsuarioWhereInput;
+    orderBy?: DiagramaUsuarioOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface SalaSubscription
-  extends Promise<AsyncIterator<Sala>>,
+export interface UsuarioSubscription
+  extends Promise<AsyncIterator<Usuario>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   nombre: () => Promise<AsyncIterator<String>>;
-  usuarioSala: <T = UsuarioSalaSubscription>() => T;
+  esAdmin: () => Promise<AsyncIterator<Boolean>>;
+  usuariosEnSala: <T = Promise<AsyncIterator<UsuarioSalaSubscription>>>(args?: {
+    where?: UsuarioSalaWhereInput;
+    orderBy?: UsuarioSalaOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  diagramasPorUsuario: <
+    T = Promise<AsyncIterator<DiagramaUsuarioSubscription>>
+  >(args?: {
+    where?: DiagramaUsuarioWhereInput;
+    orderBy?: DiagramaUsuarioOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface SalaNullablePromise
-  extends Promise<Sala | null>,
+export interface UsuarioNullablePromise
+  extends Promise<Usuario | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   nombre: () => Promise<String>;
-  usuarioSala: <T = UsuarioSalaPromise>() => T;
+  esAdmin: () => Promise<Boolean>;
+  usuariosEnSala: <T = FragmentableArray<UsuarioSala>>(args?: {
+    where?: UsuarioSalaWhereInput;
+    orderBy?: UsuarioSalaOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  diagramasPorUsuario: <T = FragmentableArray<DiagramaUsuario>>(args?: {
+    where?: DiagramaUsuarioWhereInput;
+    orderBy?: DiagramaUsuarioOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface UsuarioEdge {
-  node: Usuario;
-  cursor: String;
+export interface BatchPayload {
+  count: Long;
 }
 
-export interface UsuarioEdgePromise extends Promise<UsuarioEdge>, Fragmentable {
-  node: <T = UsuarioPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UsuarioEdgeSubscription
-  extends Promise<AsyncIterator<UsuarioEdge>>,
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
     Fragmentable {
-  node: <T = UsuarioSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  count: () => Promise<Long>;
 }
 
-export interface UsuarioSubscriptionPayload {
-  mutation: MutationType;
-  node: Usuario;
-  updatedFields: String[];
-  previousValues: UsuarioPreviousValues;
-}
-
-export interface UsuarioSubscriptionPayloadPromise
-  extends Promise<UsuarioSubscriptionPayload>,
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UsuarioPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UsuarioPreviousValuesPromise>() => T;
-}
-
-export interface UsuarioSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UsuarioSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UsuarioSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UsuarioPreviousValuesSubscription>() => T;
-}
-
-export interface AggregateSala {
-  count: Int;
-}
-
-export interface AggregateSalaPromise
-  extends Promise<AggregateSala>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateSalaSubscription
-  extends Promise<AsyncIterator<AggregateSala>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  count: () => Promise<AsyncIterator<Long>>;
 }
 
 export interface Diagrama {
@@ -1556,7 +1597,15 @@ export interface DiagramaPromise extends Promise<Diagrama>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   datos: () => Promise<String>;
-  diagramaUsuario: <T = DiagramaUsuarioPromise>() => T;
+  diagramasPorUsuario: <T = FragmentableArray<DiagramaUsuario>>(args?: {
+    where?: DiagramaUsuarioWhereInput;
+    orderBy?: DiagramaUsuarioOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface DiagramaSubscription
@@ -1566,7 +1615,17 @@ export interface DiagramaSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   datos: () => Promise<AsyncIterator<String>>;
-  diagramaUsuario: <T = DiagramaUsuarioSubscription>() => T;
+  diagramasPorUsuario: <
+    T = Promise<AsyncIterator<DiagramaUsuarioSubscription>>
+  >(args?: {
+    where?: DiagramaUsuarioWhereInput;
+    orderBy?: DiagramaUsuarioOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface DiagramaNullablePromise
@@ -1576,28 +1635,32 @@ export interface DiagramaNullablePromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   datos: () => Promise<String>;
-  diagramaUsuario: <T = DiagramaUsuarioPromise>() => T;
+  diagramasPorUsuario: <T = FragmentableArray<DiagramaUsuario>>(args?: {
+    where?: DiagramaUsuarioWhereInput;
+    orderBy?: DiagramaUsuarioOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface SalaConnection {
-  pageInfo: PageInfo;
-  edges: SalaEdge[];
+export interface SalaEdge {
+  node: Sala;
+  cursor: String;
 }
 
-export interface SalaConnectionPromise
-  extends Promise<SalaConnection>,
+export interface SalaEdgePromise extends Promise<SalaEdge>, Fragmentable {
+  node: <T = SalaPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface SalaEdgeSubscription
+  extends Promise<AsyncIterator<SalaEdge>>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<SalaEdge>>() => T;
-  aggregate: <T = AggregateSalaPromise>() => T;
-}
-
-export interface SalaConnectionSubscription
-  extends Promise<AsyncIterator<SalaConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<SalaEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateSalaSubscription>() => T;
+  node: <T = SalaSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface DiagramaSubscriptionPayload {
@@ -1625,23 +1688,29 @@ export interface DiagramaSubscriptionPayloadSubscription
   previousValues: <T = DiagramaPreviousValuesSubscription>() => T;
 }
 
-export interface DiagramaUsuarioEdge {
-  node: DiagramaUsuario;
-  cursor: String;
+export interface UsuarioSubscriptionPayload {
+  mutation: MutationType;
+  node: Usuario;
+  updatedFields: String[];
+  previousValues: UsuarioPreviousValues;
 }
 
-export interface DiagramaUsuarioEdgePromise
-  extends Promise<DiagramaUsuarioEdge>,
+export interface UsuarioSubscriptionPayloadPromise
+  extends Promise<UsuarioSubscriptionPayload>,
     Fragmentable {
-  node: <T = DiagramaUsuarioPromise>() => T;
-  cursor: () => Promise<String>;
+  mutation: () => Promise<MutationType>;
+  node: <T = UsuarioPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UsuarioPreviousValuesPromise>() => T;
 }
 
-export interface DiagramaUsuarioEdgeSubscription
-  extends Promise<AsyncIterator<DiagramaUsuarioEdge>>,
+export interface UsuarioSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UsuarioSubscriptionPayload>>,
     Fragmentable {
-  node: <T = DiagramaUsuarioSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UsuarioSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UsuarioPreviousValuesSubscription>() => T;
 }
 
 export interface DiagramaPreviousValues {
@@ -1669,90 +1738,73 @@ export interface DiagramaPreviousValuesSubscription
   datos: () => Promise<AsyncIterator<String>>;
 }
 
-export interface UsuarioPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  nombre: String;
-  esAdmin: Boolean;
-}
-
-export interface UsuarioPreviousValuesPromise
-  extends Promise<UsuarioPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  nombre: () => Promise<String>;
-  esAdmin: () => Promise<Boolean>;
-}
-
-export interface UsuarioPreviousValuesSubscription
-  extends Promise<AsyncIterator<UsuarioPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  nombre: () => Promise<AsyncIterator<String>>;
-  esAdmin: () => Promise<AsyncIterator<Boolean>>;
-}
-
-export interface Usuario {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  nombre: String;
-  esAdmin: Boolean;
-}
-
-export interface UsuarioPromise extends Promise<Usuario>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  nombre: () => Promise<String>;
-  esAdmin: () => Promise<Boolean>;
-  usuarioSala: <T = UsuarioSalaPromise>() => T;
-}
-
-export interface UsuarioSubscription
-  extends Promise<AsyncIterator<Usuario>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  nombre: () => Promise<AsyncIterator<String>>;
-  esAdmin: () => Promise<AsyncIterator<Boolean>>;
-  usuarioSala: <T = UsuarioSalaSubscription>() => T;
-}
-
-export interface UsuarioNullablePromise
-  extends Promise<Usuario | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  nombre: () => Promise<String>;
-  esAdmin: () => Promise<Boolean>;
-  usuarioSala: <T = UsuarioSalaPromise>() => T;
-}
-
-export interface UsuarioSalaEdge {
-  node: UsuarioSala;
+export interface DiagramaUsuarioEdge {
+  node: DiagramaUsuario;
   cursor: String;
 }
 
-export interface UsuarioSalaEdgePromise
-  extends Promise<UsuarioSalaEdge>,
+export interface DiagramaUsuarioEdgePromise
+  extends Promise<DiagramaUsuarioEdge>,
     Fragmentable {
-  node: <T = UsuarioSalaPromise>() => T;
+  node: <T = DiagramaUsuarioPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface UsuarioSalaEdgeSubscription
-  extends Promise<AsyncIterator<UsuarioSalaEdge>>,
+export interface DiagramaUsuarioEdgeSubscription
+  extends Promise<AsyncIterator<DiagramaUsuarioEdge>>,
     Fragmentable {
-  node: <T = UsuarioSalaSubscription>() => T;
+  node: <T = DiagramaUsuarioSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UsuarioSala {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface UsuarioSalaPromise extends Promise<UsuarioSala>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  usuario: <T = UsuarioPromise>() => T;
+  sala: <T = SalaPromise>() => T;
+}
+
+export interface UsuarioSalaSubscription
+  extends Promise<AsyncIterator<UsuarioSala>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  usuario: <T = UsuarioSubscription>() => T;
+  sala: <T = SalaSubscription>() => T;
+}
+
+export interface UsuarioSalaNullablePromise
+  extends Promise<UsuarioSala | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  usuario: <T = UsuarioPromise>() => T;
+  sala: <T = SalaPromise>() => T;
+}
+
+export interface AggregateUsuario {
+  count: Int;
+}
+
+export interface AggregateUsuarioPromise
+  extends Promise<AggregateUsuario>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUsuarioSubscription
+  extends Promise<AsyncIterator<AggregateUsuario>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface DiagramaUsuarioSubscriptionPayload {
@@ -1780,41 +1832,41 @@ export interface DiagramaUsuarioSubscriptionPayloadSubscription
   previousValues: <T = DiagramaUsuarioPreviousValuesSubscription>() => T;
 }
 
-export interface UsuarioConnection {
-  pageInfo: PageInfo;
-  edges: UsuarioEdge[];
-}
-
-export interface UsuarioConnectionPromise
-  extends Promise<UsuarioConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UsuarioEdge>>() => T;
-  aggregate: <T = AggregateUsuarioPromise>() => T;
-}
-
-export interface UsuarioConnectionSubscription
-  extends Promise<AsyncIterator<UsuarioConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UsuarioEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUsuarioSubscription>() => T;
-}
-
-export interface AggregateDiagramaUsuario {
+export interface AggregateSala {
   count: Int;
 }
 
-export interface AggregateDiagramaUsuarioPromise
-  extends Promise<AggregateDiagramaUsuario>,
+export interface AggregateSalaPromise
+  extends Promise<AggregateSala>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateDiagramaUsuarioSubscription
-  extends Promise<AsyncIterator<AggregateDiagramaUsuario>>,
+export interface AggregateSalaSubscription
+  extends Promise<AsyncIterator<AggregateSala>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface SalaConnection {
+  pageInfo: PageInfo;
+  edges: SalaEdge[];
+}
+
+export interface SalaConnectionPromise
+  extends Promise<SalaConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<SalaEdge>>() => T;
+  aggregate: <T = AggregateSalaPromise>() => T;
+}
+
+export interface SalaConnectionSubscription
+  extends Promise<AsyncIterator<SalaConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<SalaEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateSalaSubscription>() => T;
 }
 
 export interface SalaPreviousValues {
@@ -1867,28 +1919,19 @@ export interface SalaSubscriptionPayloadSubscription
   previousValues: <T = SalaPreviousValuesSubscription>() => T;
 }
 
-export interface DiagramaUsuario {
+export interface Sala {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
+  nombre: String;
 }
 
-export interface DiagramaUsuarioPromise
-  extends Promise<DiagramaUsuario>,
-    Fragmentable {
+export interface SalaPromise extends Promise<Sala>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  diagramas: <T = FragmentableArray<Diagrama>>(args?: {
-    where?: DiagramaWhereInput;
-    orderBy?: DiagramaOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  usuariosSala: <T = FragmentableArray<UsuarioSala>>(args?: {
+  nombre: () => Promise<String>;
+  usuariosEnSala: <T = FragmentableArray<UsuarioSala>>(args?: {
     where?: UsuarioSalaWhereInput;
     orderBy?: UsuarioSalaOrderByInput;
     skip?: Int;
@@ -1897,26 +1940,38 @@ export interface DiagramaUsuarioPromise
     first?: Int;
     last?: Int;
   }) => T;
+  diagramasPorUsuario: <T = FragmentableArray<DiagramaUsuario>>(args?: {
+    where?: DiagramaUsuarioWhereInput;
+    orderBy?: DiagramaUsuarioOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface DiagramaUsuarioSubscription
-  extends Promise<AsyncIterator<DiagramaUsuario>>,
+export interface SalaSubscription
+  extends Promise<AsyncIterator<Sala>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  diagramas: <T = Promise<AsyncIterator<DiagramaSubscription>>>(args?: {
-    where?: DiagramaWhereInput;
-    orderBy?: DiagramaOrderByInput;
+  nombre: () => Promise<AsyncIterator<String>>;
+  usuariosEnSala: <T = Promise<AsyncIterator<UsuarioSalaSubscription>>>(args?: {
+    where?: UsuarioSalaWhereInput;
+    orderBy?: UsuarioSalaOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
   }) => T;
-  usuariosSala: <T = Promise<AsyncIterator<UsuarioSalaSubscription>>>(args?: {
-    where?: UsuarioSalaWhereInput;
-    orderBy?: UsuarioSalaOrderByInput;
+  diagramasPorUsuario: <
+    T = Promise<AsyncIterator<DiagramaUsuarioSubscription>>
+  >(args?: {
+    where?: DiagramaUsuarioWhereInput;
+    orderBy?: DiagramaUsuarioOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -1925,24 +1980,25 @@ export interface DiagramaUsuarioSubscription
   }) => T;
 }
 
-export interface DiagramaUsuarioNullablePromise
-  extends Promise<DiagramaUsuario | null>,
+export interface SalaNullablePromise
+  extends Promise<Sala | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  diagramas: <T = FragmentableArray<Diagrama>>(args?: {
-    where?: DiagramaWhereInput;
-    orderBy?: DiagramaOrderByInput;
+  nombre: () => Promise<String>;
+  usuariosEnSala: <T = FragmentableArray<UsuarioSala>>(args?: {
+    where?: UsuarioSalaWhereInput;
+    orderBy?: UsuarioSalaOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
   }) => T;
-  usuariosSala: <T = FragmentableArray<UsuarioSala>>(args?: {
-    where?: UsuarioSalaWhereInput;
-    orderBy?: UsuarioSalaOrderByInput;
+  diagramasPorUsuario: <T = FragmentableArray<DiagramaUsuario>>(args?: {
+    where?: DiagramaUsuarioWhereInput;
+    orderBy?: DiagramaUsuarioOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -1973,83 +2029,88 @@ export interface DiagramaUsuarioPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface DiagramaUsuarioConnection {
-  pageInfo: PageInfo;
-  edges: DiagramaUsuarioEdge[];
-}
-
-export interface DiagramaUsuarioConnectionPromise
-  extends Promise<DiagramaUsuarioConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<DiagramaUsuarioEdge>>() => T;
-  aggregate: <T = AggregateDiagramaUsuarioPromise>() => T;
-}
-
-export interface DiagramaUsuarioConnectionSubscription
-  extends Promise<AsyncIterator<DiagramaUsuarioConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<DiagramaUsuarioEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateDiagramaUsuarioSubscription>() => T;
-}
-
-export interface SalaEdge {
-  node: Sala;
-  cursor: String;
-}
-
-export interface SalaEdgePromise extends Promise<SalaEdge>, Fragmentable {
-  node: <T = SalaPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface SalaEdgeSubscription
-  extends Promise<AsyncIterator<SalaEdge>>,
-    Fragmentable {
-  node: <T = SalaSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateUsuario {
+export interface AggregateDiagramaUsuario {
   count: Int;
 }
 
-export interface AggregateUsuarioPromise
-  extends Promise<AggregateUsuario>,
+export interface AggregateDiagramaUsuarioPromise
+  extends Promise<AggregateDiagramaUsuario>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateUsuarioSubscription
-  extends Promise<AsyncIterator<AggregateUsuario>>,
+export interface AggregateDiagramaUsuarioSubscription
+  extends Promise<AsyncIterator<AggregateDiagramaUsuario>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface UsuarioSalaSubscriptionPayload {
-  mutation: MutationType;
+export interface UsuarioPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  nombre: String;
+  esAdmin: Boolean;
+}
+
+export interface UsuarioPreviousValuesPromise
+  extends Promise<UsuarioPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  nombre: () => Promise<String>;
+  esAdmin: () => Promise<Boolean>;
+}
+
+export interface UsuarioPreviousValuesSubscription
+  extends Promise<AsyncIterator<UsuarioPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  nombre: () => Promise<AsyncIterator<String>>;
+  esAdmin: () => Promise<AsyncIterator<Boolean>>;
+}
+
+export interface UsuarioConnection {
+  pageInfo: PageInfo;
+  edges: UsuarioEdge[];
+}
+
+export interface UsuarioConnectionPromise
+  extends Promise<UsuarioConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UsuarioEdge>>() => T;
+  aggregate: <T = AggregateUsuarioPromise>() => T;
+}
+
+export interface UsuarioConnectionSubscription
+  extends Promise<AsyncIterator<UsuarioConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UsuarioEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUsuarioSubscription>() => T;
+}
+
+export interface UsuarioSalaEdge {
   node: UsuarioSala;
-  updatedFields: String[];
-  previousValues: UsuarioSalaPreviousValues;
+  cursor: String;
 }
 
-export interface UsuarioSalaSubscriptionPayloadPromise
-  extends Promise<UsuarioSalaSubscriptionPayload>,
+export interface UsuarioSalaEdgePromise
+  extends Promise<UsuarioSalaEdge>,
     Fragmentable {
-  mutation: () => Promise<MutationType>;
   node: <T = UsuarioSalaPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UsuarioSalaPreviousValuesPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface UsuarioSalaSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UsuarioSalaSubscriptionPayload>>,
+export interface UsuarioSalaEdgeSubscription
+  extends Promise<AsyncIterator<UsuarioSalaEdge>>,
     Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
   node: <T = UsuarioSalaSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UsuarioSalaPreviousValuesSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 /*
@@ -2057,18 +2118,11 @@ The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
 
-export type Long = string;
-
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
-
-/*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
 
 /*
 DateTime scalar input type, allowing Date
@@ -2079,6 +2133,13 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
+
+export type Long = string;
 
 /*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.

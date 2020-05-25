@@ -33,7 +33,7 @@ type Diagrama {
   createdAt: DateTime!
   updatedAt: DateTime!
   datos: String!
-  diagramaUsuario: DiagramaUsuario
+  diagramasPorUsuario(where: DiagramaUsuarioWhereInput, orderBy: DiagramaUsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DiagramaUsuario!]
 }
 
 type DiagramaConnection {
@@ -45,15 +45,15 @@ type DiagramaConnection {
 input DiagramaCreateInput {
   id: ID
   datos: String!
-  diagramaUsuario: DiagramaUsuarioCreateOneWithoutDiagramasInput
+  diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutDiagramaInput
 }
 
-input DiagramaCreateManyWithoutDiagramaUsuarioInput {
-  create: [DiagramaCreateWithoutDiagramaUsuarioInput!]
-  connect: [DiagramaWhereUniqueInput!]
+input DiagramaCreateOneWithoutDiagramasPorUsuarioInput {
+  create: DiagramaCreateWithoutDiagramasPorUsuarioInput
+  connect: DiagramaWhereUniqueInput
 }
 
-input DiagramaCreateWithoutDiagramaUsuarioInput {
+input DiagramaCreateWithoutDiagramasPorUsuarioInput {
   id: ID
   datos: String!
 }
@@ -81,7 +81,125 @@ type DiagramaPreviousValues {
   datos: String!
 }
 
-input DiagramaScalarWhereInput {
+type DiagramaSubscriptionPayload {
+  mutation: MutationType!
+  node: Diagrama
+  updatedFields: [String!]
+  previousValues: DiagramaPreviousValues
+}
+
+input DiagramaSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: DiagramaWhereInput
+  AND: [DiagramaSubscriptionWhereInput!]
+  OR: [DiagramaSubscriptionWhereInput!]
+  NOT: [DiagramaSubscriptionWhereInput!]
+}
+
+input DiagramaUpdateInput {
+  datos: String
+  diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutDiagramaInput
+}
+
+input DiagramaUpdateManyMutationInput {
+  datos: String
+}
+
+input DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput {
+  create: DiagramaCreateWithoutDiagramasPorUsuarioInput
+  update: DiagramaUpdateWithoutDiagramasPorUsuarioDataInput
+  upsert: DiagramaUpsertWithoutDiagramasPorUsuarioInput
+  connect: DiagramaWhereUniqueInput
+}
+
+input DiagramaUpdateWithoutDiagramasPorUsuarioDataInput {
+  datos: String
+}
+
+input DiagramaUpsertWithoutDiagramasPorUsuarioInput {
+  update: DiagramaUpdateWithoutDiagramasPorUsuarioDataInput!
+  create: DiagramaCreateWithoutDiagramasPorUsuarioInput!
+}
+
+type DiagramaUsuario {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  diagrama: Diagrama!
+  sala: Sala!
+  usuario: Usuario!
+}
+
+type DiagramaUsuarioConnection {
+  pageInfo: PageInfo!
+  edges: [DiagramaUsuarioEdge]!
+  aggregate: AggregateDiagramaUsuario!
+}
+
+input DiagramaUsuarioCreateInput {
+  id: ID
+  diagrama: DiagramaCreateOneWithoutDiagramasPorUsuarioInput!
+  sala: SalaCreateOneWithoutDiagramasPorUsuarioInput!
+  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput!
+}
+
+input DiagramaUsuarioCreateManyWithoutDiagramaInput {
+  create: [DiagramaUsuarioCreateWithoutDiagramaInput!]
+  connect: [DiagramaUsuarioWhereUniqueInput!]
+}
+
+input DiagramaUsuarioCreateManyWithoutSalaInput {
+  create: [DiagramaUsuarioCreateWithoutSalaInput!]
+  connect: [DiagramaUsuarioWhereUniqueInput!]
+}
+
+input DiagramaUsuarioCreateManyWithoutUsuarioInput {
+  create: [DiagramaUsuarioCreateWithoutUsuarioInput!]
+  connect: [DiagramaUsuarioWhereUniqueInput!]
+}
+
+input DiagramaUsuarioCreateWithoutDiagramaInput {
+  id: ID
+  sala: SalaCreateOneWithoutDiagramasPorUsuarioInput!
+  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput!
+}
+
+input DiagramaUsuarioCreateWithoutSalaInput {
+  id: ID
+  diagrama: DiagramaCreateOneWithoutDiagramasPorUsuarioInput!
+  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput!
+}
+
+input DiagramaUsuarioCreateWithoutUsuarioInput {
+  id: ID
+  diagrama: DiagramaCreateOneWithoutDiagramasPorUsuarioInput!
+  sala: SalaCreateOneWithoutDiagramasPorUsuarioInput!
+}
+
+type DiagramaUsuarioEdge {
+  node: DiagramaUsuario!
+  cursor: String!
+}
+
+enum DiagramaUsuarioOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type DiagramaUsuarioPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input DiagramaUsuarioScalarWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -112,136 +230,9 @@ input DiagramaScalarWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  datos: String
-  datos_not: String
-  datos_in: [String!]
-  datos_not_in: [String!]
-  datos_lt: String
-  datos_lte: String
-  datos_gt: String
-  datos_gte: String
-  datos_contains: String
-  datos_not_contains: String
-  datos_starts_with: String
-  datos_not_starts_with: String
-  datos_ends_with: String
-  datos_not_ends_with: String
-  AND: [DiagramaScalarWhereInput!]
-  OR: [DiagramaScalarWhereInput!]
-  NOT: [DiagramaScalarWhereInput!]
-}
-
-type DiagramaSubscriptionPayload {
-  mutation: MutationType!
-  node: Diagrama
-  updatedFields: [String!]
-  previousValues: DiagramaPreviousValues
-}
-
-input DiagramaSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: DiagramaWhereInput
-  AND: [DiagramaSubscriptionWhereInput!]
-  OR: [DiagramaSubscriptionWhereInput!]
-  NOT: [DiagramaSubscriptionWhereInput!]
-}
-
-input DiagramaUpdateInput {
-  datos: String
-  diagramaUsuario: DiagramaUsuarioUpdateOneWithoutDiagramasInput
-}
-
-input DiagramaUpdateManyDataInput {
-  datos: String
-}
-
-input DiagramaUpdateManyMutationInput {
-  datos: String
-}
-
-input DiagramaUpdateManyWithoutDiagramaUsuarioInput {
-  create: [DiagramaCreateWithoutDiagramaUsuarioInput!]
-  delete: [DiagramaWhereUniqueInput!]
-  connect: [DiagramaWhereUniqueInput!]
-  set: [DiagramaWhereUniqueInput!]
-  disconnect: [DiagramaWhereUniqueInput!]
-  update: [DiagramaUpdateWithWhereUniqueWithoutDiagramaUsuarioInput!]
-  upsert: [DiagramaUpsertWithWhereUniqueWithoutDiagramaUsuarioInput!]
-  deleteMany: [DiagramaScalarWhereInput!]
-  updateMany: [DiagramaUpdateManyWithWhereNestedInput!]
-}
-
-input DiagramaUpdateManyWithWhereNestedInput {
-  where: DiagramaScalarWhereInput!
-  data: DiagramaUpdateManyDataInput!
-}
-
-input DiagramaUpdateWithoutDiagramaUsuarioDataInput {
-  datos: String
-}
-
-input DiagramaUpdateWithWhereUniqueWithoutDiagramaUsuarioInput {
-  where: DiagramaWhereUniqueInput!
-  data: DiagramaUpdateWithoutDiagramaUsuarioDataInput!
-}
-
-input DiagramaUpsertWithWhereUniqueWithoutDiagramaUsuarioInput {
-  where: DiagramaWhereUniqueInput!
-  update: DiagramaUpdateWithoutDiagramaUsuarioDataInput!
-  create: DiagramaCreateWithoutDiagramaUsuarioInput!
-}
-
-type DiagramaUsuario {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  diagramas(where: DiagramaWhereInput, orderBy: DiagramaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Diagrama!]
-  usuariosSala(where: UsuarioSalaWhereInput, orderBy: UsuarioSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UsuarioSala!]
-}
-
-type DiagramaUsuarioConnection {
-  pageInfo: PageInfo!
-  edges: [DiagramaUsuarioEdge]!
-  aggregate: AggregateDiagramaUsuario!
-}
-
-input DiagramaUsuarioCreateInput {
-  id: ID
-  diagramas: DiagramaCreateManyWithoutDiagramaUsuarioInput
-  usuariosSala: UsuarioSalaCreateManyInput
-}
-
-input DiagramaUsuarioCreateOneWithoutDiagramasInput {
-  create: DiagramaUsuarioCreateWithoutDiagramasInput
-  connect: DiagramaUsuarioWhereUniqueInput
-}
-
-input DiagramaUsuarioCreateWithoutDiagramasInput {
-  id: ID
-  usuariosSala: UsuarioSalaCreateManyInput
-}
-
-type DiagramaUsuarioEdge {
-  node: DiagramaUsuario!
-  cursor: String!
-}
-
-enum DiagramaUsuarioOrderByInput {
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
-type DiagramaUsuarioPreviousValues {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  AND: [DiagramaUsuarioScalarWhereInput!]
+  OR: [DiagramaUsuarioScalarWhereInput!]
+  NOT: [DiagramaUsuarioScalarWhereInput!]
 }
 
 type DiagramaUsuarioSubscriptionPayload {
@@ -263,26 +254,90 @@ input DiagramaUsuarioSubscriptionWhereInput {
 }
 
 input DiagramaUsuarioUpdateInput {
-  diagramas: DiagramaUpdateManyWithoutDiagramaUsuarioInput
-  usuariosSala: UsuarioSalaUpdateManyInput
+  diagrama: DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+  sala: SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+  usuario: UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput
 }
 
-input DiagramaUsuarioUpdateOneWithoutDiagramasInput {
-  create: DiagramaUsuarioCreateWithoutDiagramasInput
-  update: DiagramaUsuarioUpdateWithoutDiagramasDataInput
-  upsert: DiagramaUsuarioUpsertWithoutDiagramasInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: DiagramaUsuarioWhereUniqueInput
+input DiagramaUsuarioUpdateManyWithoutDiagramaInput {
+  create: [DiagramaUsuarioCreateWithoutDiagramaInput!]
+  delete: [DiagramaUsuarioWhereUniqueInput!]
+  connect: [DiagramaUsuarioWhereUniqueInput!]
+  set: [DiagramaUsuarioWhereUniqueInput!]
+  disconnect: [DiagramaUsuarioWhereUniqueInput!]
+  update: [DiagramaUsuarioUpdateWithWhereUniqueWithoutDiagramaInput!]
+  upsert: [DiagramaUsuarioUpsertWithWhereUniqueWithoutDiagramaInput!]
+  deleteMany: [DiagramaUsuarioScalarWhereInput!]
 }
 
-input DiagramaUsuarioUpdateWithoutDiagramasDataInput {
-  usuariosSala: UsuarioSalaUpdateManyInput
+input DiagramaUsuarioUpdateManyWithoutSalaInput {
+  create: [DiagramaUsuarioCreateWithoutSalaInput!]
+  delete: [DiagramaUsuarioWhereUniqueInput!]
+  connect: [DiagramaUsuarioWhereUniqueInput!]
+  set: [DiagramaUsuarioWhereUniqueInput!]
+  disconnect: [DiagramaUsuarioWhereUniqueInput!]
+  update: [DiagramaUsuarioUpdateWithWhereUniqueWithoutSalaInput!]
+  upsert: [DiagramaUsuarioUpsertWithWhereUniqueWithoutSalaInput!]
+  deleteMany: [DiagramaUsuarioScalarWhereInput!]
 }
 
-input DiagramaUsuarioUpsertWithoutDiagramasInput {
-  update: DiagramaUsuarioUpdateWithoutDiagramasDataInput!
-  create: DiagramaUsuarioCreateWithoutDiagramasInput!
+input DiagramaUsuarioUpdateManyWithoutUsuarioInput {
+  create: [DiagramaUsuarioCreateWithoutUsuarioInput!]
+  delete: [DiagramaUsuarioWhereUniqueInput!]
+  connect: [DiagramaUsuarioWhereUniqueInput!]
+  set: [DiagramaUsuarioWhereUniqueInput!]
+  disconnect: [DiagramaUsuarioWhereUniqueInput!]
+  update: [DiagramaUsuarioUpdateWithWhereUniqueWithoutUsuarioInput!]
+  upsert: [DiagramaUsuarioUpsertWithWhereUniqueWithoutUsuarioInput!]
+  deleteMany: [DiagramaUsuarioScalarWhereInput!]
+}
+
+input DiagramaUsuarioUpdateWithoutDiagramaDataInput {
+  sala: SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+  usuario: UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+}
+
+input DiagramaUsuarioUpdateWithoutSalaDataInput {
+  diagrama: DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+  usuario: UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+}
+
+input DiagramaUsuarioUpdateWithoutUsuarioDataInput {
+  diagrama: DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+  sala: SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+}
+
+input DiagramaUsuarioUpdateWithWhereUniqueWithoutDiagramaInput {
+  where: DiagramaUsuarioWhereUniqueInput!
+  data: DiagramaUsuarioUpdateWithoutDiagramaDataInput!
+}
+
+input DiagramaUsuarioUpdateWithWhereUniqueWithoutSalaInput {
+  where: DiagramaUsuarioWhereUniqueInput!
+  data: DiagramaUsuarioUpdateWithoutSalaDataInput!
+}
+
+input DiagramaUsuarioUpdateWithWhereUniqueWithoutUsuarioInput {
+  where: DiagramaUsuarioWhereUniqueInput!
+  data: DiagramaUsuarioUpdateWithoutUsuarioDataInput!
+}
+
+input DiagramaUsuarioUpsertWithWhereUniqueWithoutDiagramaInput {
+  where: DiagramaUsuarioWhereUniqueInput!
+  update: DiagramaUsuarioUpdateWithoutDiagramaDataInput!
+  create: DiagramaUsuarioCreateWithoutDiagramaInput!
+}
+
+input DiagramaUsuarioUpsertWithWhereUniqueWithoutSalaInput {
+  where: DiagramaUsuarioWhereUniqueInput!
+  update: DiagramaUsuarioUpdateWithoutSalaDataInput!
+  create: DiagramaUsuarioCreateWithoutSalaInput!
+}
+
+input DiagramaUsuarioUpsertWithWhereUniqueWithoutUsuarioInput {
+  where: DiagramaUsuarioWhereUniqueInput!
+  update: DiagramaUsuarioUpdateWithoutUsuarioDataInput!
+  create: DiagramaUsuarioCreateWithoutUsuarioInput!
 }
 
 input DiagramaUsuarioWhereInput {
@@ -316,12 +371,9 @@ input DiagramaUsuarioWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  diagramas_every: DiagramaWhereInput
-  diagramas_some: DiagramaWhereInput
-  diagramas_none: DiagramaWhereInput
-  usuariosSala_every: UsuarioSalaWhereInput
-  usuariosSala_some: UsuarioSalaWhereInput
-  usuariosSala_none: UsuarioSalaWhereInput
+  diagrama: DiagramaWhereInput
+  sala: SalaWhereInput
+  usuario: UsuarioWhereInput
   AND: [DiagramaUsuarioWhereInput!]
   OR: [DiagramaUsuarioWhereInput!]
   NOT: [DiagramaUsuarioWhereInput!]
@@ -376,7 +428,9 @@ input DiagramaWhereInput {
   datos_not_starts_with: String
   datos_ends_with: String
   datos_not_ends_with: String
-  diagramaUsuario: DiagramaUsuarioWhereInput
+  diagramasPorUsuario_every: DiagramaUsuarioWhereInput
+  diagramasPorUsuario_some: DiagramaUsuarioWhereInput
+  diagramasPorUsuario_none: DiagramaUsuarioWhereInput
   AND: [DiagramaWhereInput!]
   OR: [DiagramaWhereInput!]
   NOT: [DiagramaWhereInput!]
@@ -460,7 +514,8 @@ type Sala {
   createdAt: DateTime!
   updatedAt: DateTime!
   nombre: String!
-  usuarioSala: UsuarioSala
+  usuariosEnSala(where: UsuarioSalaWhereInput, orderBy: UsuarioSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UsuarioSala!]
+  diagramasPorUsuario(where: DiagramaUsuarioWhereInput, orderBy: DiagramaUsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DiagramaUsuario!]
 }
 
 type SalaConnection {
@@ -472,17 +527,30 @@ type SalaConnection {
 input SalaCreateInput {
   id: ID
   nombre: String!
-  usuarioSala: UsuarioSalaCreateOneWithoutSalasInput
+  usuariosEnSala: UsuarioSalaCreateManyWithoutSalaInput
+  diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutSalaInput
 }
 
-input SalaCreateManyWithoutUsuarioSalaInput {
-  create: [SalaCreateWithoutUsuarioSalaInput!]
-  connect: [SalaWhereUniqueInput!]
+input SalaCreateOneWithoutDiagramasPorUsuarioInput {
+  create: SalaCreateWithoutDiagramasPorUsuarioInput
+  connect: SalaWhereUniqueInput
 }
 
-input SalaCreateWithoutUsuarioSalaInput {
+input SalaCreateOneWithoutUsuariosEnSalaInput {
+  create: SalaCreateWithoutUsuariosEnSalaInput
+  connect: SalaWhereUniqueInput
+}
+
+input SalaCreateWithoutDiagramasPorUsuarioInput {
   id: ID
   nombre: String!
+  usuariosEnSala: UsuarioSalaCreateManyWithoutSalaInput
+}
+
+input SalaCreateWithoutUsuariosEnSalaInput {
+  id: ID
+  nombre: String!
+  diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutSalaInput
 }
 
 type SalaEdge {
@@ -508,56 +576,6 @@ type SalaPreviousValues {
   nombre: String!
 }
 
-input SalaScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  nombre: String
-  nombre_not: String
-  nombre_in: [String!]
-  nombre_not_in: [String!]
-  nombre_lt: String
-  nombre_lte: String
-  nombre_gt: String
-  nombre_gte: String
-  nombre_contains: String
-  nombre_not_contains: String
-  nombre_starts_with: String
-  nombre_not_starts_with: String
-  nombre_ends_with: String
-  nombre_not_ends_with: String
-  AND: [SalaScalarWhereInput!]
-  OR: [SalaScalarWhereInput!]
-  NOT: [SalaScalarWhereInput!]
-}
-
 type SalaSubscriptionPayload {
   mutation: MutationType!
   node: Sala
@@ -578,47 +596,46 @@ input SalaSubscriptionWhereInput {
 
 input SalaUpdateInput {
   nombre: String
-  usuarioSala: UsuarioSalaUpdateOneWithoutSalasInput
-}
-
-input SalaUpdateManyDataInput {
-  nombre: String
+  usuariosEnSala: UsuarioSalaUpdateManyWithoutSalaInput
+  diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutSalaInput
 }
 
 input SalaUpdateManyMutationInput {
   nombre: String
 }
 
-input SalaUpdateManyWithoutUsuarioSalaInput {
-  create: [SalaCreateWithoutUsuarioSalaInput!]
-  delete: [SalaWhereUniqueInput!]
-  connect: [SalaWhereUniqueInput!]
-  set: [SalaWhereUniqueInput!]
-  disconnect: [SalaWhereUniqueInput!]
-  update: [SalaUpdateWithWhereUniqueWithoutUsuarioSalaInput!]
-  upsert: [SalaUpsertWithWhereUniqueWithoutUsuarioSalaInput!]
-  deleteMany: [SalaScalarWhereInput!]
-  updateMany: [SalaUpdateManyWithWhereNestedInput!]
+input SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput {
+  create: SalaCreateWithoutDiagramasPorUsuarioInput
+  update: SalaUpdateWithoutDiagramasPorUsuarioDataInput
+  upsert: SalaUpsertWithoutDiagramasPorUsuarioInput
+  connect: SalaWhereUniqueInput
 }
 
-input SalaUpdateManyWithWhereNestedInput {
-  where: SalaScalarWhereInput!
-  data: SalaUpdateManyDataInput!
+input SalaUpdateOneRequiredWithoutUsuariosEnSalaInput {
+  create: SalaCreateWithoutUsuariosEnSalaInput
+  update: SalaUpdateWithoutUsuariosEnSalaDataInput
+  upsert: SalaUpsertWithoutUsuariosEnSalaInput
+  connect: SalaWhereUniqueInput
 }
 
-input SalaUpdateWithoutUsuarioSalaDataInput {
+input SalaUpdateWithoutDiagramasPorUsuarioDataInput {
   nombre: String
+  usuariosEnSala: UsuarioSalaUpdateManyWithoutSalaInput
 }
 
-input SalaUpdateWithWhereUniqueWithoutUsuarioSalaInput {
-  where: SalaWhereUniqueInput!
-  data: SalaUpdateWithoutUsuarioSalaDataInput!
+input SalaUpdateWithoutUsuariosEnSalaDataInput {
+  nombre: String
+  diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutSalaInput
 }
 
-input SalaUpsertWithWhereUniqueWithoutUsuarioSalaInput {
-  where: SalaWhereUniqueInput!
-  update: SalaUpdateWithoutUsuarioSalaDataInput!
-  create: SalaCreateWithoutUsuarioSalaInput!
+input SalaUpsertWithoutDiagramasPorUsuarioInput {
+  update: SalaUpdateWithoutDiagramasPorUsuarioDataInput!
+  create: SalaCreateWithoutDiagramasPorUsuarioInput!
+}
+
+input SalaUpsertWithoutUsuariosEnSalaInput {
+  update: SalaUpdateWithoutUsuariosEnSalaDataInput!
+  create: SalaCreateWithoutUsuariosEnSalaInput!
 }
 
 input SalaWhereInput {
@@ -666,7 +683,12 @@ input SalaWhereInput {
   nombre_not_starts_with: String
   nombre_ends_with: String
   nombre_not_ends_with: String
-  usuarioSala: UsuarioSalaWhereInput
+  usuariosEnSala_every: UsuarioSalaWhereInput
+  usuariosEnSala_some: UsuarioSalaWhereInput
+  usuariosEnSala_none: UsuarioSalaWhereInput
+  diagramasPorUsuario_every: DiagramaUsuarioWhereInput
+  diagramasPorUsuario_some: DiagramaUsuarioWhereInput
+  diagramasPorUsuario_none: DiagramaUsuarioWhereInput
   AND: [SalaWhereInput!]
   OR: [SalaWhereInput!]
   NOT: [SalaWhereInput!]
@@ -690,7 +712,8 @@ type Usuario {
   updatedAt: DateTime!
   nombre: String!
   esAdmin: Boolean!
-  usuarioSala: UsuarioSala
+  usuariosEnSala(where: UsuarioSalaWhereInput, orderBy: UsuarioSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UsuarioSala!]
+  diagramasPorUsuario(where: DiagramaUsuarioWhereInput, orderBy: DiagramaUsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DiagramaUsuario!]
 }
 
 type UsuarioConnection {
@@ -703,18 +726,32 @@ input UsuarioCreateInput {
   id: ID
   nombre: String!
   esAdmin: Boolean
-  usuarioSala: UsuarioSalaCreateOneWithoutUsuariosInput
+  usuariosEnSala: UsuarioSalaCreateManyWithoutUsuarioInput
+  diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutUsuarioInput
 }
 
-input UsuarioCreateManyWithoutUsuarioSalaInput {
-  create: [UsuarioCreateWithoutUsuarioSalaInput!]
-  connect: [UsuarioWhereUniqueInput!]
+input UsuarioCreateOneWithoutDiagramasPorUsuarioInput {
+  create: UsuarioCreateWithoutDiagramasPorUsuarioInput
+  connect: UsuarioWhereUniqueInput
 }
 
-input UsuarioCreateWithoutUsuarioSalaInput {
+input UsuarioCreateOneWithoutUsuariosEnSalaInput {
+  create: UsuarioCreateWithoutUsuariosEnSalaInput
+  connect: UsuarioWhereUniqueInput
+}
+
+input UsuarioCreateWithoutDiagramasPorUsuarioInput {
   id: ID
   nombre: String!
   esAdmin: Boolean
+  usuariosEnSala: UsuarioSalaCreateManyWithoutUsuarioInput
+}
+
+input UsuarioCreateWithoutUsuariosEnSalaInput {
+  id: ID
+  nombre: String!
+  esAdmin: Boolean
+  diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutUsuarioInput
 }
 
 type UsuarioEdge {
@@ -747,8 +784,8 @@ type UsuarioSala {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  usuarios(where: UsuarioWhereInput, orderBy: UsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Usuario!]
-  salas(where: SalaWhereInput, orderBy: SalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Sala!]
+  usuario: Usuario!
+  sala: Sala!
 }
 
 type UsuarioSalaConnection {
@@ -759,33 +796,28 @@ type UsuarioSalaConnection {
 
 input UsuarioSalaCreateInput {
   id: ID
-  usuarios: UsuarioCreateManyWithoutUsuarioSalaInput
-  salas: SalaCreateManyWithoutUsuarioSalaInput
+  usuario: UsuarioCreateOneWithoutUsuariosEnSalaInput!
+  sala: SalaCreateOneWithoutUsuariosEnSalaInput!
 }
 
-input UsuarioSalaCreateManyInput {
-  create: [UsuarioSalaCreateInput!]
+input UsuarioSalaCreateManyWithoutSalaInput {
+  create: [UsuarioSalaCreateWithoutSalaInput!]
   connect: [UsuarioSalaWhereUniqueInput!]
 }
 
-input UsuarioSalaCreateOneWithoutSalasInput {
-  create: UsuarioSalaCreateWithoutSalasInput
-  connect: UsuarioSalaWhereUniqueInput
+input UsuarioSalaCreateManyWithoutUsuarioInput {
+  create: [UsuarioSalaCreateWithoutUsuarioInput!]
+  connect: [UsuarioSalaWhereUniqueInput!]
 }
 
-input UsuarioSalaCreateOneWithoutUsuariosInput {
-  create: UsuarioSalaCreateWithoutUsuariosInput
-  connect: UsuarioSalaWhereUniqueInput
-}
-
-input UsuarioSalaCreateWithoutSalasInput {
+input UsuarioSalaCreateWithoutSalaInput {
   id: ID
-  usuarios: UsuarioCreateManyWithoutUsuarioSalaInput
+  usuario: UsuarioCreateOneWithoutUsuariosEnSalaInput!
 }
 
-input UsuarioSalaCreateWithoutUsuariosInput {
+input UsuarioSalaCreateWithoutUsuarioInput {
   id: ID
-  salas: SalaCreateManyWithoutUsuarioSalaInput
+  sala: SalaCreateOneWithoutUsuariosEnSalaInput!
 }
 
 type UsuarioSalaEdge {
@@ -862,72 +894,61 @@ input UsuarioSalaSubscriptionWhereInput {
   NOT: [UsuarioSalaSubscriptionWhereInput!]
 }
 
-input UsuarioSalaUpdateDataInput {
-  usuarios: UsuarioUpdateManyWithoutUsuarioSalaInput
-  salas: SalaUpdateManyWithoutUsuarioSalaInput
-}
-
 input UsuarioSalaUpdateInput {
-  usuarios: UsuarioUpdateManyWithoutUsuarioSalaInput
-  salas: SalaUpdateManyWithoutUsuarioSalaInput
+  usuario: UsuarioUpdateOneRequiredWithoutUsuariosEnSalaInput
+  sala: SalaUpdateOneRequiredWithoutUsuariosEnSalaInput
 }
 
-input UsuarioSalaUpdateManyInput {
-  create: [UsuarioSalaCreateInput!]
-  update: [UsuarioSalaUpdateWithWhereUniqueNestedInput!]
-  upsert: [UsuarioSalaUpsertWithWhereUniqueNestedInput!]
+input UsuarioSalaUpdateManyWithoutSalaInput {
+  create: [UsuarioSalaCreateWithoutSalaInput!]
   delete: [UsuarioSalaWhereUniqueInput!]
   connect: [UsuarioSalaWhereUniqueInput!]
   set: [UsuarioSalaWhereUniqueInput!]
   disconnect: [UsuarioSalaWhereUniqueInput!]
+  update: [UsuarioSalaUpdateWithWhereUniqueWithoutSalaInput!]
+  upsert: [UsuarioSalaUpsertWithWhereUniqueWithoutSalaInput!]
   deleteMany: [UsuarioSalaScalarWhereInput!]
 }
 
-input UsuarioSalaUpdateOneWithoutSalasInput {
-  create: UsuarioSalaCreateWithoutSalasInput
-  update: UsuarioSalaUpdateWithoutSalasDataInput
-  upsert: UsuarioSalaUpsertWithoutSalasInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: UsuarioSalaWhereUniqueInput
+input UsuarioSalaUpdateManyWithoutUsuarioInput {
+  create: [UsuarioSalaCreateWithoutUsuarioInput!]
+  delete: [UsuarioSalaWhereUniqueInput!]
+  connect: [UsuarioSalaWhereUniqueInput!]
+  set: [UsuarioSalaWhereUniqueInput!]
+  disconnect: [UsuarioSalaWhereUniqueInput!]
+  update: [UsuarioSalaUpdateWithWhereUniqueWithoutUsuarioInput!]
+  upsert: [UsuarioSalaUpsertWithWhereUniqueWithoutUsuarioInput!]
+  deleteMany: [UsuarioSalaScalarWhereInput!]
 }
 
-input UsuarioSalaUpdateOneWithoutUsuariosInput {
-  create: UsuarioSalaCreateWithoutUsuariosInput
-  update: UsuarioSalaUpdateWithoutUsuariosDataInput
-  upsert: UsuarioSalaUpsertWithoutUsuariosInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: UsuarioSalaWhereUniqueInput
+input UsuarioSalaUpdateWithoutSalaDataInput {
+  usuario: UsuarioUpdateOneRequiredWithoutUsuariosEnSalaInput
 }
 
-input UsuarioSalaUpdateWithoutSalasDataInput {
-  usuarios: UsuarioUpdateManyWithoutUsuarioSalaInput
+input UsuarioSalaUpdateWithoutUsuarioDataInput {
+  sala: SalaUpdateOneRequiredWithoutUsuariosEnSalaInput
 }
 
-input UsuarioSalaUpdateWithoutUsuariosDataInput {
-  salas: SalaUpdateManyWithoutUsuarioSalaInput
-}
-
-input UsuarioSalaUpdateWithWhereUniqueNestedInput {
+input UsuarioSalaUpdateWithWhereUniqueWithoutSalaInput {
   where: UsuarioSalaWhereUniqueInput!
-  data: UsuarioSalaUpdateDataInput!
+  data: UsuarioSalaUpdateWithoutSalaDataInput!
 }
 
-input UsuarioSalaUpsertWithoutSalasInput {
-  update: UsuarioSalaUpdateWithoutSalasDataInput!
-  create: UsuarioSalaCreateWithoutSalasInput!
-}
-
-input UsuarioSalaUpsertWithoutUsuariosInput {
-  update: UsuarioSalaUpdateWithoutUsuariosDataInput!
-  create: UsuarioSalaCreateWithoutUsuariosInput!
-}
-
-input UsuarioSalaUpsertWithWhereUniqueNestedInput {
+input UsuarioSalaUpdateWithWhereUniqueWithoutUsuarioInput {
   where: UsuarioSalaWhereUniqueInput!
-  update: UsuarioSalaUpdateDataInput!
-  create: UsuarioSalaCreateInput!
+  data: UsuarioSalaUpdateWithoutUsuarioDataInput!
+}
+
+input UsuarioSalaUpsertWithWhereUniqueWithoutSalaInput {
+  where: UsuarioSalaWhereUniqueInput!
+  update: UsuarioSalaUpdateWithoutSalaDataInput!
+  create: UsuarioSalaCreateWithoutSalaInput!
+}
+
+input UsuarioSalaUpsertWithWhereUniqueWithoutUsuarioInput {
+  where: UsuarioSalaWhereUniqueInput!
+  update: UsuarioSalaUpdateWithoutUsuarioDataInput!
+  create: UsuarioSalaCreateWithoutUsuarioInput!
 }
 
 input UsuarioSalaWhereInput {
@@ -961,12 +982,8 @@ input UsuarioSalaWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  usuarios_every: UsuarioWhereInput
-  usuarios_some: UsuarioWhereInput
-  usuarios_none: UsuarioWhereInput
-  salas_every: SalaWhereInput
-  salas_some: SalaWhereInput
-  salas_none: SalaWhereInput
+  usuario: UsuarioWhereInput
+  sala: SalaWhereInput
   AND: [UsuarioSalaWhereInput!]
   OR: [UsuarioSalaWhereInput!]
   NOT: [UsuarioSalaWhereInput!]
@@ -974,58 +991,6 @@ input UsuarioSalaWhereInput {
 
 input UsuarioSalaWhereUniqueInput {
   id: ID
-}
-
-input UsuarioScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  nombre: String
-  nombre_not: String
-  nombre_in: [String!]
-  nombre_not_in: [String!]
-  nombre_lt: String
-  nombre_lte: String
-  nombre_gt: String
-  nombre_gte: String
-  nombre_contains: String
-  nombre_not_contains: String
-  nombre_starts_with: String
-  nombre_not_starts_with: String
-  nombre_ends_with: String
-  nombre_not_ends_with: String
-  esAdmin: Boolean
-  esAdmin_not: Boolean
-  AND: [UsuarioScalarWhereInput!]
-  OR: [UsuarioScalarWhereInput!]
-  NOT: [UsuarioScalarWhereInput!]
 }
 
 type UsuarioSubscriptionPayload {
@@ -1049,12 +1014,8 @@ input UsuarioSubscriptionWhereInput {
 input UsuarioUpdateInput {
   nombre: String
   esAdmin: Boolean
-  usuarioSala: UsuarioSalaUpdateOneWithoutUsuariosInput
-}
-
-input UsuarioUpdateManyDataInput {
-  nombre: String
-  esAdmin: Boolean
+  usuariosEnSala: UsuarioSalaUpdateManyWithoutUsuarioInput
+  diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutUsuarioInput
 }
 
 input UsuarioUpdateManyMutationInput {
@@ -1062,37 +1023,40 @@ input UsuarioUpdateManyMutationInput {
   esAdmin: Boolean
 }
 
-input UsuarioUpdateManyWithoutUsuarioSalaInput {
-  create: [UsuarioCreateWithoutUsuarioSalaInput!]
-  delete: [UsuarioWhereUniqueInput!]
-  connect: [UsuarioWhereUniqueInput!]
-  set: [UsuarioWhereUniqueInput!]
-  disconnect: [UsuarioWhereUniqueInput!]
-  update: [UsuarioUpdateWithWhereUniqueWithoutUsuarioSalaInput!]
-  upsert: [UsuarioUpsertWithWhereUniqueWithoutUsuarioSalaInput!]
-  deleteMany: [UsuarioScalarWhereInput!]
-  updateMany: [UsuarioUpdateManyWithWhereNestedInput!]
+input UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput {
+  create: UsuarioCreateWithoutDiagramasPorUsuarioInput
+  update: UsuarioUpdateWithoutDiagramasPorUsuarioDataInput
+  upsert: UsuarioUpsertWithoutDiagramasPorUsuarioInput
+  connect: UsuarioWhereUniqueInput
 }
 
-input UsuarioUpdateManyWithWhereNestedInput {
-  where: UsuarioScalarWhereInput!
-  data: UsuarioUpdateManyDataInput!
+input UsuarioUpdateOneRequiredWithoutUsuariosEnSalaInput {
+  create: UsuarioCreateWithoutUsuariosEnSalaInput
+  update: UsuarioUpdateWithoutUsuariosEnSalaDataInput
+  upsert: UsuarioUpsertWithoutUsuariosEnSalaInput
+  connect: UsuarioWhereUniqueInput
 }
 
-input UsuarioUpdateWithoutUsuarioSalaDataInput {
+input UsuarioUpdateWithoutDiagramasPorUsuarioDataInput {
   nombre: String
   esAdmin: Boolean
+  usuariosEnSala: UsuarioSalaUpdateManyWithoutUsuarioInput
 }
 
-input UsuarioUpdateWithWhereUniqueWithoutUsuarioSalaInput {
-  where: UsuarioWhereUniqueInput!
-  data: UsuarioUpdateWithoutUsuarioSalaDataInput!
+input UsuarioUpdateWithoutUsuariosEnSalaDataInput {
+  nombre: String
+  esAdmin: Boolean
+  diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutUsuarioInput
 }
 
-input UsuarioUpsertWithWhereUniqueWithoutUsuarioSalaInput {
-  where: UsuarioWhereUniqueInput!
-  update: UsuarioUpdateWithoutUsuarioSalaDataInput!
-  create: UsuarioCreateWithoutUsuarioSalaInput!
+input UsuarioUpsertWithoutDiagramasPorUsuarioInput {
+  update: UsuarioUpdateWithoutDiagramasPorUsuarioDataInput!
+  create: UsuarioCreateWithoutDiagramasPorUsuarioInput!
+}
+
+input UsuarioUpsertWithoutUsuariosEnSalaInput {
+  update: UsuarioUpdateWithoutUsuariosEnSalaDataInput!
+  create: UsuarioCreateWithoutUsuariosEnSalaInput!
 }
 
 input UsuarioWhereInput {
@@ -1142,7 +1106,12 @@ input UsuarioWhereInput {
   nombre_not_ends_with: String
   esAdmin: Boolean
   esAdmin_not: Boolean
-  usuarioSala: UsuarioSalaWhereInput
+  usuariosEnSala_every: UsuarioSalaWhereInput
+  usuariosEnSala_some: UsuarioSalaWhereInput
+  usuariosEnSala_none: UsuarioSalaWhereInput
+  diagramasPorUsuario_every: DiagramaUsuarioWhereInput
+  diagramasPorUsuario_some: DiagramaUsuarioWhereInput
+  diagramasPorUsuario_none: DiagramaUsuarioWhereInput
   AND: [UsuarioWhereInput!]
   OR: [UsuarioWhereInput!]
   NOT: [UsuarioWhereInput!]
