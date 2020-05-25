@@ -7,15 +7,17 @@ import {WebSocketLink} from "apollo-link-ws";
 import {getMainDefinition} from "apollo-utilities";
 import {HttpLink} from "apollo-link-http";
 
+const URI = '/';
+
 const webSocketLink = new WebSocketLink({
-    uri: `wss://${window.location.host}`,
+    uri: URI.replace('https', 'wss'),
     options: {
         reconnect: true
     }
 });
 
 const httpLink = new HttpLink({
-    uri: '/'
+    uri: URI
 });
 
 const link = split(
