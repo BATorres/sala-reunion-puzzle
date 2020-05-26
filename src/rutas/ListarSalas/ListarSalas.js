@@ -13,9 +13,11 @@ const LISTAR_SALAS = gql`
 
 const NUEVA_SALA = gql`
     subscription {
-        salaCreada {
-            id
-            nombre
+        sala {
+            node {
+                id
+                nombre
+            }
         }
     }`;
 
@@ -34,8 +36,7 @@ class ListarSalas extends Component {
             document: NUEVA_SALA,
             updateQuery: (salasExistentes, {subscriptionData}) => {
                 if (!subscriptionData.data) return salasExistentes.findAllSalas;
-                console.log('salas existentes', salasExistentes)
-                const nuevaSala = subscriptionData.data.salaCreada;
+                const nuevaSala = subscriptionData.data.sala.node;
                 const existeNuevaSala = salasExistentes.findAllSalas
                     .find(
                         ({id}) => id === nuevaSala.id
