@@ -7,10 +7,8 @@ import {WebSocketLink} from "apollo-link-ws";
 import {getMainDefinition} from "apollo-utilities";
 import {HttpLink} from "apollo-link-http";
 
-const PUERTO = process.env.PORT;
-
 const webSocketLink = new WebSocketLink({
-    uri: PUERTO ? `wss://localhost:${PUERTO}` : `ws://localhost:4000`,
+    uri: `wss://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev`,
     options: {
         reconnect: true
     }

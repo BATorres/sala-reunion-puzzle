@@ -12,5 +12,20 @@ export const mutationSalas = {
                 nombre
             },
         );
+    },
+
+    async unirseSala(
+        padre,
+        {idSala, idUsuario},
+        contexto: ContextoInterface
+    ) {
+        return contexto.db.createUsuarioSala({
+            sala: {
+                connect: idSala
+            },
+            usuario: {
+                connect: idUsuario
+            }
+        })
     }
 };
