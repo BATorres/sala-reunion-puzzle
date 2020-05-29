@@ -1,20 +1,30 @@
 import React, {Component} from 'react';
 import * as go from "gojs";
-import io from 'socket.io-client';
-import {Button, Col, Container, Row} from "react-bootstrap";
-import Paleta from "../Paleta/Paleta";
+import {Button, Card, Col, Container, Row} from "react-bootstrap";
+import Paleta from "../../componentes/Paleta/Paleta";
 import {FaLock, FaRegHandPaper, FaSatelliteDish} from "react-icons/fa";
-import DiagramaEditable from "../DiagramaEditable/DiagramaEditable";
-import {diagramaEditable} from "../DiagramaEditable/DiagramaEditable";
-
-// const socket = io('/');
-const $ = go.GraphObject.make;
-const colores = ["lightgray", "lightblue", "lightgreen", "orange", "pink"];
+import DiagramaEditable from "../../componentes/DiagramaEditable/DiagramaEditable";
+import {diagramaEditable} from "../../componentes/DiagramaEditable/DiagramaEditable";
+import {gql} from "apollo-client-preset";
+import {Mutation, Query, graphql} from 'react-apollo';
 
 var datosGuardados;
+
 var datosCompartidos;
+
 var usuariosSeteados = [];
+
 var lleganDatos = false;
+
+const USUARIOS_EN_SALA = gql`
+    query BuscarUsuariosEnSala($idSala: ID) {
+        buscarUsuariosEnSala(idSala: $idSala) {
+            usuario {
+                id
+                nombre
+            }
+        }
+    }`;
 
 function guardar() {
     document.getElementById('diagrama-editable').value = diagramaEditable.model.toJson();
@@ -53,7 +63,6 @@ class PantallaInteractivaEditable extends Component {
     }
 
     componentDidMount() {
-        // const socket = io('/');
         const usuariosEnSala = this.verificarUsuarioEnSala();
         const esAdmin = this.props.history.location.pathname.includes('admin');
 
@@ -61,17 +70,6 @@ class PantallaInteractivaEditable extends Component {
         if (!esAdmin && !usuariosEnSala) {
             // socket.emit('unirseSala', {sala: this.state.sala, usuario: this.state.usuario});
         }
-
-        /*socket.on('usuarioUnido', (datos) => {
-            const datosAGuardar = datos
-                .filter(
-                    datosSocket => datosSocket.sala.idSala === this.state.sala.idSala
-                )
-                .map(
-                    datosSocket => datosSocket.usuario
-                );
-            localStorage.setItem(this.state.sala.idSala, JSON.stringify(datosAGuardar));
-        });*/
 
         const usuariosGuardados = JSON.parse(localStorage.getItem(this.state.sala.idSala));
 
@@ -112,33 +110,34 @@ class PantallaInteractivaEditable extends Component {
                                 onClick={compartirPantalla}>
                                 Compartir
                             </Button>
-                        </Row> : (usuariosGuardados  ? usuariosGuardados.map((usuario, indice) => (
-                            <div key={indice}>
-                                <Button disabled={
-                                            !lleganDatos
-                                        }
-                                >
-                                    <FaLock/>
-                                    {usuario}
-                                </Button>
+                        </Row> : (
+                            <Query query={USUARIOS_EN_SALA}>
+                                {({loading, error, data}) => {
+                                    if (loading) return <p>Cargando ...</p>;
+                                    if (error) return <p>Error ...</p>;
 
-                                <Button disabled={
-                                            !lleganDatos
-                                        }
-                                >
-                                    <FaRegHandPaper/>
-                                    {usuario}
-                                </Button>
+                                    const usuariosEnSala = data.buscarUsuariosEnSala.map(usuarios => usuarios.usuario);
+                                    const existenUsuariosEnSala = usuariosEnSala.length > 0;
 
-                                <Button disabled={
-                                            !lleganDatos
-                                        }
-                                >
-                                    <FaSatelliteDish/>
-                                    {usuario}
-                                </Button>
-                            </div>)
-                        ) : 'No existen usuarios unidos a la sala')
+                                    return (
+                                        <div>
+                                            {
+                                                !existenUsuariosEnSala ?
+                                                    <h2>No existen usuarios en sala</h2> :
+                                                    <Row>
+                                                        {usuariosEnSala.map(
+                                                            (usuario, indice) =>
+                                                                <Button key={indice}>
+                                                                    <FaLock/>
+                                                                    {usuario.nombre}
+                                                                </Button>
+                                                        )}
+                                                    </Row>
+                                            }
+                                        </div>
+                                    )
+                                }}
+                            </Query>)
                     }
                 </div>
                 <Col id="diagrama">
@@ -150,3 +149,31 @@ class PantallaInteractivaEditable extends Component {
 }
 
 export default PantallaInteractivaEditable;
+
+/*
+usuariosGuardados  ? usuariosGuardados.map((usuario, indice) => (
+    <div key={indice}>
+        <Button disabled={
+            !lleganDatos
+        }
+        >
+            <FaLock/>
+            {usuario}
+        </Button>
+
+        <Button disabled={
+            !lleganDatos
+        }
+        >
+            <FaRegHandPaper/>
+            {usuario}
+        </Button>
+
+        <Button disabled={
+            !lleganDatos
+        }
+        >
+            <FaSatelliteDish/>
+            {usuario}
+        </Button>
+    </div>*/

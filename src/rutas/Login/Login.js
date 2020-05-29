@@ -1,11 +1,19 @@
 import React, {Component} from 'react';
-import io from "socket.io-client";
-import {Mutation} from 'react-apollo';
+import {Query, Mutation} from 'react-apollo';
 import gql from "graphql-tag";
+import {useQuery} from "@apollo/react-hooks";
 
 const CREAR_USUARIO = gql`
     mutation CrearUsuario($nombre: String!, $esAdmin: Boolean) {
         crearUsuario(nombre: $nombre, esAdmin: $esAdmin) {
+            id
+            nombre
+        }
+    }`;
+
+const LISTAR_USUARIOS = gql`
+    query ListarUsuarios($nombre: String) {
+        findAllUsuarios(nombre: $nombre) {
             id
             nombre
         }
@@ -27,15 +35,12 @@ class Login extends Component {
     };
 
     ingresar = (evento) => {
-        // const socket = io('/');
         const {usuario} = this.state;
 
         evento.preventDefault();
-        // socket.emit('verificarUsuario', usuario, this.setearUsuario)
+
         const esAdmin = this.props.history.location.pathname.includes('admin');
         this.setearError('');
-
-        // socket.emit('agregarUsuario', usuario);
 
         if (esAdmin) {
             this.props.history.push({
@@ -59,8 +64,6 @@ class Login extends Component {
         } else {
             const esAdmin = this.props.history.location.pathname.includes('admin');
             this.setearError('');
-            /*const socket = io('/');
-            socket.emit('agregarUsuario', usuario);*/
 
             if (esAdmin) {
                 this.props.history.push({
@@ -76,21 +79,44 @@ class Login extends Component {
         }
     };
 
+    verificarUsuario = ({usuario}) => {
+        const {loading, error, data} = useQuery(LISTAR_USUARIOS);
+        console.log('data', data)
+    };
+
     setearError = (error) => {
         this.setState({error})
     };
 
     render() {
         const {usuario, error} = this.state;
+
         return (
             <div id="login">
-                <Mutation mutation={CREAR_USUARIO}>
-                    {(crearUsuario, {data}) => (
+                <Mutation mutation={CREAR_USUARIO}
+                          update={(proxy, mutationResult) => {
+                              const usuarioCreado = mutationResult.data.crearUsuario.id;
+                              const esAdmin = this.props.history.location.pathname.includes('admin');
+                              this.setearError('');
+
+                              if (esAdmin) {
+                                  localStorage.setItem('usuarioAdmin', usuarioCreado);
+                              } else {
+                                  localStorage.setItem('usuario', usuarioCreado);
+                              }
+
+                          }}
+                          onError={(mutationError) => {
+                              const error = mutationError.graphQLErrors[0].message;
+                              this.setearError(error)
+                          }}
+                >
+                    {(crearUsuario) => (
                         <form id="formulario" onSubmit={
                             evento => {
                                 evento.preventDefault();
+
                                 const esAdmin = this.props.history.location.pathname.includes('admin');
-                                this.setearError('');
 
                                 if (esAdmin) {
                                     this.props.history.push({
@@ -98,15 +124,34 @@ class Login extends Component {
                                         state: {usuarioAdmin: usuario}
                                     });
                                     crearUsuario({variables: {nombre: usuario, esAdmin: true}});
-                                    localStorage.setItem('usuarioAdmin', usuario);
+                                    // localStorage.setItem('usuarioAdmin', usuario);
                                 } else {
                                     this.props.history.push({
                                         pathname: '/usuario/listar-salas',
                                         state: {usuario: usuario}
                                     });
                                     crearUsuario({variables: {nombre: usuario}});
-                                    localStorage.setItem('usuario', usuario);
+                                    // localStorage.setItem('usuario', usuario);
                                 }
+                                /*if (existeError) {
+                                    this.setearError(error);
+                                } else {
+                                    if (esAdmin) {
+                                        this.props.history.push({
+                                            pathname: '/admin/menu',
+                                            state: {usuarioAdmin: usuario}
+                                        });
+                                        crearUsuario({variables: {nombre: usuario, esAdmin: true}});
+                                        localStorage.setItem('usuarioAdmin', usuario);
+                                    } else {
+                                        this.props.history.push({
+                                            pathname: '/usuario/listar-salas',
+                                            state: {usuario: usuario}
+                                        });
+                                        crearUsuario({variables: {nombre: usuario}});
+                                        localStorage.setItem('usuario', usuario);
+                                    }
+                                }*/
                             }
                         }>
                             <label htmlFor="usuario">

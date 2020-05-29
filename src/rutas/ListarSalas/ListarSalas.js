@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Container, Button, Col, Row, Card} from "react-bootstrap";
-import {Query, Subscription} from 'react-apollo';
+import {Button, Card, Col, Row} from "react-bootstrap";
+import {Mutation, Query, graphql} from 'react-apollo';
 import gql from "graphql-tag";
 
 const LISTAR_SALAS = gql`
@@ -18,6 +18,13 @@ const NUEVA_SALA = gql`
                 id
                 nombre
             }
+        }
+    }`;
+
+const UNIRSE_SALA = gql`
+    mutation UnirseSala($idSala: ID!, $idUsuario: ID!) {
+        unirseSala(idSala: $idSala, idUsuario: $idUsuario) {
+            id
         }
     }`;
 
@@ -41,7 +48,7 @@ class ListarSalas extends Component {
                     .find(
                         ({id}) => id === nuevaSala.id
                     );
-                if (existeNuevaSala) return  salasExistentes.findAllSalas;
+                if (existeNuevaSala) return salasExistentes.findAllSalas;
                 return Object.assign({}, salasExistentes, {
                     findAllSalas: [nuevaSala, ...salasExistentes.findAllSalas]
                 });
@@ -62,7 +69,13 @@ class ListarSalas extends Component {
             this.props.history.push({
                 pathname: `/usuario/sala/${sala.id}`,
                 state: {sala: sala, usuario: usuario}
-            })
+            });
+            this.props.mutate({
+                variables: {
+                    idSala: sala.id,
+                    idUsuario: localStorage.getItem('usuario')
+                }
+            });
         }
     };
 
@@ -91,7 +104,10 @@ class ListarSalas extends Component {
                                                     <Card.Text>
                                                         {sala.nombre}
                                                     </Card.Text>
-                                                    <Button type="primary" onClick={() => this.accederSala(sala)}>Ir a
+                                                    <Button
+                                                        type="primary"
+                                                        onClick={() => this.accederSala(sala)
+                                                        }>Ir a
                                                         sala</Button>
                                                 </Card.Body>
                                             </Card>)}
@@ -107,4 +123,6 @@ class ListarSalas extends Component {
     }
 }
 
-export default ListarSalas;
+// export default ListarSalas;
+
+export default graphql(UNIRSE_SALA)(ListarSalas);
