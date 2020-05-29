@@ -26,6 +26,22 @@ const USUARIOS_EN_SALA = gql`
         }
     }`;
 
+const NUEVO_USUARIO_SALA = gql`
+    subscription {
+        usuarioSala {
+            node {
+                usuario {
+                    id
+                    nombre
+                }
+                sala {
+                    id
+                    nombre
+                }
+            }
+        }
+    }`;
+
 function guardar() {
     document.getElementById('diagrama-editable').value = diagramaEditable.model.toJson();
     datosGuardados = diagramaEditable.model.toJson();
@@ -81,6 +97,25 @@ class PantallaInteractivaEditable extends Component {
         }
     }
 
+    subscribeNuevoUsuarioSala = subscribeToMore => {
+        subscribeToMore({
+            document: NUEVO_USUARIO_SALA,
+            updateQuery: (usuariosEnSala, {subscriptionData}) => {
+                if (!subscriptionData.data) return usuariosEnSala.buscarUsuariosEnSala;
+                const datosSubscription = subscriptionData.data.usuarioSala.node;
+                const nuevoUsuarioEnSala = {usuario: datosSubscription.usuario};
+                const existeNuevoUsuarioEnSala = usuariosEnSala.buscarUsuariosEnSala.map(usuarios => usuarios.usuario)
+                    .find(
+                        ({id}) => id === nuevoUsuarioEnSala.usuario.id
+                    );
+                if (existeNuevoUsuarioEnSala && datosSubscription.sala.id === this.state.sala.idSala) return usuariosEnSala.buscarUsuariosEnSala;
+                return Object.assign({}, usuariosEnSala, {
+                    buscarUsuariosEnSala: [nuevoUsuarioEnSala, ...usuariosEnSala.buscarUsuariosEnSala]
+                });
+            }
+        })
+    };
+
     verificarUsuarioEnSala = () => {
         const existenUsuariosGuardados = JSON.parse(localStorage.getItem(this.state.sala.idSala));
         if (existenUsuariosGuardados) {
@@ -112,9 +147,11 @@ class PantallaInteractivaEditable extends Component {
                             </Button>
                         </Row> : (
                             <Query query={USUARIOS_EN_SALA}>
-                                {({loading, error, data}) => {
+                                {({loading, error, data, subscribeToMore}) => {
                                     if (loading) return <p>Cargando ...</p>;
                                     if (error) return <p>Error ...</p>;
+
+                                    this.subscribeNuevoUsuarioSala(subscribeToMore, {variables: {id: this.state.sala}})
 
                                     const usuariosEnSala = data.buscarUsuariosEnSala.map(usuarios => usuarios.usuario);
                                     const existenUsuariosEnSala = usuariosEnSala.length > 0;

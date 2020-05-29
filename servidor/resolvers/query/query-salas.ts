@@ -31,7 +31,8 @@ export const querySalas = {
                 sala: {
                     id: idSala
                 }
-            }
+            },
+            orderBy: 'createdAt_DESC'
         })
     }
 };
