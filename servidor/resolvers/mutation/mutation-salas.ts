@@ -1,5 +1,5 @@
 import {ContextoInterface} from '../../interfaces/contexto.interface';
-import {SalaCreateInput} from '../../generated/prisma-client';
+import {SalaCreateInput, UsuarioSalaCreateInput} from '../../generated/prisma-client';
 
 export const mutationSalas = {
     async crearSala(
@@ -21,10 +21,14 @@ export const mutationSalas = {
     ) {
         return contexto.db.createUsuarioSala({
             sala: {
-                connect: idSala
+                connect: {
+                    id: idSala
+                }
             },
             usuario: {
-                connect: idUsuario
+                connect: {
+                    id: idUsuario
+                }
             }
         })
     }
