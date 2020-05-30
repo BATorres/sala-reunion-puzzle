@@ -19,20 +19,5 @@ export const querySalas = {
         return contexto.db.sala({
             id: idSala
         });
-    },
-
-    buscarUsuariosEnSala(
-        padre,
-        {idSala},
-        contexto: ContextoInterface
-    ) {
-        return contexto.db.usuarioSalas({
-            where: {
-                sala: {
-                    id: idSala
-                }
-            },
-            orderBy: 'createdAt_DESC'
-        })
     }
 };

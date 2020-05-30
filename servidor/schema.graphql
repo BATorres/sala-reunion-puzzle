@@ -2,10 +2,11 @@
 
 type Query {
     findAllSalas: [Sala]
-    findAllUsuarios(nombre: String!): [Usuario]
+    findAllUsuarios(idUsuario: ID!): [Usuario]
     findOneSala(idSala: ID): Sala!
     findOneUsuario(idUsuario: ID): Usuario!
     buscarUsuariosEnSala(idSala: ID): [UsuarioSala]
+    verificarUsuarioEnSala(idUsuario: ID): UsuarioSala
 }
 
 type Mutation {

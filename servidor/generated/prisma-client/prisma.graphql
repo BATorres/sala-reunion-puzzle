@@ -1,5 +1,5 @@
 # source: https://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev
-# timestamp: Sun May 24 2020 23:21:29 GMT-0500 (GMT-05:00)
+# timestamp: Fri May 29 2020 14:53:30 GMT-0500 (GMT-05:00)
 
 type AggregateDiagrama {
   count: Int!
@@ -724,6 +724,7 @@ type Mutation {
   upsertUsuario(where: UsuarioWhereUniqueInput!, create: UsuarioCreateInput!, update: UsuarioUpdateInput!): Usuario!
   upsertDiagrama(where: DiagramaWhereUniqueInput!, create: DiagramaCreateInput!, update: DiagramaUpdateInput!): Diagrama!
   upsertDiagramaUsuario(where: DiagramaUsuarioWhereUniqueInput!, create: DiagramaUsuarioCreateInput!, update: DiagramaUsuarioUpdateInput!): DiagramaUsuario!
+  updateManyUsuarioSalas(data: UsuarioSalaUpdateManyMutationInput!, where: UsuarioSalaWhereInput): BatchPayload!
   updateManySalas(data: SalaUpdateManyMutationInput!, where: SalaWhereInput): BatchPayload!
   updateManyUsuarios(data: UsuarioUpdateManyMutationInput!, where: UsuarioWhereInput): BatchPayload!
   updateManyDiagramas(data: DiagramaUpdateManyMutationInput!, where: DiagramaWhereInput): BatchPayload!
@@ -1180,6 +1181,8 @@ type UsuarioSala implements Node {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  levantarMano: Boolean!
+  compartirPantalla: Boolean!
   usuario: Usuario!
   sala: Sala!
 }
@@ -1196,6 +1199,8 @@ type UsuarioSalaConnection {
 
 input UsuarioSalaCreateInput {
   id: ID
+  levantarMano: Boolean
+  compartirPantalla: Boolean
   usuario: UsuarioCreateOneWithoutUsuariosEnSalaInput!
   sala: SalaCreateOneWithoutUsuariosEnSalaInput!
 }
@@ -1212,11 +1217,15 @@ input UsuarioSalaCreateManyWithoutUsuarioInput {
 
 input UsuarioSalaCreateWithoutSalaInput {
   id: ID
+  levantarMano: Boolean
+  compartirPantalla: Boolean
   usuario: UsuarioCreateOneWithoutUsuariosEnSalaInput!
 }
 
 input UsuarioSalaCreateWithoutUsuarioInput {
   id: ID
+  levantarMano: Boolean
+  compartirPantalla: Boolean
   sala: SalaCreateOneWithoutUsuariosEnSalaInput!
 }
 
@@ -1236,12 +1245,18 @@ enum UsuarioSalaOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  levantarMano_ASC
+  levantarMano_DESC
+  compartirPantalla_ASC
+  compartirPantalla_DESC
 }
 
 type UsuarioSalaPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  levantarMano: Boolean!
+  compartirPantalla: Boolean!
 }
 
 input UsuarioSalaScalarWhereInput {
@@ -1337,6 +1352,14 @@ input UsuarioSalaScalarWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  levantarMano: Boolean
+
+  """All values that are not equal to given value."""
+  levantarMano_not: Boolean
+  compartirPantalla: Boolean
+
+  """All values that are not equal to given value."""
+  compartirPantalla_not: Boolean
 }
 
 type UsuarioSalaSubscriptionPayload {
@@ -1377,8 +1400,20 @@ input UsuarioSalaSubscriptionWhereInput {
 }
 
 input UsuarioSalaUpdateInput {
+  levantarMano: Boolean
+  compartirPantalla: Boolean
   usuario: UsuarioUpdateOneRequiredWithoutUsuariosEnSalaInput
   sala: SalaUpdateOneRequiredWithoutUsuariosEnSalaInput
+}
+
+input UsuarioSalaUpdateManyDataInput {
+  levantarMano: Boolean
+  compartirPantalla: Boolean
+}
+
+input UsuarioSalaUpdateManyMutationInput {
+  levantarMano: Boolean
+  compartirPantalla: Boolean
 }
 
 input UsuarioSalaUpdateManyWithoutSalaInput {
@@ -1388,6 +1423,7 @@ input UsuarioSalaUpdateManyWithoutSalaInput {
   disconnect: [UsuarioSalaWhereUniqueInput!]
   delete: [UsuarioSalaWhereUniqueInput!]
   update: [UsuarioSalaUpdateWithWhereUniqueWithoutSalaInput!]
+  updateMany: [UsuarioSalaUpdateManyWithWhereNestedInput!]
   deleteMany: [UsuarioSalaScalarWhereInput!]
   upsert: [UsuarioSalaUpsertWithWhereUniqueWithoutSalaInput!]
 }
@@ -1399,15 +1435,25 @@ input UsuarioSalaUpdateManyWithoutUsuarioInput {
   disconnect: [UsuarioSalaWhereUniqueInput!]
   delete: [UsuarioSalaWhereUniqueInput!]
   update: [UsuarioSalaUpdateWithWhereUniqueWithoutUsuarioInput!]
+  updateMany: [UsuarioSalaUpdateManyWithWhereNestedInput!]
   deleteMany: [UsuarioSalaScalarWhereInput!]
   upsert: [UsuarioSalaUpsertWithWhereUniqueWithoutUsuarioInput!]
 }
 
+input UsuarioSalaUpdateManyWithWhereNestedInput {
+  where: UsuarioSalaScalarWhereInput!
+  data: UsuarioSalaUpdateManyDataInput!
+}
+
 input UsuarioSalaUpdateWithoutSalaDataInput {
+  levantarMano: Boolean
+  compartirPantalla: Boolean
   usuario: UsuarioUpdateOneRequiredWithoutUsuariosEnSalaInput
 }
 
 input UsuarioSalaUpdateWithoutUsuarioDataInput {
+  levantarMano: Boolean
+  compartirPantalla: Boolean
   sala: SalaUpdateOneRequiredWithoutUsuariosEnSalaInput
 }
 
@@ -1526,6 +1572,14 @@ input UsuarioSalaWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  levantarMano: Boolean
+
+  """All values that are not equal to given value."""
+  levantarMano_not: Boolean
+  compartirPantalla: Boolean
+
+  """All values that are not equal to given value."""
+  compartirPantalla_not: Boolean
   usuario: UsuarioWhereInput
   sala: SalaWhereInput
 }

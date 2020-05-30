@@ -14,12 +14,12 @@ export const queryUsuarios = {
 
     findAllUsuarios(
         padre,
-        {nombre},
+        {idUsuario},
         contexto: ContextoInterface
     ) {
         return contexto.db.usuarios({
             where: {
-                nombre: nombre
+                id: idUsuario
             }
         })
     }

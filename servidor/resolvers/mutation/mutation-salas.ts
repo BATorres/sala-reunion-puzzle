@@ -19,6 +19,22 @@ export const mutationSalas = {
         {idSala, idUsuario},
         contexto: ContextoInterface
     ) {
+        const usuarioUnido = await contexto.db.usuarioSalas({
+           where: {
+               AND: [
+                   {
+                       sala: {
+                           id_contains: idSala
+                       }
+                   },
+                   {
+                       usuario: {
+                           id_contains: idUsuario
+                       }
+                   }
+               ]
+           }
+        });
         return contexto.db.createUsuarioSala({
             sala: {
                 connect: {

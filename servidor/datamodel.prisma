@@ -2,6 +2,8 @@ type UsuarioSala {
   id: ID! @id
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  levantarMano: Boolean! @default(value: false)
+  compartirPantalla: Boolean! @default(value: false)
   usuario: Usuario!
   sala: Sala!
 }
