@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Button, Card, Col, Row} from "react-bootstrap";
 import {Mutation, Query, graphql} from 'react-apollo';
 import gql from "graphql-tag";
+import {flowRight as compose} from 'lodash';
 
 const LISTAR_SALAS = gql`
     query {
@@ -25,6 +26,18 @@ const UNIRSE_SALA = gql`
     mutation UnirseSala($idSala: ID!, $idUsuario: ID!) {
         unirseSala(idSala: $idSala, idUsuario: $idUsuario) {
             id
+        }
+    }`;
+
+const BUSCAR_USUARIO = gql`
+    query BuscarUsuario($idUsuario: ID) {
+        findOneUsuario(idUsuario: $idUsuario) {
+            usuariosEnSala {
+                sala {
+                    id
+                    nombre
+                }
+            }
         }
     }`;
 
@@ -66,16 +79,48 @@ class ListarSalas extends Component {
                 state: {sala: sala, usuarioAdmin: usuarioAdmin}
             })
         } else {
-            this.props.history.push({
-                pathname: `/usuario/sala/${sala.id}`,
-                state: {sala: sala, usuario: usuario}
-            });
-            this.props.mutate({
-                variables: {
-                    idSala: sala.id,
-                    idUsuario: localStorage.getItem('usuario')
+            const salasDeUsuario = this.props.data.findOneUsuario.usuariosEnSala;
+            if (salasDeUsuario.length > 0) {
+                const seUnioSala = salasDeUsuario
+                    .map(
+                        salas => salas.sala
+                    ).some(
+                        salaUsuario => salaUsuario.id === sala.id
+                    );
+
+                if (seUnioSala) {
+                    this.props.history.push({
+                        pathname: `/usuario/sala/${sala.id}`,
+                        state: {sala: sala, usuario: usuario}
+                    });
                 }
-            });
+
+                if (salasDeUsuario.length !== 0 && !seUnioSala) {
+                    this.props.history.push({
+                        pathname: `/usuario/sala/${sala.id}`,
+                        state: {sala: sala, usuario: usuario}
+                    });
+
+                    this.props.mutate({
+                        variables: {
+                            idSala: sala.id,
+                            idUsuario: localStorage.getItem('usuario')
+                        }
+                    });
+                }
+            } else {
+                this.props.history.push({
+                    pathname: `/usuario/sala/${sala.id}`,
+                    state: {sala: sala, usuario: usuario}
+                });
+
+                this.props.mutate({
+                    variables: {
+                        idSala: sala.id,
+                        idUsuario: localStorage.getItem('usuario')
+                    }
+                });
+            }
         }
     };
 
@@ -123,6 +168,16 @@ class ListarSalas extends Component {
     }
 }
 
-// export default ListarSalas;
-
-export default graphql(UNIRSE_SALA)(ListarSalas);
+export default compose(
+    graphql(
+        BUSCAR_USUARIO,
+        {
+            options: {
+                variables: {
+                    idUsuario: localStorage.getItem('usuario')
+                }
+            }
+        }),
+    graphql(UNIRSE_SALA)
+)
+(ListarSalas);

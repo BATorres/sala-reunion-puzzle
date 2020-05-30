@@ -23,12 +23,20 @@ const USUARIOS_EN_SALA = gql`
                 id
                 nombre
             }
+            sala {
+                id
+                nombre
+            }
         }
     }`;
 
 const NUEVO_USUARIO_SALA = gql`
     subscription {
-        usuarioSala {
+        usuarioSala(
+            where: {
+                mutation_in: [CREATED]
+            }
+        ){
             node {
                 usuario {
                     id
@@ -41,6 +49,27 @@ const NUEVO_USUARIO_SALA = gql`
             }
         }
     }`;
+
+const CAMBIOS_USUARIO = gql`
+    subscription {
+        usuarioSala(
+            where: {
+                mutation_in: [UPDATED]
+            }
+        ) {
+            node {
+                usuario {
+                    id
+                    nombre
+                }
+                sala {
+                    id
+                    nombre
+                }
+            }
+        }
+    }
+`;
 
 function guardar() {
     document.getElementById('diagrama-editable').value = diagramaEditable.model.toJson();
@@ -116,6 +145,26 @@ class PantallaInteractivaEditable extends Component {
         })
     };
 
+    subscribeCambioUsuario = subscribeToMore => {
+        subscribeToMore({
+            document: CAMBIOS_USUARIO,
+            updateQuery: (usuariosEnSala, {subscriptionData}) => {
+                console.log('usuarios en sala', usuariosEnSala)
+                /*if (!subscriptionData.data) return usuariosEnSala.buscarUsuariosEnSala;
+                const datosSubscription = subscriptionData.data.usuarioSala.node;
+                const nuevoUsuarioEnSala = {usuario: datosSubscription.usuario};
+                const existeNuevoUsuarioEnSala = usuariosEnSala.buscarUsuariosEnSala.map(usuarios => usuarios.usuario)
+                    .find(
+                        ({id}) => id === nuevoUsuarioEnSala.usuario.id
+                    );
+                if (existeNuevoUsuarioEnSala && datosSubscription.sala.id === this.state.sala.idSala) return usuariosEnSala.buscarUsuariosEnSala;
+                return Object.assign({}, usuariosEnSala, {
+                    buscarUsuariosEnSala: [nuevoUsuarioEnSala, ...usuariosEnSala.buscarUsuariosEnSala]
+                });*/
+            }
+        })
+    };
+
     verificarUsuarioEnSala = () => {
         const existenUsuariosGuardados = JSON.parse(localStorage.getItem(this.state.sala.idSala));
         if (existenUsuariosGuardados) {
@@ -152,8 +201,9 @@ class PantallaInteractivaEditable extends Component {
                                     if (error) return <p>Error ...</p>;
 
                                     this.subscribeNuevoUsuarioSala(subscribeToMore, {variables: {id: this.state.sala}})
+                                    this.subscribeCambioUsuario(subscribeToMore, {variables: {id: this.state.sala}})
 
-                                    const usuariosEnSala = data.buscarUsuariosEnSala.map(usuarios => usuarios.usuario);
+                                    const usuariosEnSala = data.buscarUsuariosEnSala.filter(salas => salas.sala.id === this.state.sala.idSala);
                                     const existenUsuariosEnSala = usuariosEnSala.length > 0;
 
                                     return (
@@ -163,10 +213,20 @@ class PantallaInteractivaEditable extends Component {
                                                     <h2>No existen usuarios en sala</h2> :
                                                     <Row>
                                                         {usuariosEnSala.map(
-                                                            (usuario, indice) =>
-                                                                <Button key={indice}>
-                                                                    <FaLock/>
-                                                                    {usuario.nombre}
+                                                            (usuarios, indice) =>
+                                                                <Button key={indice}
+                                                                        disabled={!usuarios.levantarMano}
+                                                                >
+                                                                    {
+                                                                        usuarios.compartirPantalla
+                                                                            ? <FaSatelliteDish/>
+                                                                            : (
+                                                                                !usuarios.levantarMano
+                                                                                    ? <FaLock/> :
+                                                                                    <FaRegHandPaper/>
+                                                                            )
+                                                                    }
+                                                                    {usuarios.usuario.nombre}
                                                                 </Button>
                                                         )}
                                                     </Row>
