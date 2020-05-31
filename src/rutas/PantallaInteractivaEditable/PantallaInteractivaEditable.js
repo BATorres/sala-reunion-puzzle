@@ -7,6 +7,7 @@ import DiagramaEditable from "../../componentes/DiagramaEditable/DiagramaEditabl
 import {diagramaEditable} from "../../componentes/DiagramaEditable/DiagramaEditable";
 import {gql} from "apollo-client-preset";
 import {Mutation, Query, graphql} from 'react-apollo';
+import {flowRight as compose} from 'lodash';
 
 var datosGuardados;
 
@@ -19,6 +20,9 @@ var lleganDatos = false;
 const USUARIOS_EN_SALA = gql`
     query BuscarUsuariosEnSala($idSala: ID) {
         buscarUsuariosEnSala(idSala: $idSala) {
+            id
+            levantarMano
+            compartirPantalla
             usuario {
                 id
                 nombre
@@ -38,6 +42,9 @@ const NUEVO_USUARIO_SALA = gql`
             }
         ){
             node {
+                id
+                levantarMano
+                compartirPantalla
                 usuario {
                     id
                     nombre
@@ -58,6 +65,9 @@ const CAMBIOS_USUARIO = gql`
             }
         ) {
             node {
+                id
+                levantarMano
+                compartirPantalla
                 usuario {
                     id
                     nombre
@@ -70,6 +80,13 @@ const CAMBIOS_USUARIO = gql`
         }
     }
 `;
+
+const PEDIR_PALABRA = gql`
+    mutation PedirLaPalabra($idSala: ID, $idUsuario: ID) {
+        pedirLaPalabra(idSala: $idSala, idUsuario: $idUsuario) {
+            id
+        }
+    }`;
 
 function guardar() {
     document.getElementById('diagrama-editable').value = diagramaEditable.model.toJson();
@@ -107,25 +124,6 @@ class PantallaInteractivaEditable extends Component {
         };
     }
 
-    componentDidMount() {
-        const usuariosEnSala = this.verificarUsuarioEnSala();
-        const esAdmin = this.props.history.location.pathname.includes('admin');
-
-
-        if (!esAdmin && !usuariosEnSala) {
-            // socket.emit('unirseSala', {sala: this.state.sala, usuario: this.state.usuario});
-        }
-
-        const usuariosGuardados = JSON.parse(localStorage.getItem(this.state.sala.idSala));
-
-        if (usuariosGuardados) {
-            usuariosSeteados = usuariosGuardados;
-            return usuariosSeteados;
-        } else {
-            return [];
-        }
-    }
-
     subscribeNuevoUsuarioSala = subscribeToMore => {
         subscribeToMore({
             document: NUEVO_USUARIO_SALA,
@@ -149,29 +147,29 @@ class PantallaInteractivaEditable extends Component {
         subscribeToMore({
             document: CAMBIOS_USUARIO,
             updateQuery: (usuariosEnSala, {subscriptionData}) => {
-                console.log('usuarios en sala', usuariosEnSala)
-                /*if (!subscriptionData.data) return usuariosEnSala.buscarUsuariosEnSala;
+                if (!subscriptionData.data) return usuariosEnSala.buscarUsuariosEnSala;
                 const datosSubscription = subscriptionData.data.usuarioSala.node;
-                const nuevoUsuarioEnSala = {usuario: datosSubscription.usuario};
-                const existeNuevoUsuarioEnSala = usuariosEnSala.buscarUsuariosEnSala.map(usuarios => usuarios.usuario)
-                    .find(
-                        ({id}) => id === nuevoUsuarioEnSala.usuario.id
+                const usuarioPidioLaPalabra = usuariosEnSala.buscarUsuariosEnSala
+                    .findIndex(
+                        ({id}) => id === datosSubscription.id
                     );
-                if (existeNuevoUsuarioEnSala && datosSubscription.sala.id === this.state.sala.idSala) return usuariosEnSala.buscarUsuariosEnSala;
-                return Object.assign({}, usuariosEnSala, {
-                    buscarUsuariosEnSala: [nuevoUsuarioEnSala, ...usuariosEnSala.buscarUsuariosEnSala]
-                });*/
+                if (usuarioPidioLaPalabra && datosSubscription.sala.id === this.state.sala.idSala) return usuariosEnSala.buscarUsuariosEnSala;
+                let nuevoArreglo = [...usuariosEnSala.buscarUsuariosEnSala];
+                nuevoArreglo[usuarioPidioLaPalabra] = datosSubscription;
+                return Object.assign({}, nuevoArreglo, {
+                    buscarUsuariosEnSala: [...nuevoArreglo]
+                });
             }
         })
     };
 
-    verificarUsuarioEnSala = () => {
-        const existenUsuariosGuardados = JSON.parse(localStorage.getItem(this.state.sala.idSala));
-        if (existenUsuariosGuardados) {
-            return existenUsuariosGuardados.some(usuario => usuario === this.state.usuario);
-        } else {
-            return false;
-        }
+    pedirLaPalabra = () => {
+      this.props.mutate({
+          variables: {
+              idSala: this.state.sala.idSala,
+              idUsuario: localStorage.getItem('usuario')
+          }
+      })
     };
 
     render() {
@@ -185,7 +183,7 @@ class PantallaInteractivaEditable extends Component {
                         <Row>
                             <Button
                                 variant="success"
-                                onClick={guardar}>
+                                onClick={this.pedirLaPalabra}>
                                 Pedir la palabra
                             </Button>
 
@@ -245,7 +243,12 @@ class PantallaInteractivaEditable extends Component {
     }
 }
 
-export default PantallaInteractivaEditable;
+export default compose(
+    graphql(
+        PEDIR_PALABRA
+    )
+)
+(PantallaInteractivaEditable);
 
 /*
 usuariosGuardados  ? usuariosGuardados.map((usuario, indice) => (

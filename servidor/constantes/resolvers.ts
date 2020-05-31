@@ -4,6 +4,7 @@ import {mutationUsuarios} from '../resolvers/mutation/mutation-usuarios';
 import {queryUsuarios} from '../resolvers/query/query-usuarios';
 import {ContextoInterface} from '../interfaces/contexto.interface';
 import {queryUsuariosSala} from '../resolvers/query/query-usuarios-sala';
+import {mutationUsuariosSala} from '../resolvers/mutation/mutation-usuarios-sala';
 
 export default {
     Query: {
@@ -13,7 +14,8 @@ export default {
     },
     Mutation: {
         ...mutationSalas,
-        ...mutationUsuarios
+        ...mutationUsuarios,
+        ...mutationUsuariosSala
     },
     Sala: {
         usuariosEnSala(

@@ -13,4 +13,5 @@ type Mutation {
     crearSala(nombre: String!): Sala!
     crearUsuario(nombre: String!, esAdmin: Boolean): Usuario!
     unirseSala(idSala: ID!, idUsuario: ID!): UsuarioSala!
+    pedirLaPalabra(idUsuario: ID, idSala: ID): UsuarioSala!
 }
