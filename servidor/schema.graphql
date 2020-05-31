@@ -3,15 +3,15 @@
 type Query {
     findAllSalas: [Sala]
     findAllUsuarios(idUsuario: ID!): [Usuario]
+    findAllUsuariosEnSala(idSala: ID): [UsuarioSala]
     findOneSala(idSala: ID): Sala!
     findOneUsuario(idUsuario: ID): Usuario!
-    buscarUsuariosEnSala(idSala: ID): [UsuarioSala]
-    verificarUsuarioEnSala(idUsuario: ID): UsuarioSala
 }
 
 type Mutation {
+    compartirPantalla(idSala: ID!, idUsuario: ID!, datos: String!): DiagramaUsuario!
     crearSala(nombre: String!): Sala!
     crearUsuario(nombre: String!, esAdmin: Boolean): Usuario!
+    pedirLaPalabra(idSala: ID!, idUsuario: ID!): UsuarioSala!
     unirseSala(idSala: ID!, idUsuario: ID!): UsuarioSala!
-    pedirLaPalabra(idUsuario: ID, idSala: ID): UsuarioSala!
 }

@@ -5,6 +5,7 @@ import {queryUsuarios} from '../resolvers/query/query-usuarios';
 import {ContextoInterface} from '../interfaces/contexto.interface';
 import {queryUsuariosSala} from '../resolvers/query/query-usuarios-sala';
 import {mutationUsuariosSala} from '../resolvers/mutation/mutation-usuarios-sala';
+import {mutationDiagramaUsuario} from '../resolvers/mutation/mutation-diagrama-usuario';
 
 export default {
     Query: {
@@ -13,9 +14,39 @@ export default {
         ...queryUsuariosSala
     },
     Mutation: {
+        ...mutationDiagramaUsuario,
         ...mutationSalas,
         ...mutationUsuarios,
         ...mutationUsuariosSala
+    },
+    DiagramaUsuario: {
+        diagrama(
+            padre,
+            argumentos,
+            contexto: ContextoInterface
+        ) {
+            return contexto.db.diagramaUsuario({
+                id: padre.id
+            }).diagrama();
+        },
+        sala(
+            padre,
+            argumentos,
+            contexto: ContextoInterface
+        ) {
+            return contexto.db.diagramaUsuario({
+                id: padre.id
+            }).sala();
+        },
+        usuario(
+            padre,
+            argumentos,
+            contexto: ContextoInterface
+        ) {
+            return contexto.db.diagramaUsuario({
+                id: padre.id
+            }).usuario();
+        }
     },
     Sala: {
         usuariosEnSala(
