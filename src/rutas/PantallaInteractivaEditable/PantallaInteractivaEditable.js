@@ -100,10 +100,6 @@ function cargar() {
     console.log('está cargando?', datosGuardados)
 }
 
-function compartirPantalla() {
-    // socket.emit('compartirPantalla', { usuario: localStorage.getItem('usuario'), diagrama: diagramaEditable.model.toJson()});
-}
-
 function cargarPantallaCompartida() {
     if (datosCompartidos) {
         diagramaEditable.model = go.Model.fromJson(datosCompartidos)
@@ -173,6 +169,16 @@ class PantallaInteractivaEditable extends Component {
       })
     };
 
+    compartirPantalla = () => {
+        this.props.mutate({
+            variables: {
+                idSala: this.state.sala.idSala,
+                idUsuario: localStorage.getItem('usuario'),
+                tipoAccion: 'Compartir pantalla'
+            }
+        })
+    };
+
     render() {
         const esAdmin = this.props.history.location.pathname.includes('admin');
         const usuariosGuardados = JSON.parse(localStorage.getItem(this.state.sala.idSala));
@@ -190,7 +196,7 @@ class PantallaInteractivaEditable extends Component {
 
                             <Button
                                 variant="info"
-                                onClick={compartirPantalla}>
+                                onClick={this.compartirPantalla}>
                                 Compartir
                             </Button>
                         </Row> : (
