@@ -18,8 +18,8 @@ var usuariosSeteados = [];
 var lleganDatos = false;
 
 const USUARIOS_EN_SALA = gql`
-    query BuscarUsuariosEnSala($idSala: ID) {
-        buscarUsuariosEnSala(idSala: $idSala) {
+    query FindAllUsuariosEnSala($idSala: ID) {
+        findAllUsuariosEnSala(idSala: $idSala) {
             id
             levantarMano
             compartirPantalla
@@ -81,9 +81,9 @@ const CAMBIOS_USUARIO = gql`
     }
 `;
 
-const PEDIR_PALABRA = gql`
-    mutation PedirLaPalabra($idSala: ID, $idUsuario: ID) {
-        pedirLaPalabra(idSala: $idSala, idUsuario: $idUsuario) {
+const ACCIONES_USUARIO_SALA = gql`
+    mutation AccionesUsuarioSala($idSala: ID, $idUsuario: ID, $tipoAccion: String) {
+        accionesUsuarioSala(idSala: $idSala, idUsuario: $idUsuario, tipoAccion: $tipoAccion) {
             id
         }
     }`;
@@ -128,16 +128,16 @@ class PantallaInteractivaEditable extends Component {
         subscribeToMore({
             document: NUEVO_USUARIO_SALA,
             updateQuery: (usuariosEnSala, {subscriptionData}) => {
-                if (!subscriptionData.data) return usuariosEnSala.buscarUsuariosEnSala;
+                if (!subscriptionData.data) return usuariosEnSala.findAllUsuariosEnSala;
                 const datosSubscription = subscriptionData.data.usuarioSala.node;
                 const nuevoUsuarioEnSala = {usuario: datosSubscription.usuario};
-                const existeNuevoUsuarioEnSala = usuariosEnSala.buscarUsuariosEnSala.map(usuarios => usuarios.usuario)
+                const existeNuevoUsuarioEnSala = usuariosEnSala.findAllUsuariosEnSala.map(usuarios => usuarios.usuario)
                     .find(
                         ({id}) => id === nuevoUsuarioEnSala.usuario.id
                     );
-                if (existeNuevoUsuarioEnSala && datosSubscription.sala.id === this.state.sala.idSala) return usuariosEnSala.buscarUsuariosEnSala;
+                if (existeNuevoUsuarioEnSala && datosSubscription.sala.id === this.state.sala.idSala) return usuariosEnSala.findAllUsuariosEnSala;
                 return Object.assign({}, usuariosEnSala, {
-                    buscarUsuariosEnSala: [nuevoUsuarioEnSala, ...usuariosEnSala.buscarUsuariosEnSala]
+                    findAllUsuariosEnSala: [nuevoUsuarioEnSala, ...usuariosEnSala.findAllUsuariosEnSala]
                 });
             }
         })
@@ -147,17 +147,17 @@ class PantallaInteractivaEditable extends Component {
         subscribeToMore({
             document: CAMBIOS_USUARIO,
             updateQuery: (usuariosEnSala, {subscriptionData}) => {
-                if (!subscriptionData.data) return usuariosEnSala.buscarUsuariosEnSala;
+                if (!subscriptionData.data) return usuariosEnSala.findAllUsuariosEnSala;
                 const datosSubscription = subscriptionData.data.usuarioSala.node;
-                const usuarioPidioLaPalabra = usuariosEnSala.buscarUsuariosEnSala
+                const usuarioPidioLaPalabra = usuariosEnSala.findAllUsuariosEnSala
                     .findIndex(
                         ({id}) => id === datosSubscription.id
                     );
-                if (usuarioPidioLaPalabra && datosSubscription.sala.id === this.state.sala.idSala) return usuariosEnSala.buscarUsuariosEnSala;
-                let nuevoArreglo = [...usuariosEnSala.buscarUsuariosEnSala];
+                if (usuarioPidioLaPalabra && datosSubscription.sala.id === this.state.sala.idSala) return usuariosEnSala.findAllUsuariosEnSala;
+                let nuevoArreglo = [...usuariosEnSala.findAllUsuariosEnSala];
                 nuevoArreglo[usuarioPidioLaPalabra] = datosSubscription;
                 return Object.assign({}, nuevoArreglo, {
-                    buscarUsuariosEnSala: [...nuevoArreglo]
+                    findAllUsuariosEnSala: [...nuevoArreglo]
                 });
             }
         })
@@ -167,7 +167,8 @@ class PantallaInteractivaEditable extends Component {
       this.props.mutate({
           variables: {
               idSala: this.state.sala.idSala,
-              idUsuario: localStorage.getItem('usuario')
+              idUsuario: localStorage.getItem('usuario'),
+              tipoAccion: 'Pedir la palabra'
           }
       })
     };
@@ -198,10 +199,10 @@ class PantallaInteractivaEditable extends Component {
                                     if (loading) return <p>Cargando ...</p>;
                                     if (error) return <p>Error ...</p>;
 
-                                    this.subscribeNuevoUsuarioSala(subscribeToMore, {variables: {id: this.state.sala}})
-                                    this.subscribeCambioUsuario(subscribeToMore, {variables: {id: this.state.sala}})
+                                    this.subscribeNuevoUsuarioSala(subscribeToMore, {variables: {id: this.state.sala}});
+                                    this.subscribeCambioUsuario(subscribeToMore, {variables: {id: this.state.sala}});
 
-                                    const usuariosEnSala = data.buscarUsuariosEnSala.filter(salas => salas.sala.id === this.state.sala.idSala);
+                                    const usuariosEnSala = data.findAllUsuariosEnSala.filter(salas => salas.sala.id === this.state.sala.idSala);
                                     const existenUsuariosEnSala = usuariosEnSala.length > 0;
 
                                     return (
@@ -213,7 +214,7 @@ class PantallaInteractivaEditable extends Component {
                                                         {usuariosEnSala.map(
                                                             (usuarios, indice) =>
                                                                 <Button key={indice}
-                                                                        disabled={!usuarios.levantarMano}
+                                                                        disabled={!usuarios.compartirPantalla}
                                                                 >
                                                                     {
                                                                         usuarios.compartirPantalla
@@ -245,7 +246,7 @@ class PantallaInteractivaEditable extends Component {
 
 export default compose(
     graphql(
-        PEDIR_PALABRA
+        ACCIONES_USUARIO_SALA
     )
 )
 (PantallaInteractivaEditable);

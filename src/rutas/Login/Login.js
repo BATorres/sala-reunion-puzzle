@@ -12,8 +12,8 @@ const CREAR_USUARIO = gql`
     }`;
 
 const LISTAR_USUARIOS = gql`
-    query ListarUsuarios($nombre: String) {
-        findAllUsuarios(nombre: $nombre) {
+    query ListarUsuarios($idUsuario: ID) {
+        findAllUsuarios(idUsuario: $idUsuario) {
             id
             nombre
         }
