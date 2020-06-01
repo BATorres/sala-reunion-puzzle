@@ -79,7 +79,7 @@ class ListarSalas extends Component {
                 state: {sala: sala, usuarioAdmin: usuarioAdmin}
             })
         } else {
-            const salasDeUsuario = this.props.data.findOneUsuario.usuariosEnSala;
+            const salasDeUsuario = this.props.buscarUsuario.findOneUsuario.usuariosEnSala;
             if (salasDeUsuario.length > 0) {
                 const seUnioSala = salasDeUsuario
                     .map(
@@ -172,6 +172,7 @@ export default compose(
     graphql(
         BUSCAR_USUARIO,
         {
+            name: 'buscarUsuario',
             options: {
                 variables: {
                     idUsuario: localStorage.getItem('usuario')

@@ -250,31 +250,3 @@ export default compose(
     )
 )
 (PantallaInteractivaEditable);
-
-/*
-usuariosGuardados  ? usuariosGuardados.map((usuario, indice) => (
-    <div key={indice}>
-        <Button disabled={
-            !lleganDatos
-        }
-        >
-            <FaLock/>
-            {usuario}
-        </Button>
-
-        <Button disabled={
-            !lleganDatos
-        }
-        >
-            <FaRegHandPaper/>
-            {usuario}
-        </Button>
-
-        <Button disabled={
-            !lleganDatos
-        }
-        >
-            <FaSatelliteDish/>
-            {usuario}
-        </Button>
-    </div>*/
