@@ -26,7 +26,8 @@ export const mutationUsuariosSala = {
         if (tipoAccion === 'Pedir la palabra') {
             return contexto.db.updateUsuarioSala({
                 data: {
-                    levantarMano: true
+                    levantarMano: true,
+                    compartirPantalla: false,
                 },
                 where: {
                     id: usuarioSala[0].id

@@ -106,10 +106,6 @@ class Login extends Component {
                               }
 
                           }}
-                          onError={(mutationError) => {
-                              const error = mutationError.graphQLErrors[0].message;
-                              this.setearError(error)
-                          }}
                 >
                     {(crearUsuario) => (
                         <form id="formulario" onSubmit={
