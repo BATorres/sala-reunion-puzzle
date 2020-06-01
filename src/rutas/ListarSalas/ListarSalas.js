@@ -29,18 +29,6 @@ const UNIRSE_SALA = gql`
         }
     }`;
 
-const BUSCAR_USUARIO = gql`
-    query BuscarUsuario($idUsuario: ID) {
-        findOneUsuario(idUsuario: $idUsuario) {
-            usuariosEnSala {
-                sala {
-                    id
-                    nombre
-                }
-            }
-        }
-    }`;
-
 class ListarSalas extends Component {
     constructor(props) {
         super(props);
@@ -79,48 +67,17 @@ class ListarSalas extends Component {
                 state: {sala: sala, usuarioAdmin: usuarioAdmin}
             })
         } else {
-            const salasDeUsuario = this.props.buscarUsuario.findOneUsuario.usuariosEnSala;
-            if (salasDeUsuario.length > 0) {
-                const seUnioSala = salasDeUsuario
-                    .map(
-                        salas => salas.sala
-                    ).some(
-                        salaUsuario => salaUsuario.id === sala.id
-                    );
+            this.props.history.push({
+                pathname: `/usuario/sala/${sala.id}`,
+                state: {sala: sala, usuario: usuario}
+            });
 
-                if (seUnioSala) {
-                    this.props.history.push({
-                        pathname: `/usuario/sala/${sala.id}`,
-                        state: {sala: sala, usuario: usuario}
-                    });
+            this.props.mutate({
+                variables: {
+                    idSala: sala.id,
+                    idUsuario: localStorage.getItem('usuario')
                 }
-
-                if (salasDeUsuario.length !== 0 && !seUnioSala) {
-                    this.props.history.push({
-                        pathname: `/usuario/sala/${sala.id}`,
-                        state: {sala: sala, usuario: usuario}
-                    });
-
-                    this.props.mutate({
-                        variables: {
-                            idSala: sala.id,
-                            idUsuario: localStorage.getItem('usuario')
-                        }
-                    });
-                }
-            } else {
-                this.props.history.push({
-                    pathname: `/usuario/sala/${sala.id}`,
-                    state: {sala: sala, usuario: usuario}
-                });
-
-                this.props.mutate({
-                    variables: {
-                        idSala: sala.id,
-                        idUsuario: localStorage.getItem('usuario')
-                    }
-                });
-            }
+            });
         }
     };
 
@@ -169,16 +126,6 @@ class ListarSalas extends Component {
 }
 
 export default compose(
-    graphql(
-        BUSCAR_USUARIO,
-        {
-            name: 'buscarUsuario',
-            options: {
-                variables: {
-                    idUsuario: localStorage.getItem('usuario')
-                }
-            }
-        }),
     graphql(UNIRSE_SALA)
 )
 (ListarSalas);

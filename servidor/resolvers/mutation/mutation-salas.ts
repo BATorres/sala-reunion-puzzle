@@ -35,17 +35,31 @@ export const mutationSalas = {
                ]
            }
         });
-        return contexto.db.createUsuarioSala({
-            sala: {
-                connect: {
-                    id: idSala
+        const yaSeUnioASala: boolean = usuarioUnido.length > 0;
+        if (yaSeUnioASala) {
+            return contexto.db.updateUsuarioSala({
+                where: {
+                    id: usuarioUnido[0].id
+                },
+                data: {
+                    levantarMano: false,
+                    compartirPantalla: false
                 }
-            },
-            usuario: {
-                connect: {
-                    id: idUsuario
+            })
+
+        } else {
+            return contexto.db.createUsuarioSala({
+                sala: {
+                    connect: {
+                        id: idSala
+                    }
+                },
+                usuario: {
+                    connect: {
+                        id: idUsuario
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 };

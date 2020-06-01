@@ -133,7 +133,7 @@ class PantallaInteractivaEditable extends Component {
                     );
                 if (existeNuevoUsuarioEnSala && datosSubscription.sala.id === this.state.sala.idSala) return usuariosEnSala.findAllUsuariosEnSala;
                 return Object.assign({}, usuariosEnSala, {
-                    findAllUsuariosEnSala: [nuevoUsuarioEnSala, ...usuariosEnSala.findAllUsuariosEnSala]
+                    findAllUsuariosEnSala: [datosSubscription, ...usuariosEnSala.findAllUsuariosEnSala]
                 });
             }
         })
@@ -209,6 +209,7 @@ class PantallaInteractivaEditable extends Component {
                                     this.subscribeCambioUsuario(subscribeToMore, {variables: {id: this.state.sala}});
 
                                     const usuariosEnSala = data.findAllUsuariosEnSala.filter(salas => salas.sala.id === this.state.sala.idSala);
+                                    console.log('usuarios sala', data.findAllUsuariosEnSala)
                                     const existenUsuariosEnSala = usuariosEnSala.length > 0;
 
                                     return (

@@ -22,17 +22,18 @@ export const mutationDiagramaUsuario = {
                 ]
             }
         });
-        if (diagramaUsuario.length > 0) {
+        const existeDiagramaUsuario: boolean = diagramaUsuario.length > 0;
+        if (existeDiagramaUsuario) {
             return contexto.db.updateDiagramaUsuario({
+                where: {
+                    id: diagramaUsuario[0].id
+                },
                 data: {
                     diagrama: {
                         update: {
                             datos: datos
                         }
                     }
-                },
-                where: {
-                    id: diagramaUsuario[0].id
                 }
             })
         } else {
