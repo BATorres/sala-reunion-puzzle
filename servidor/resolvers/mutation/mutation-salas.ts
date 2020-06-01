@@ -1,5 +1,5 @@
 import {ContextoInterface} from '../../interfaces/contexto.interface';
-import {SalaCreateInput} from '../../generated/prisma-client';
+import {SalaCreateInput, UsuarioSalaCreateInput} from '../../generated/prisma-client';
 
 export const mutationSalas = {
     async crearSala(
@@ -19,12 +19,32 @@ export const mutationSalas = {
         {idSala, idUsuario},
         contexto: ContextoInterface
     ) {
+        const usuarioUnido = await contexto.db.usuarioSalas({
+           where: {
+               AND: [
+                   {
+                       sala: {
+                           id_contains: idSala
+                       }
+                   },
+                   {
+                       usuario: {
+                           id_contains: idUsuario
+                       }
+                   }
+               ]
+           }
+        });
         return contexto.db.createUsuarioSala({
             sala: {
-                connect: idSala
+                connect: {
+                    id: idSala
+                }
             },
             usuario: {
-                connect: idUsuario
+                connect: {
+                    id: idUsuario
+                }
             }
         })
     }

@@ -13,5 +13,23 @@ export const mutationUsuarios = {
                 esAdmin
             },
         );
+        /*const usuariosRegistrados = await contexto.db.usuarios({
+            where: {
+                nombre: nombre
+            }
+        });
+
+        const existeUsuario = usuariosRegistrados.length > 0;
+
+        if (existeUsuario) {
+            throw new Error('El usuario que desea ingresar ya se encuentra registrado')
+        } else {
+            return contexto.db.createUsuario(
+                {
+                    nombre,
+                    esAdmin
+                },
+            );
+        }*/
     }
 };

@@ -15,7 +15,7 @@ const webSocketLink = new WebSocketLink({
 });
 
 const httpLink = new HttpLink({
-    uri: '/'
+    uri: 'http://localhost:4000'
 });
 
 const link = split(

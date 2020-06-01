@@ -468,6 +468,7 @@ type Mutation {
   deleteManyUsuarios(where: UsuarioWhereInput): BatchPayload!
   createUsuarioSala(data: UsuarioSalaCreateInput!): UsuarioSala!
   updateUsuarioSala(data: UsuarioSalaUpdateInput!, where: UsuarioSalaWhereUniqueInput!): UsuarioSala
+  updateManyUsuarioSalas(data: UsuarioSalaUpdateManyMutationInput!, where: UsuarioSalaWhereInput): BatchPayload!
   upsertUsuarioSala(where: UsuarioSalaWhereUniqueInput!, create: UsuarioSalaCreateInput!, update: UsuarioSalaUpdateInput!): UsuarioSala!
   deleteUsuarioSala(where: UsuarioSalaWhereUniqueInput!): UsuarioSala
   deleteManyUsuarioSalas(where: UsuarioSalaWhereInput): BatchPayload!
@@ -784,6 +785,8 @@ type UsuarioSala {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  levantarMano: Boolean!
+  compartirPantalla: Boolean!
   usuario: Usuario!
   sala: Sala!
 }
@@ -796,6 +799,8 @@ type UsuarioSalaConnection {
 
 input UsuarioSalaCreateInput {
   id: ID
+  levantarMano: Boolean
+  compartirPantalla: Boolean
   usuario: UsuarioCreateOneWithoutUsuariosEnSalaInput!
   sala: SalaCreateOneWithoutUsuariosEnSalaInput!
 }
@@ -812,11 +817,15 @@ input UsuarioSalaCreateManyWithoutUsuarioInput {
 
 input UsuarioSalaCreateWithoutSalaInput {
   id: ID
+  levantarMano: Boolean
+  compartirPantalla: Boolean
   usuario: UsuarioCreateOneWithoutUsuariosEnSalaInput!
 }
 
 input UsuarioSalaCreateWithoutUsuarioInput {
   id: ID
+  levantarMano: Boolean
+  compartirPantalla: Boolean
   sala: SalaCreateOneWithoutUsuariosEnSalaInput!
 }
 
@@ -832,12 +841,18 @@ enum UsuarioSalaOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  levantarMano_ASC
+  levantarMano_DESC
+  compartirPantalla_ASC
+  compartirPantalla_DESC
 }
 
 type UsuarioSalaPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  levantarMano: Boolean!
+  compartirPantalla: Boolean!
 }
 
 input UsuarioSalaScalarWhereInput {
@@ -871,6 +886,10 @@ input UsuarioSalaScalarWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  levantarMano: Boolean
+  levantarMano_not: Boolean
+  compartirPantalla: Boolean
+  compartirPantalla_not: Boolean
   AND: [UsuarioSalaScalarWhereInput!]
   OR: [UsuarioSalaScalarWhereInput!]
   NOT: [UsuarioSalaScalarWhereInput!]
@@ -895,8 +914,20 @@ input UsuarioSalaSubscriptionWhereInput {
 }
 
 input UsuarioSalaUpdateInput {
+  levantarMano: Boolean
+  compartirPantalla: Boolean
   usuario: UsuarioUpdateOneRequiredWithoutUsuariosEnSalaInput
   sala: SalaUpdateOneRequiredWithoutUsuariosEnSalaInput
+}
+
+input UsuarioSalaUpdateManyDataInput {
+  levantarMano: Boolean
+  compartirPantalla: Boolean
+}
+
+input UsuarioSalaUpdateManyMutationInput {
+  levantarMano: Boolean
+  compartirPantalla: Boolean
 }
 
 input UsuarioSalaUpdateManyWithoutSalaInput {
@@ -908,6 +939,7 @@ input UsuarioSalaUpdateManyWithoutSalaInput {
   update: [UsuarioSalaUpdateWithWhereUniqueWithoutSalaInput!]
   upsert: [UsuarioSalaUpsertWithWhereUniqueWithoutSalaInput!]
   deleteMany: [UsuarioSalaScalarWhereInput!]
+  updateMany: [UsuarioSalaUpdateManyWithWhereNestedInput!]
 }
 
 input UsuarioSalaUpdateManyWithoutUsuarioInput {
@@ -919,13 +951,23 @@ input UsuarioSalaUpdateManyWithoutUsuarioInput {
   update: [UsuarioSalaUpdateWithWhereUniqueWithoutUsuarioInput!]
   upsert: [UsuarioSalaUpsertWithWhereUniqueWithoutUsuarioInput!]
   deleteMany: [UsuarioSalaScalarWhereInput!]
+  updateMany: [UsuarioSalaUpdateManyWithWhereNestedInput!]
+}
+
+input UsuarioSalaUpdateManyWithWhereNestedInput {
+  where: UsuarioSalaScalarWhereInput!
+  data: UsuarioSalaUpdateManyDataInput!
 }
 
 input UsuarioSalaUpdateWithoutSalaDataInput {
+  levantarMano: Boolean
+  compartirPantalla: Boolean
   usuario: UsuarioUpdateOneRequiredWithoutUsuariosEnSalaInput
 }
 
 input UsuarioSalaUpdateWithoutUsuarioDataInput {
+  levantarMano: Boolean
+  compartirPantalla: Boolean
   sala: SalaUpdateOneRequiredWithoutUsuariosEnSalaInput
 }
 
@@ -982,6 +1024,10 @@ input UsuarioSalaWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  levantarMano: Boolean
+  levantarMano_not: Boolean
+  compartirPantalla: Boolean
+  compartirPantalla_not: Boolean
   usuario: UsuarioWhereInput
   sala: SalaWhereInput
   AND: [UsuarioSalaWhereInput!]

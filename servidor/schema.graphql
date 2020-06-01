@@ -2,15 +2,16 @@
 
 type Query {
     findAllSalas: [Sala]
+    findAllUsuarios(idUsuario: ID!): [Usuario]
+    findAllUsuariosEnSala(idSala: ID): [UsuarioSala]
+    findOneSala(idSala: ID): Sala!
+    findOneUsuario(idUsuario: ID): Usuario!
 }
 
 type Mutation {
+    accionesUsuarioSala(idSala: ID!, idUsuario: ID!, tipoAccion: String!): UsuarioSala!
+    compartirPantalla(idSala: ID!, idUsuario: ID!, datos: String!): DiagramaUsuario!
     crearSala(nombre: String!): Sala!
-    crearUsuario(nombre: String!, esAdmin: Boolean): Usuario!
-    unirseSala(idSala: ID, idUsuario: ID): UsuarioSala
-}
-
-type Subscription {
-    usuarioCreadoSubs: Usuario
-    salaCreada: Sala
+    crearUsuario(nombre: String!, esAdmin: Boolean!): Usuario!
+    unirseSala(idSala: ID!, idUsuario: ID!): UsuarioSala!
 }

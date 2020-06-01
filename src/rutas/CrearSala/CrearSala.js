@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import io from "socket.io-client";
 import gql from "graphql-tag";
 import {Mutation} from 'react-apollo';
 
@@ -26,11 +25,7 @@ class CrearSala extends Component {
     };
 
     crearSala = (evento) => {
-        // const socket = io('/');
-        const {sala} = this.state;
-
         evento.preventDefault();
-        // socket.emit('verificarSala', sala, this.setearSala);
     };
 
     setearSala = ({existeSala, sala}) => {
@@ -39,8 +34,6 @@ class CrearSala extends Component {
             this.setearError('La sala que desea crear ya existe');
         } else {
             this.setearError('');
-            /*const socket = io('/');
-            socket.emit('crearSala', sala);*/
             this.props.history.push({
                 pathname: '/admin/listar-salas',
                 state: {usuario: usuario}

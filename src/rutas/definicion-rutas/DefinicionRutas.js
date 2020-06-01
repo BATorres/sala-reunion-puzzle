@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import Inicio from "../Inicio/Inicio";
-import PantallaInteractivaEditable from "../../componentes/PantallaInteractivaEditable/PantallaInteractivaEditable";
+import PantallaInteractivaEditable from "../PantallaInteractivaEditable/PantallaInteractivaEditable";
 import PantallaInteractivaGlobal from "../../componentes/PantallaInteractivaGlobal/PantallaInteractivaGlobal";
 import Login from "../Login/Login";
 import io from "socket.io-client";
