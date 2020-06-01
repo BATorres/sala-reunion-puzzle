@@ -1,9 +1,9 @@
 import {ContextoInterface} from '../../interfaces/contexto.interface';
 
 export const mutationUsuariosSala = {
-    async pedirLaPalabra(
+    async accionesUsuarioSala(
         padre,
-        {idUsuario, idSala},
+        {idUsuario, idSala, tipoAccion},
         contexto: ContextoInterface
     ) {
         const usuarioSala = await contexto.db.usuarioSalas({
@@ -23,13 +23,39 @@ export const mutationUsuariosSala = {
             }
         });
 
-        return contexto.db.updateUsuarioSala({
-            data: {
-                levantarMano: true
-            },
-            where: {
-                id: usuarioSala[0].id
-            }
-        });
+        if (tipoAccion === 'Pedir la palabra') {
+            return contexto.db.updateUsuarioSala({
+                data: {
+                    levantarMano: true
+                },
+                where: {
+                    id: usuarioSala[0].id
+                }
+            });
+        }
+
+        if (tipoAccion === 'Compartir pantalla') {
+            return contexto.db.updateUsuarioSala({
+                data: {
+                    levantarMano: false,
+                    compartirPantalla: true
+                },
+                where: {
+                    id: usuarioSala[0].id
+                }
+            });
+        }
+
+        if (tipoAccion === 'Cancelar') {
+            return contexto.db.updateUsuarioSala({
+                data: {
+                    levantarMano: false,
+                    compartirPantalla: false
+                },
+                where: {
+                    id: usuarioSala[0].id
+                }
+            });
+        }
     },
 };
