@@ -1,45 +1,10 @@
 import React, {Component} from 'react';
 import {Button, Card, Col, Row} from "react-bootstrap";
 import {Mutation, Query, graphql} from 'react-apollo';
-import gql from "graphql-tag";
 import {flowRight as compose} from 'lodash';
-
-const LISTAR_SALAS = gql`
-    query {
-        findAllSalas {
-            id
-            nombre
-        }
-    }`;
-
-const NUEVA_SALA = gql`
-    subscription {
-        sala {
-            node {
-                id
-                nombre
-            }
-        }
-    }`;
-
-const UNIRSE_SALA = gql`
-    mutation UnirseSala($idSala: ID!, $idUsuario: ID!) {
-        unirseSala(idSala: $idSala, idUsuario: $idUsuario) {
-            id
-        }
-    }`;
-
-const BUSCAR_USUARIO = gql`
-    query BuscarUsuario($idUsuario: ID) {
-        findOneUsuario(idUsuario: $idUsuario) {
-            usuariosEnSala {
-                sala {
-                    id
-                    nombre
-                }
-            }
-        }
-    }`;
+import {NUEVA_SALA} from "../../constantes/subscriptors";
+import {LISTAR_SALAS} from "../../constantes/queries";
+import {UNIRSE_SALA} from "../../constantes/mutations";
 
 class ListarSalas extends Component {
     constructor(props) {
@@ -79,48 +44,17 @@ class ListarSalas extends Component {
                 state: {sala: sala, usuarioAdmin: usuarioAdmin}
             })
         } else {
-            const salasDeUsuario = this.props.buscarUsuario.findOneUsuario.usuariosEnSala;
-            if (salasDeUsuario.length > 0) {
-                const seUnioSala = salasDeUsuario
-                    .map(
-                        salas => salas.sala
-                    ).some(
-                        salaUsuario => salaUsuario.id === sala.id
-                    );
+            this.props.history.push({
+                pathname: `/usuario/sala/${sala.id}`,
+                state: {sala: sala, usuario: usuario}
+            });
 
-                if (seUnioSala) {
-                    this.props.history.push({
-                        pathname: `/usuario/sala/${sala.id}`,
-                        state: {sala: sala, usuario: usuario}
-                    });
+            this.props.mutate({
+                variables: {
+                    idSala: sala.id,
+                    idUsuario: localStorage.getItem('usuario')
                 }
-
-                if (salasDeUsuario.length !== 0 && !seUnioSala) {
-                    this.props.history.push({
-                        pathname: `/usuario/sala/${sala.id}`,
-                        state: {sala: sala, usuario: usuario}
-                    });
-
-                    this.props.mutate({
-                        variables: {
-                            idSala: sala.id,
-                            idUsuario: localStorage.getItem('usuario')
-                        }
-                    });
-                }
-            } else {
-                this.props.history.push({
-                    pathname: `/usuario/sala/${sala.id}`,
-                    state: {sala: sala, usuario: usuario}
-                });
-
-                this.props.mutate({
-                    variables: {
-                        idSala: sala.id,
-                        idUsuario: localStorage.getItem('usuario')
-                    }
-                });
-            }
+            });
         }
     };
 
@@ -169,16 +103,6 @@ class ListarSalas extends Component {
 }
 
 export default compose(
-    graphql(
-        BUSCAR_USUARIO,
-        {
-            name: 'buscarUsuario',
-            options: {
-                variables: {
-                    idUsuario: localStorage.getItem('usuario')
-                }
-            }
-        }),
     graphql(UNIRSE_SALA)
 )
 (ListarSalas);

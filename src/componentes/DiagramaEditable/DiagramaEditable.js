@@ -8,18 +8,17 @@ import {crearConfirmacion} from "../../funciones/crear-confirmacion";
 import {crearContradiccion} from "../../funciones/crear-contradiccion";
 import {crearEditarTexto} from "../../funciones/crear-editar-texto";
 import {eliminarNodoOConexion} from "../../funciones/eliminar-nodo-o-conexion";
-import io from "socket.io-client";
 import {GojsDiagram} from "react-gojs";
+import {flowRight as compose} from 'lodash';
+import {graphql} from 'react-apollo';
+import {GUARDAR_DIAGRAMA_USUARIO} from "../../constantes/mutations";
+import {Button, Row} from "react-bootstrap";
 
-// const socket = io('http://localhost:8081');
 const $ = go.GraphObject.make;
 const colores = ["lightgray", "lightblue", "lightgreen", "orange", "pink"];
 
 export var diagramaEditable;
-var datosGuardados;
-var datosCompartidos;
-var usuariosSeteados = [];
-var lleganDatos = false;
+export var datosDiagrama;
 
 function crearDiagrama(id) {
     diagramaEditable = $(
@@ -40,6 +39,7 @@ function crearDiagrama(id) {
             'undoManager.isEnabled': true, // permite realizar cambios ctrl + z
             "ModelChanged": function (e) {
                 if (e.isTransactionFinished) {
+                    datosDiagrama = e.model.toJson();
                     /*socket.on('datosRecibidos', (datos) => {
                         console.log('llegaron datos', datos)
                         datosCompartidos = datos.diagrama;
@@ -232,24 +232,30 @@ function crearDiagrama(id) {
         dibujarConexion(boton.part.adornedPart, 'Contradicción')
     }
 
-    diagramaEditable.model.addChangedListener(() => {
-        const datosAGuardar = diagramaEditable.model.toJson();
-        console.log('estoy en evento', datosAGuardar.class)
-    });
-
     return diagramaEditable;
 }
 
 class DiagramaEditable extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            sala: this.props.sala,
-            usuarioAdmin: localStorage.getItem('usuarioAdmin'),
-            usuario: localStorage.getItem('usuario')
-        };
     }
+
+    guardarDatos = () => {
+        document.getElementById('diagrama-editable').value = diagramaEditable.model.toJson();
+        const sala = this.props.sala.idSala;
+        const usuario = this.props.usuario;
+        const datosAGuardar = diagramaEditable.model.toJson();
+        diagramaEditable.isModified = false;
+        console.log('datos guardados?', datosAGuardar);
+
+        this.props.guardarDiagramaUsuario({
+                variables: {
+                    datos: datosAGuardar,
+                    idSala: sala,
+                    idUsuario: usuario
+                }
+            })
+    };
 
     render() {
         return (
@@ -260,7 +266,10 @@ class DiagramaEditable extends Component {
                     nodeDataArray: [
                         {key: "Nodo", loc: "-57.899993896484375 -164", text: "Tema 1"},
                         {key: "Nodo2", loc: "39.100006103515625 -25", text: "Tema 2"}
-                    ], linkDataArray: [{category: "Casualidad", from: "Nodo2", to: "Nodo"}]
+                    ],
+                    linkDataArray: [
+                        {category: "Casualidad", from: "Nodo2", to: "Nodo"}
+                    ],
                 }}
                 onModelChange={console.log}
             />
@@ -268,4 +277,11 @@ class DiagramaEditable extends Component {
     }
 }
 
-export default DiagramaEditable;
+export default compose(
+    graphql(
+        GUARDAR_DIAGRAMA_USUARIO,
+        {
+            name: 'guardarDiagramaUsuario'
+        }
+    )
+)(DiagramaEditable);

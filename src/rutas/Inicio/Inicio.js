@@ -40,6 +40,15 @@ class Inicio extends Component {
                     >
                         Soy usuario
                     </Button>
+
+                    <Button variant="danger"
+                            block
+                            onClick={() => {
+                                localStorage.clear();
+                            }}
+                    >
+                        Limpiar local storage
+                    </Button>
                 </Row>
             </Container>
         )
