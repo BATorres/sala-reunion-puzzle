@@ -29,9 +29,9 @@ export const ACCIONES_USUARIO_SALA = gql`
         }
     }`;
 
-export const COMPARTIR_PANTALLA = gql`
-    mutation CompartirPantalla($idSala: ID, $idUsuario: ID, $datos: String) {
-        compartirPantalla(idSala: $idSala, idUsuario: $idUsuario, datos: $datos) {
+export const GUARDAR_DIAGRAMA_USUARIO = gql`
+    mutation GuardarDiagramaUsuario($idSala: ID, $idUsuario: ID, $datos: String) {
+        guardarDiagramaUsuario(idSala: $idSala, idUsuario: $idUsuario, datos: $datos) {
             sala {
                 id
                 nombre

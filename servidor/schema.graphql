@@ -10,8 +10,8 @@ type Query {
 
 type Mutation {
     accionesUsuarioSala(idSala: ID, idUsuario: ID, tipoAccion: String): UsuarioSala!
-    compartirPantalla(idSala: ID!, idUsuario: ID!, datos: String!): DiagramaUsuario!
     crearSala(nombre: String!): Sala!
     crearUsuario(nombre: String!, esAdmin: Boolean): Usuario!
+    guardarDiagramaUsuario(idSala: ID!, idUsuario: ID!, datos: String!): DiagramaUsuario!
     unirseSala(idSala: ID!, idUsuario: ID!): UsuarioSala!
 }

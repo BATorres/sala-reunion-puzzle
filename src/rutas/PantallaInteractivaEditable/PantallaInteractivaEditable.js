@@ -1,92 +1,19 @@
 import React, {Component} from 'react';
 import * as go from "gojs";
-import {Button, Card, Col, Container, Row} from "react-bootstrap";
+import {Button, Col, Row} from "react-bootstrap";
 import Paleta from "../../componentes/Paleta/Paleta";
 import {FaLock, FaRegHandPaper, FaSatelliteDish} from "react-icons/fa";
 import DiagramaEditable from "../../componentes/DiagramaEditable/DiagramaEditable";
 import {diagramaEditable} from "../../componentes/DiagramaEditable/DiagramaEditable";
-import {gql} from "apollo-client-preset";
-import {Mutation, Query, graphql} from 'react-apollo';
+import {Query, graphql} from 'react-apollo';
 import {flowRight as compose} from 'lodash';
+import {CAMBIOS_USUARIO, NUEVO_USUARIO_SALA} from "../../constantes/subscriptors";
+import {ACCIONES_USUARIO_SALA, GUARDAR_DIAGRAMA_USUARIO} from "../../constantes/mutations";
+import {USUARIOS_EN_SALA} from "../../constantes/queries";
 
 var datosGuardados;
-
 var datosCompartidos;
-
-var usuariosSeteados = [];
-
-var lleganDatos = false;
-
-const USUARIOS_EN_SALA = gql`
-    query FindAllUsuariosEnSala($idSala: ID) {
-        findAllUsuariosEnSala(idSala: $idSala) {
-            id
-            levantarMano
-            compartirPantalla
-            usuario {
-                id
-                nombre
-            }
-            sala {
-                id
-                nombre
-            }
-        }
-    }`;
-
-const NUEVO_USUARIO_SALA = gql`
-    subscription {
-        usuarioSala(
-            where: {
-                mutation_in: [CREATED]
-            }
-        ){
-            node {
-                id
-                levantarMano
-                compartirPantalla
-                usuario {
-                    id
-                    nombre
-                }
-                sala {
-                    id
-                    nombre
-                }
-            }
-        }
-    }`;
-
-const CAMBIOS_USUARIO = gql`
-    subscription {
-        usuarioSala(
-            where: {
-                mutation_in: [UPDATED]
-            }
-        ) {
-            node {
-                id
-                levantarMano
-                compartirPantalla
-                usuario {
-                    id
-                    nombre
-                }
-                sala {
-                    id
-                    nombre
-                }
-            }
-        }
-    }
-`;
-
-const ACCIONES_USUARIO_SALA = gql`
-    mutation AccionesUsuarioSala($idSala: ID, $idUsuario: ID, $tipoAccion: String) {
-        accionesUsuarioSala(idSala: $idSala, idUsuario: $idUsuario, tipoAccion: $tipoAccion) {
-            id
-        }
-    }`;
+var guardarDatos;
 
 function guardar() {
     document.getElementById('diagrama-editable').value = diagramaEditable.model.toJson();
@@ -116,7 +43,8 @@ class PantallaInteractivaEditable extends Component {
         this.state = {
             sala: this.props.match.params,
             usuarioAdmin: localStorage.getItem('usuarioAdmin'),
-            usuario: localStorage.getItem('usuario')
+            usuario: localStorage.getItem('usuario'),
+            guardar: ''
         };
     }
 
@@ -160,23 +88,31 @@ class PantallaInteractivaEditable extends Component {
     };
 
     pedirLaPalabra = () => {
-      this.props.mutate({
-          variables: {
-              idSala: this.state.sala.idSala,
-              idUsuario: localStorage.getItem('usuario'),
-              tipoAccion: 'Pedir la palabra'
-          }
-      })
+        this.props.accionesUsuarioSala({
+            variables: {
+                idSala: this.state.sala.idSala,
+                idUsuario: localStorage.getItem('usuario'),
+                tipoAccion: 'Pedir la palabra'
+            }
+        })
     };
 
     compartirPantalla = () => {
-        this.props.mutate({
+        this.props.accionesUsuarioSala({
             variables: {
                 idSala: this.state.sala.idSala,
                 idUsuario: localStorage.getItem('usuario'),
                 tipoAccion: 'Compartir pantalla'
             }
-        })
+        });
+
+        /*this.props.guardarDiagramaUsuario({
+            variables: {
+                datos: datosAGuardar,
+                idSala: this.state.sala.idSala,
+                idUsuario: localStorage.getItem('usuario')
+            }
+        })*/
     };
 
     render() {
@@ -209,7 +145,6 @@ class PantallaInteractivaEditable extends Component {
                                     this.subscribeCambioUsuario(subscribeToMore, {variables: {id: this.state.sala}});
 
                                     const usuariosEnSala = data.findAllUsuariosEnSala.filter(salas => salas.sala.id === this.state.sala.idSala);
-                                    console.log('usuarios sala', data.findAllUsuariosEnSala)
                                     const existenUsuariosEnSala = usuariosEnSala.length > 0;
 
                                     return (
@@ -244,7 +179,11 @@ class PantallaInteractivaEditable extends Component {
                     }
                 </div>
                 <Col id="diagrama">
-                    <DiagramaEditable sala={this.state.sala}/>
+                    <DiagramaEditable
+                        sala={this.state.sala}
+                        usuario={this.state.usuario}
+                        guardar={this.state.guardar}
+                    />
                 </Col>
             </div>
         );
@@ -253,7 +192,16 @@ class PantallaInteractivaEditable extends Component {
 
 export default compose(
     graphql(
-        ACCIONES_USUARIO_SALA
+        ACCIONES_USUARIO_SALA,
+        {
+            name: 'accionesUsuarioSala'
+        }
+    ),
+    graphql(
+        GUARDAR_DIAGRAMA_USUARIO,
+        {
+            name: 'guardarDiagramaUsuario'
+        }
     )
 )
 (PantallaInteractivaEditable);

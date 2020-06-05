@@ -1,23 +1,8 @@
 import React, {Component} from 'react';
 import {Query, Mutation} from 'react-apollo';
-import gql from "graphql-tag";
 import {useQuery} from "@apollo/react-hooks";
-
-const CREAR_USUARIO = gql`
-    mutation CrearUsuario($nombre: String!, $esAdmin: Boolean) {
-        crearUsuario(nombre: $nombre, esAdmin: $esAdmin) {
-            id
-            nombre
-        }
-    }`;
-
-const LISTAR_USUARIOS = gql`
-    query ListarUsuarios($idUsuario: ID) {
-        findAllUsuarios(idUsuario: $idUsuario) {
-            id
-            nombre
-        }
-    }`;
+import {CREAR_USUARIO} from "../../constantes/mutations";
+import {LISTAR_USUARIOS} from "../../constantes/queries";
 
 class Login extends Component {
     constructor(props) {

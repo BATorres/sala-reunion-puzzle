@@ -1,13 +1,6 @@
 import React, {Component} from 'react';
-import gql from "graphql-tag";
 import {Mutation} from 'react-apollo';
-
-const CREAR_SALA = gql`
-    mutation CrearSala($nombre: String!) {
-        crearSala(nombre: $nombre) {
-            nombre
-        }
-    }`;
+import {CREAR_SALA} from "../../constantes/mutations";
 
 class CrearSala extends Component {
     constructor(props) {

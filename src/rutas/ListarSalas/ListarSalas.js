@@ -1,33 +1,10 @@
 import React, {Component} from 'react';
 import {Button, Card, Col, Row} from "react-bootstrap";
 import {Mutation, Query, graphql} from 'react-apollo';
-import gql from "graphql-tag";
 import {flowRight as compose} from 'lodash';
-
-const LISTAR_SALAS = gql`
-    query {
-        findAllSalas {
-            id
-            nombre
-        }
-    }`;
-
-const NUEVA_SALA = gql`
-    subscription {
-        sala {
-            node {
-                id
-                nombre
-            }
-        }
-    }`;
-
-const UNIRSE_SALA = gql`
-    mutation UnirseSala($idSala: ID!, $idUsuario: ID!) {
-        unirseSala(idSala: $idSala, idUsuario: $idUsuario) {
-            id
-        }
-    }`;
+import {NUEVA_SALA} from "../../constantes/subscriptors";
+import {LISTAR_SALAS} from "../../constantes/queries";
+import {UNIRSE_SALA} from "../../constantes/mutations";
 
 class ListarSalas extends Component {
     constructor(props) {
