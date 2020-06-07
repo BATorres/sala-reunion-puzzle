@@ -14,7 +14,6 @@ const $ = go.GraphObject.make;
 const colores = ["lightgray", "lightblue", "lightgreen", "orange", "pink"];
 
 export var diagramaEditable;
-export var datosDiagrama;
 
 function crearDiagrama(id) {
     diagramaEditable = $(
@@ -33,13 +32,8 @@ function crearDiagrama(id) {
                 color: 'blue'
             }, // permite utilicar ctrl + g para llamar al método groupSelection()
             'undoManager.isEnabled': true, // permite realizar cambios ctrl + z
-            'InitialLayoutCompleted': function (e) {
-                mostrarIncrementos('InitialLayout')
-            },
             "ModelChanged": function (e) {
                 if (e.isTransactionFinished) {
-                    mostrarIncrementos(diagramaEditable.model.toIncrementalJson(e))
-                    datosDiagrama = diagramaEditable.model.toIncrementalJson(e);
                     /*socket.on('datosRecibidos', (datos) => {
                         console.log('llegaron datos', datos)
                         datosCompartidos = datos.diagrama;
@@ -233,13 +227,6 @@ function crearDiagrama(id) {
     }
 
     return diagramaEditable;
-}
-
-function mostrarIncrementos(string) {
-    const elemento = document.getElementById('diagrama-editable');
-    if (elemento.value === 'InitialLayout') string = '';
-    elemento.value = string;
-    console.log('elemento', elemento.value)
 }
 
 class DiagramaEditable extends Component {
