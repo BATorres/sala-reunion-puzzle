@@ -3,7 +3,7 @@ import * as go from "gojs";
 import {Button, Col, Row} from "react-bootstrap";
 import Paleta from "../../componentes/Paleta/Paleta";
 import {FaLock, FaRegHandPaper, FaSatelliteDish} from "react-icons/fa";
-import DiagramaEditable from "../../componentes/DiagramaEditable/DiagramaEditable";
+import DiagramaEditable, {datosDiagrama} from "../../componentes/DiagramaEditable/DiagramaEditable";
 import {diagramaEditable} from "../../componentes/DiagramaEditable/DiagramaEditable";
 import {Query, graphql} from 'react-apollo';
 import {flowRight as compose} from 'lodash';
@@ -14,6 +14,7 @@ import {USUARIOS_EN_SALA} from "../../constantes/queries";
 var datosGuardados;
 var datosCompartidos;
 var guardarDatos;
+var escuchoCambios = false;
 
 function guardar() {
     document.getElementById('diagrama-editable').value = diagramaEditable.model.toJson();
@@ -106,13 +107,15 @@ class PantallaInteractivaEditable extends Component {
             }
         });
 
-        /*this.props.guardarDiagramaUsuario({
+        const datosAGuardar = diagramaEditable.model.toJson();
+
+        this.props.guardarDiagramaUsuario({
             variables: {
-                datos: datosAGuardar,
                 idSala: this.state.sala.idSala,
-                idUsuario: localStorage.getItem('usuario')
+                idUsuario: localStorage.getItem('usuario'),
+                datos: JSON.stringify(datosAGuardar)
             }
-        })*/
+        })
     };
 
     render() {

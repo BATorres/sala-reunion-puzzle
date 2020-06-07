@@ -21,15 +21,14 @@ export function crearNodo(graphObject) {
             new go.Binding(
                 'fill',
                 'color'
-            ),
+            ).makeTwoWay(),
         ),
         graphObject(
             go.TextBlock,
             {
                 name: 'Texto',
                 margin: 6,
-                text: 'Nuevo',
-                // editable: true,
+                text: 'Nuevo'
             },
             new go.Binding(
                 'text',
