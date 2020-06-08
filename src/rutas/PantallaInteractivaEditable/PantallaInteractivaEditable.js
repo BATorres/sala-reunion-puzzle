@@ -7,34 +7,11 @@ import DiagramaEditable from "../../componentes/DiagramaEditable/DiagramaEditabl
 import {diagramaEditable} from "../../componentes/DiagramaEditable/DiagramaEditable";
 import {Query, graphql} from 'react-apollo';
 import {flowRight as compose} from 'lodash';
-import {CAMBIOS_USUARIO, NUEVO_USUARIO_SALA} from "../../constantes/subscriptors";
+import {CAMBIOS_DIAGRAMA_USUARIO, CAMBIOS_USUARIO, NUEVO_USUARIO_SALA} from "../../constantes/subscriptors";
 import {ACCIONES_USUARIO_SALA, GUARDAR_DIAGRAMA_USUARIO} from "../../constantes/mutations";
 import {USUARIOS_EN_SALA} from "../../constantes/queries";
 
-var datosGuardados;
 var datosCompartidos;
-var guardarDatos;
-
-function guardar() {
-    document.getElementById('diagrama-editable').value = diagramaEditable.model.toJson();
-    datosGuardados = diagramaEditable.model.toJson();
-    diagramaEditable.isModified = false;
-    console.log('datos guardados?', datosGuardados);
-}
-
-function cargar() {
-    diagramaEditable.model = go.Model.fromJson(datosGuardados);
-    console.log('está cargando?', datosGuardados)
-}
-
-function cargarPantallaCompartida() {
-    if (datosCompartidos) {
-        diagramaEditable.model = go.Model.fromJson(datosCompartidos)
-        return true;
-    } else {
-        return false;
-    }
-}
 
 class PantallaInteractivaEditable extends Component {
     constructor(props) {
@@ -87,6 +64,15 @@ class PantallaInteractivaEditable extends Component {
         })
     };
 
+    subscribeCambiosDiagramaUsuario = subscribeToMore => {
+        subscribeToMore({
+            document: CAMBIOS_DIAGRAMA_USUARIO,
+            updateQuery: (usuariosEnSala, {subscriptionData}) => {
+                datosCompartidos = subscriptionData.data.diagrama.node;
+            }
+        })
+    };
+
     pedirLaPalabra = () => {
         this.props.accionesUsuarioSala({
             variables: {
@@ -106,18 +92,35 @@ class PantallaInteractivaEditable extends Component {
             }
         });
 
-        /*this.props.guardarDiagramaUsuario({
+        const datosAGuardar = diagramaEditable.model.toJson();
+
+        this.props.guardarDiagramaUsuario({
             variables: {
-                datos: datosAGuardar,
                 idSala: this.state.sala.idSala,
-                idUsuario: localStorage.getItem('usuario')
+                idUsuario: localStorage.getItem('usuario'),
+                datos: JSON.stringify(datosAGuardar)
             }
-        })*/
+        })
+    };
+
+    cargarDatosCompartidos = (usuario) => {
+        const lleganDatosCompartidos = datosCompartidos !== undefined;
+
+        if (lleganDatosCompartidos) {
+            const diagramaUsuario = datosCompartidos.diagramasPorUsuario[0];
+
+            const usuarioTieneDiagramaEnSala =
+                usuario.usuario.id === diagramaUsuario.usuario.id &&
+                usuario.sala.id === diagramaUsuario.sala.id;
+
+            if (usuarioTieneDiagramaEnSala) {
+                diagramaEditable.model = go.Model.fromJson(JSON.parse(datosCompartidos.datos));
+            }
+        }
     };
 
     render() {
         const esAdmin = this.props.history.location.pathname.includes('admin');
-        const usuariosGuardados = JSON.parse(localStorage.getItem(this.state.sala.idSala));
         return (
             <div id="contenedor">
                 <div id="area-paleta">
@@ -143,6 +146,7 @@ class PantallaInteractivaEditable extends Component {
 
                                     this.subscribeNuevoUsuarioSala(subscribeToMore, {variables: {id: this.state.sala}});
                                     this.subscribeCambioUsuario(subscribeToMore, {variables: {id: this.state.sala}});
+                                    this.subscribeCambiosDiagramaUsuario(subscribeToMore);
 
                                     const usuariosEnSala = data.findAllUsuariosEnSala.filter(salas => salas.sala.id === this.state.sala.idSala);
                                     const existenUsuariosEnSala = usuariosEnSala.length > 0;
@@ -157,6 +161,9 @@ class PantallaInteractivaEditable extends Component {
                                                             (usuarios, indice) =>
                                                                 <Button key={indice}
                                                                         disabled={!usuarios.compartirPantalla}
+                                                                        onClick={
+                                                                            () => this.cargarDatosCompartidos(usuarios)
+                                                                        }
                                                                 >
                                                                     {
                                                                         usuarios.compartirPantalla

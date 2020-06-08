@@ -56,3 +56,27 @@ export const CAMBIOS_USUARIO = gql`
         }
     }
 `;
+
+export const CAMBIOS_DIAGRAMA_USUARIO = gql`
+subscription {
+    diagrama(
+        where: {
+            mutation_in: [
+                CREATED,
+                UPDATED
+            ]
+        }
+    ) {
+        node {
+            datos
+            diagramasPorUsuario {
+                sala {
+                    id
+                }
+                usuario {
+                    id
+                }
+            }
+        }
+    }
+}`;

@@ -30,15 +30,17 @@ export const ACCIONES_USUARIO_SALA = gql`
     }`;
 
 export const GUARDAR_DIAGRAMA_USUARIO = gql`
-    mutation GuardarDiagramaUsuario($idSala: ID, $idUsuario: ID, $datos: String) {
-        guardarDiagramaUsuario(idSala: $idSala, idUsuario: $idUsuario, datos: $datos) {
+    mutation GuardarDiagramaUsuario($idSala: ID!, $idUsuario: ID!, $datos: String!) {
+        guardarDiagramaUsuario(datos: $datos, idSala: $idSala, idUsuario: $idUsuario) {
+            id
+            diagrama {
+                datos
+            }
             sala {
                 id
-                nombre
-            }
+            } 
             usuario {
                 id
-                nombre
             }
         }
     }`;
