@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import Inicio from "../Inicio/Inicio";
-import PantallaInteractivaEditable from "../PantallaInteractivaEditable/PantallaInteractivaEditable";
-import PantallaInteractivaGlobal from "../../componentes/PantallaInteractivaGlobal/PantallaInteractivaGlobal";
+import PantallaInteractivaEditable from "../SalaReunion/SalaReunion";
 import Login from "../Login/Login";
-import io from "socket.io-client";
 import MenuAdmin from "../MenuAdmin/MenuAdmin";
 import ListarSalas from "../ListarSalas/ListarSalas";
 import CrearSala from "../CrearSala/CrearSala";

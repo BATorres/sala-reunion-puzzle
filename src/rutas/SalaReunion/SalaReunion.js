@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import * as go from "gojs";
-import {Button, Col, Row} from "react-bootstrap";
+import {Button, Col, Row, Tab, Tabs} from "react-bootstrap";
 import Paleta from "../../componentes/Paleta/Paleta";
 import {FaLock, FaRegHandPaper, FaSatelliteDish} from "react-icons/fa";
 import DiagramaEditable from "../../componentes/DiagramaEditable/DiagramaEditable";
@@ -14,6 +14,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Container from "react-bootstrap/Container";
 import BreadcrumbItem from "react-bootstrap/BreadcrumbItem";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
+import DiagramaGlobal, {diagramaGlobal} from "../../componentes/DiagramaGlobal/DiagramaGlobal";
 
 var datosCompartidos;
 
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-class PantallaInteractivaEditable extends Component {
+class SalaReunion extends Component {
     constructor(props) {
         super(props);
 
@@ -36,7 +37,7 @@ class PantallaInteractivaEditable extends Component {
             sala: this.props.match.params,
             usuarioAdmin: localStorage.getItem('usuarioAdmin'),
             usuario: localStorage.getItem('usuario'),
-            guardar: ''
+            llaveSeleccionada: 'diagramaEditable'
         };
     }
 
@@ -129,7 +130,7 @@ class PantallaInteractivaEditable extends Component {
                 usuario.sala.id === diagramaUsuario.sala.id;
 
             if (usuarioTieneDiagramaEnSala) {
-                diagramaEditable.model = go.Model.fromJson(JSON.parse(datosCompartidos.datos));
+                diagramaGlobal.model = go.Model.fromJson(JSON.parse(datosCompartidos.datos));
             }
         }
     };
@@ -137,6 +138,7 @@ class PantallaInteractivaEditable extends Component {
     render() {
         const esAdmin = this.props.history.location.pathname.includes('admin');
         const sala = this.state.sala;
+
         return (
             <Container fluid>
                 <Breadcrumb>
@@ -165,13 +167,26 @@ class PantallaInteractivaEditable extends Component {
                 </Breadcrumb>
 
                 <Row>
-                    <Col xs={2}>
-                        <Paleta/>
-                    </Col>
+                    {!esAdmin ?
+                        <Container fluid>
+                            <Row>
+                                <Col xs={2}>
+                                    <Paleta/>
+                                </Col>
 
-                    <Col xs={10}>
-                        <DiagramaEditable/>
-                    </Col>
+                                <Col xs={10}>
+                                    <DiagramaEditable/>
+                                </Col>
+                            </Row>
+                        </Container> :
+                        <Container fluid>
+                            <Row>
+                                <Col>
+                                    <DiagramaGlobal/>
+                                </Col>
+                            </Row>
+                        </Container>
+                    }
 
                     {!esAdmin ?
                         <Container fluid>
@@ -262,4 +277,4 @@ export default compose(
         }
     )
 )
-(PantallaInteractivaEditable);
+(SalaReunion);
