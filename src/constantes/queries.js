@@ -32,3 +32,12 @@ export const USUARIOS_EN_SALA = gql`
             }
         }
     }`;
+
+export const VERIFICAR_DIAGRAMA_USUARIO = gql`
+    query VerificarDiagramaUsuario($idSala: ID!, $idUsuario: ID!) {
+        verificarDiagramaUsuario(idSala: $idSala, idUsuario: $idUsuario) {
+            diagrama {
+                datos
+            }
+        }
+    }`;

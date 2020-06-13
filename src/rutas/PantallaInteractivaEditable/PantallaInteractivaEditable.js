@@ -9,9 +9,24 @@ import {Query, graphql} from 'react-apollo';
 import {flowRight as compose} from 'lodash';
 import {CAMBIOS_DIAGRAMA_USUARIO, CAMBIOS_USUARIO, NUEVO_USUARIO_SALA} from "../../constantes/subscriptors";
 import {ACCIONES_USUARIO_SALA, GUARDAR_DIAGRAMA_USUARIO} from "../../constantes/mutations";
-import {USUARIOS_EN_SALA} from "../../constantes/queries";
+import {USUARIOS_EN_SALA, VERIFICAR_DIAGRAMA_USUARIO} from "../../constantes/queries";
+import {makeStyles} from '@material-ui/core/styles';
+import Container from "react-bootstrap/Container";
+import BreadcrumbItem from "react-bootstrap/BreadcrumbItem";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 var datosCompartidos;
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+    paper: {
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    },
+}));
 
 class PantallaInteractivaEditable extends Component {
     constructor(props) {
@@ -121,24 +136,63 @@ class PantallaInteractivaEditable extends Component {
 
     render() {
         const esAdmin = this.props.history.location.pathname.includes('admin');
+        const sala = this.state.sala;
         return (
-            <div id="contenedor">
-                <div id="area-paleta">
-                    <Paleta/>
-                    {!esAdmin ?
-                        <Row>
-                            <Button
-                                variant="success"
-                                onClick={this.pedirLaPalabra}>
-                                Pedir la palabra
-                            </Button>
+            <Container fluid>
+                <Breadcrumb>
+                    <BreadcrumbItem href="/">
+                        Inicio
+                    </BreadcrumbItem>
 
-                            <Button
-                                variant="info"
-                                onClick={this.compartirPantalla}>
-                                Compartir
-                            </Button>
-                        </Row> : (
+                    {esAdmin ?
+                        <BreadcrumbItem href="/admin/menu">
+                            Menú
+                        </BreadcrumbItem> : ''
+                    }
+
+                    {esAdmin ?
+                        <BreadcrumbItem href="/admin/listar-salas">
+                            Lista de salas
+                        </BreadcrumbItem> :
+                        <BreadcrumbItem href="/usuario/listar-salas">
+                            Lista de salas
+                        </BreadcrumbItem>
+                    }
+
+                    <BreadcrumbItem active>
+                        {sala.idSala}
+                    </BreadcrumbItem>
+                </Breadcrumb>
+
+                <Row>
+                    <Col xs={2}>
+                        <Paleta/>
+                    </Col>
+
+                    <Col xs={10}>
+                        <DiagramaEditable/>
+                    </Col>
+
+                    {!esAdmin ?
+                        <Container fluid>
+                            <Row>
+                                <Col xs={1}>
+                                    <Button
+                                        variant="success"
+                                        onClick={this.pedirLaPalabra}>
+                                        Pedir la palabra
+                                    </Button>
+                                </Col>
+
+                                <Col xs={1}>
+                                    <Button
+                                        variant="info"
+                                        onClick={this.compartirPantalla}>
+                                        Compartir
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </Container> : (
                             <Query query={USUARIOS_EN_SALA}>
                                 {({loading, error, data, subscribeToMore}) => {
                                     if (loading) return <p>Cargando ...</p>;
@@ -156,43 +210,40 @@ class PantallaInteractivaEditable extends Component {
                                             {
                                                 !existenUsuariosEnSala ?
                                                     <h2>No existen usuarios en sala</h2> :
-                                                    <Row>
-                                                        {usuariosEnSala.map(
-                                                            (usuarios, indice) =>
-                                                                <Button key={indice}
-                                                                        disabled={!usuarios.compartirPantalla}
-                                                                        onClick={
-                                                                            () => this.cargarDatosCompartidos(usuarios)
-                                                                        }
-                                                                >
-                                                                    {
-                                                                        usuarios.compartirPantalla
-                                                                            ? <FaSatelliteDish/>
-                                                                            : (
-                                                                                !usuarios.levantarMano
-                                                                                    ? <FaLock/> :
-                                                                                    <FaRegHandPaper/>
-                                                                            )
-                                                                    }
-                                                                    {usuarios.usuario.nombre}
-                                                                </Button>
-                                                        )}
-                                                    </Row>
+                                                    <Container>
+                                                        <Row>
+                                                            {usuariosEnSala.map(
+                                                                (usuarios, indice) =>
+                                                                    <Col>
+                                                                        <Button key={indice}
+                                                                                disabled={!usuarios.compartirPantalla}
+                                                                                onClick={
+                                                                                    () => this.cargarDatosCompartidos(usuarios)
+                                                                                }
+                                                                        >
+                                                                            {
+                                                                                usuarios.compartirPantalla
+                                                                                    ? <FaSatelliteDish/>
+                                                                                    : (
+                                                                                        !usuarios.levantarMano
+                                                                                            ? <FaLock/> :
+                                                                                            <FaRegHandPaper/>
+                                                                                    )
+                                                                            }
+                                                                            {usuarios.usuario.nombre}
+                                                                        </Button>
+                                                                    </Col>
+                                                            )}
+                                                        </Row>
+                                                    </Container>
                                             }
                                         </div>
                                     )
                                 }}
                             </Query>)
                     }
-                </div>
-                <Col id="diagrama">
-                    <DiagramaEditable
-                        sala={this.state.sala}
-                        usuario={this.state.usuario}
-                        guardar={this.state.guardar}
-                    />
-                </Col>
-            </div>
+                </Row>
+            </Container>
         );
     }
 }
