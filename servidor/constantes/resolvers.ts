@@ -57,6 +57,15 @@ export default {
             return contexto.db.sala({
                 id: padre.id
             }).usuariosEnSala();
+        },
+        diagramasPorUsuario(
+            padre,
+            argumentos,
+            contexto: ContextoInterface
+        ) {
+            return contexto.db.sala({
+                id: padre.id
+            }).diagramasPorUsuario();
         }
     },
     UsuarioSala: {
@@ -88,6 +97,15 @@ export default {
             return contexto.db.usuario({
                 id: padre.id
             }).usuariosEnSala();
+        },
+        diagramasPorUsuario(
+            padre,
+            argumentos,
+            contexto: ContextoInterface
+        ) {
+            return contexto.db.usuario({
+                id: padre.id
+            }).diagramasPorUsuario();
         }
     },
 };

@@ -5,6 +5,17 @@ export const LISTAR_SALAS = gql`
         findAllSalas {
             id
             nombre
+            diagramasPorUsuario {
+                sala {
+                    id
+                }
+                usuario {
+                    id
+                }
+                diagrama {
+                    datos
+                }
+            }
         }
     }`;
 
@@ -13,6 +24,17 @@ export const LISTAR_USUARIOS = gql`
         findAllUsuarios(idUsuario: $idUsuario) {
             id
             nombre
+            diagramasPorUsuario {
+                sala {
+                    id
+                }
+                usuario {
+                    id
+                }
+                diagrama {
+                    datos
+                }
+            }
         }
     }`;
 
@@ -29,15 +51,6 @@ export const USUARIOS_EN_SALA = gql`
             sala {
                 id
                 nombre
-            }
-        }
-    }`;
-
-export const VERIFICAR_DIAGRAMA_USUARIO = gql`
-    query VerificarDiagramaUsuario($idSala: ID!, $idUsuario: ID!) {
-        verificarDiagramaUsuario(idSala: $idSala, idUsuario: $idUsuario) {
-            diagrama {
-                datos
             }
         }
     }`;

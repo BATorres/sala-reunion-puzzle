@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Button, Card, Col, Row} from "react-bootstrap";
-import {Mutation, Query, graphql} from 'react-apollo';
+import {Query, graphql} from 'react-apollo';
 import {flowRight as compose} from 'lodash';
 import {NUEVA_SALA} from "../../constantes/subscriptors";
-import {LISTAR_SALAS, VERIFICAR_DIAGRAMA_USUARIO} from "../../constantes/queries";
+import {LISTAR_SALAS} from "../../constantes/queries";
 import {UNIRSE_SALA} from "../../constantes/mutations";
 import Container from "react-bootstrap/Container";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
@@ -106,6 +106,7 @@ class ListarSalas extends Component {
 
                                                         <Button
                                                             type="primary"
+                                                            block
                                                             onClick={
                                                                 () => this.accederSala(sala)
                                                             }>Ir a sala
@@ -129,12 +130,6 @@ export default compose(
         UNIRSE_SALA,
         {
             name: 'unirseSala'
-        }
-    ),
-    graphql(
-        VERIFICAR_DIAGRAMA_USUARIO,
-        {
-            name: 'verificarDiagramaUsuario'
         }
     )
 )

@@ -15,6 +15,9 @@ import Container from "react-bootstrap/Container";
 import BreadcrumbItem from "react-bootstrap/BreadcrumbItem";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import DiagramaGlobal, {diagramaGlobal} from "../../componentes/DiagramaGlobal/DiagramaGlobal";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+import {MdScreenShare} from "react-icons/md";
 
 var datosCompartidos;
 
@@ -34,11 +37,25 @@ class SalaReunion extends Component {
         super(props);
 
         this.state = {
-            sala: this.props.match.params,
+            sala: this.props.location.state.sala,
             usuarioAdmin: localStorage.getItem('usuarioAdmin'),
             usuario: localStorage.getItem('usuario'),
-            llaveSeleccionada: 'diagramaEditable'
+            llaveSeleccionada: 'diagramaEditable',
         };
+    }
+
+    componentDidMount() {
+        const datosDiagramaExistentes = this.state.sala.diagramasPorUsuario
+            .filter(
+                (diagramaPorUsuario) => {
+                    return diagramaPorUsuario.sala.id === this.state.sala.id && diagramaPorUsuario.usuario.id === localStorage.getItem('usuario')
+                }
+            );
+        const existenDiagramasExistentes = datosDiagramaExistentes.length > 0;
+        if (existenDiagramasExistentes) {
+            const datosACargar = datosDiagramaExistentes[0].diagrama.datos;
+            diagramaEditable.model = go.Model.fromJson(JSON.parse(datosACargar));
+        }
     }
 
     subscribeNuevoUsuarioSala = subscribeToMore => {
@@ -52,7 +69,7 @@ class SalaReunion extends Component {
                     .find(
                         ({id}) => id === nuevoUsuarioEnSala.usuario.id
                     );
-                if (existeNuevoUsuarioEnSala && datosSubscription.sala.id === this.state.sala.idSala) return usuariosEnSala.findAllUsuariosEnSala;
+                if (existeNuevoUsuarioEnSala && datosSubscription.sala.id === this.state.sala.id) return usuariosEnSala.findAllUsuariosEnSala;
                 return Object.assign({}, usuariosEnSala, {
                     findAllUsuariosEnSala: [datosSubscription, ...usuariosEnSala.findAllUsuariosEnSala]
                 });
@@ -70,7 +87,7 @@ class SalaReunion extends Component {
                     .findIndex(
                         ({id}) => id === datosSubscription.id
                     );
-                if (usuarioPidioLaPalabra && datosSubscription.sala.id === this.state.sala.idSala) return usuariosEnSala.findAllUsuariosEnSala;
+                if (usuarioPidioLaPalabra && datosSubscription.sala.id === this.state.sala.id) return usuariosEnSala.findAllUsuariosEnSala;
                 let nuevoArreglo = [...usuariosEnSala.findAllUsuariosEnSala];
                 nuevoArreglo[usuarioPidioLaPalabra] = datosSubscription;
                 return Object.assign({}, nuevoArreglo, {
@@ -92,7 +109,7 @@ class SalaReunion extends Component {
     pedirLaPalabra = () => {
         this.props.accionesUsuarioSala({
             variables: {
-                idSala: this.state.sala.idSala,
+                idSala: this.state.sala.id,
                 idUsuario: localStorage.getItem('usuario'),
                 tipoAccion: 'Pedir la palabra'
             }
@@ -102,7 +119,7 @@ class SalaReunion extends Component {
     compartirPantalla = () => {
         this.props.accionesUsuarioSala({
             variables: {
-                idSala: this.state.sala.idSala,
+                idSala: this.state.sala.id,
                 idUsuario: localStorage.getItem('usuario'),
                 tipoAccion: 'Compartir pantalla'
             }
@@ -112,7 +129,7 @@ class SalaReunion extends Component {
 
         this.props.guardarDiagramaUsuario({
             variables: {
-                idSala: this.state.sala.idSala,
+                idSala: this.state.sala.id,
                 idUsuario: localStorage.getItem('usuario'),
                 datos: JSON.stringify(datosAGuardar)
             }
@@ -162,7 +179,7 @@ class SalaReunion extends Component {
                     }
 
                     <BreadcrumbItem active>
-                        {sala.idSala}
+                        {sala.nombre}
                     </BreadcrumbItem>
                 </Breadcrumb>
 
@@ -192,19 +209,35 @@ class SalaReunion extends Component {
                         <Container fluid>
                             <Row>
                                 <Col xs={1}>
-                                    <Button
-                                        variant="success"
-                                        onClick={this.pedirLaPalabra}>
-                                        Pedir la palabra
-                                    </Button>
+                                    <OverlayTrigger
+                                        placement="right"
+                                        overlay={
+                                            <Tooltip id="tooltip-levantar-mano">
+                                                Pedir la palabra
+                                            </Tooltip>
+                                        }>
+                                        <Button
+                                            variant="success"
+                                            onClick={this.pedirLaPalabra}>
+                                            <FaRegHandPaper/>
+                                        </Button>
+                                    </OverlayTrigger>
                                 </Col>
 
                                 <Col xs={1}>
-                                    <Button
-                                        variant="info"
-                                        onClick={this.compartirPantalla}>
-                                        Compartir
-                                    </Button>
+                                    <OverlayTrigger
+                                        placement="right"
+                                        overlay={
+                                            <Tooltip id="tooltip-compartir-pantalla">
+                                                Compartir pantalla
+                                            </Tooltip>
+                                        }>
+                                        <Button
+                                            variant="info"
+                                            onClick={this.compartirPantalla}>
+                                            <MdScreenShare/>
+                                        </Button>
+                                    </OverlayTrigger>
                                 </Col>
                             </Row>
                         </Container> : (
@@ -217,7 +250,7 @@ class SalaReunion extends Component {
                                     this.subscribeCambioUsuario(subscribeToMore, {variables: {id: this.state.sala}});
                                     this.subscribeCambiosDiagramaUsuario(subscribeToMore);
 
-                                    const usuariosEnSala = data.findAllUsuariosEnSala.filter(salas => salas.sala.id === this.state.sala.idSala);
+                                    const usuariosEnSala = data.findAllUsuariosEnSala.filter(salas => salas.sala.id === this.state.sala.id);
                                     const existenUsuariosEnSala = usuariosEnSala.length > 0;
 
                                     return (
