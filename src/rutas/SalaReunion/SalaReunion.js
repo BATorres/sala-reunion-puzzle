@@ -10,7 +10,6 @@ import {flowRight as compose} from 'lodash';
 import {CAMBIOS_DIAGRAMA_USUARIO, CAMBIOS_USUARIO, NUEVO_USUARIO_SALA} from "../../constantes/subscriptors";
 import {ACCIONES_USUARIO_SALA, GUARDAR_DIAGRAMA_USUARIO} from "../../constantes/mutations";
 import {USUARIOS_EN_SALA, VERIFICAR_DIAGRAMA_USUARIO} from "../../constantes/queries";
-import {makeStyles} from '@material-ui/core/styles';
 import Container from "react-bootstrap/Container";
 import BreadcrumbItem from "react-bootstrap/BreadcrumbItem";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
@@ -20,17 +19,6 @@ import Tooltip from "react-bootstrap/Tooltip";
 import {MdScreenShare} from "react-icons/md";
 
 var datosCompartidos;
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
-    paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-    },
-}));
 
 class SalaReunion extends Component {
     constructor(props) {
