@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
 import {Button, Card, Col, Row} from "react-bootstrap";
-import {Mutation, Query, graphql} from 'react-apollo';
+import {Query, graphql} from 'react-apollo';
 import {flowRight as compose} from 'lodash';
 import {NUEVA_SALA} from "../../constantes/subscriptors";
 import {LISTAR_SALAS} from "../../constantes/queries";
 import {UNIRSE_SALA} from "../../constantes/mutations";
+import Container from "react-bootstrap/Container";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
+import BreadcrumbItem from "react-bootstrap/BreadcrumbItem";
 
 class ListarSalas extends Component {
     constructor(props) {
@@ -49,7 +52,7 @@ class ListarSalas extends Component {
                 state: {sala: sala, usuario: usuario}
             });
 
-            this.props.mutate({
+            this.props.unirseSala({
                 variables: {
                     idSala: sala.id,
                     idUsuario: localStorage.getItem('usuario')
@@ -69,30 +72,50 @@ class ListarSalas extends Component {
 
                     const salasAMostrar = data.findAllSalas;
                     const existenSalasDisponibles = salasAMostrar.length > 0;
+                    const esAdmin = this.props.history.location.pathname.includes('admin');
 
                     return (
                         <div>
                             {
                                 !existenSalasDisponibles ?
                                     <h2>No existen salas de reunión</h2> :
-                                    <Row>
-                                        <Col xs={3}></Col>
-                                        <Col xs={6}>
-                                            {salasAMostrar.map(sala => <Card key={sala.id}>
-                                                <Card.Body>
-                                                    <Card.Text>
-                                                        {sala.nombre}
-                                                    </Card.Text>
-                                                    <Button
-                                                        type="primary"
-                                                        onClick={() => this.accederSala(sala)
-                                                        }>Ir a
-                                                        sala</Button>
-                                                </Card.Body>
-                                            </Card>)}
-                                        </Col>
-                                        <Col xs={3}></Col>
-                                    </Row>
+                                    <Container fluid>
+                                        <Breadcrumb>
+                                            <BreadcrumbItem href="/">
+                                                Inicio
+                                            </BreadcrumbItem>
+
+                                            {esAdmin ?
+                                                <BreadcrumbItem href="/admin/menu">
+                                                    Menú
+                                                </BreadcrumbItem> : ''
+                                            }
+
+                                            <BreadcrumbItem active>
+                                                Lista de salas
+                                            </BreadcrumbItem>
+                                        </Breadcrumb>
+
+                                        <Row>
+                                            {salasAMostrar.map(sala => <Col xs={3}>
+                                                <Card key={sala.id}>
+                                                    <Card.Body>
+                                                        <Card.Text>
+                                                            {sala.nombre}
+                                                        </Card.Text>
+
+                                                        <Button
+                                                            type="primary"
+                                                            block
+                                                            onClick={
+                                                                () => this.accederSala(sala)
+                                                            }>Ir a sala
+                                                        </Button>
+                                                    </Card.Body>
+                                                </Card>
+                                            </Col>)}
+                                        </Row>
+                                    </Container>
                             }
                         </div>
                     )
@@ -103,6 +126,11 @@ class ListarSalas extends Component {
 }
 
 export default compose(
-    graphql(UNIRSE_SALA)
+    graphql(
+        UNIRSE_SALA,
+        {
+            name: 'unirseSala'
+        }
+    )
 )
 (ListarSalas);

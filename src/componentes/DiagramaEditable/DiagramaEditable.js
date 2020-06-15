@@ -62,15 +62,15 @@ function crearDiagrama(id) {
     diagramaEditable.linkTemplate = crearConexion($);
     diagramaEditable.linkTemplateMap.add(
         'Casualidad',
-        crearCasualidad($)
+        crearCasualidad($, true)
     );
     diagramaEditable.linkTemplateMap.add(
         'Confirmación',
-        crearConfirmacion($)
+        crearConfirmacion($, true)
     );
     diagramaEditable.linkTemplateMap.add(
         'Contradicción',
-        crearContradiccion($)
+        crearContradiccion($, true)
     );
 
     // definir botones nodos

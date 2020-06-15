@@ -5,6 +5,17 @@ export const LISTAR_SALAS = gql`
         findAllSalas {
             id
             nombre
+            diagramasPorUsuario {
+                sala {
+                    id
+                }
+                usuario {
+                    id
+                }
+                diagrama {
+                    datos
+                }
+            }
         }
     }`;
 
@@ -13,6 +24,17 @@ export const LISTAR_USUARIOS = gql`
         findAllUsuarios(idUsuario: $idUsuario) {
             id
             nombre
+            diagramasPorUsuario {
+                sala {
+                    id
+                }
+                usuario {
+                    id
+                }
+                diagrama {
+                    datos
+                }
+            }
         }
     }`;
 
