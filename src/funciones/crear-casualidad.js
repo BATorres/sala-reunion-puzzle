@@ -57,7 +57,8 @@ export function crearCasualidad(graphObject, esDiagramaEditable) {
                             'Horizontal',
                             {
                                 alignment: go.Spot.Top,
-                                alignmentFocus: go.Spot.Bottom
+                                alignmentFocus: go.Spot.Bottom,
+                                height: 80
                             },
                             graphObject(
                                 'Button',
@@ -151,6 +152,14 @@ export function crearCasualidad(graphObject, esDiagramaEditable) {
                 {
                     stroke: 'blue',
                     strokeWidth: 2
+                }
+            ),
+            graphObject(
+                go.Shape,
+                {
+                    stroke: 'blue',
+                    strokeWidth: 2,
+                    toArrow: 'OpenTriangle'
                 }
             ),
         )
