@@ -49,7 +49,8 @@ export function crearContradiccion(graphObject, esDiagramaEditable) {
                             'Horizontal',
                             {
                                 alignment: go.Spot.Top,
-                                alignmentFocus: go.Spot.Bottom
+                                alignmentFocus: go.Spot.Bottom,
+                                height: 80
                             },
                             graphObject(
                                 'Button',

@@ -9,7 +9,7 @@ import {Query, graphql} from 'react-apollo';
 import {flowRight as compose} from 'lodash';
 import {CAMBIOS_DIAGRAMA_USUARIO, CAMBIOS_USUARIO, NUEVO_USUARIO_SALA} from "../../constantes/subscriptors";
 import {ACCIONES_USUARIO_SALA, GUARDAR_DIAGRAMA_USUARIO} from "../../constantes/mutations";
-import {USUARIOS_EN_SALA, VERIFICAR_DIAGRAMA_USUARIO} from "../../constantes/queries";
+import {USUARIOS_EN_SALA} from "../../constantes/queries";
 import Container from "react-bootstrap/Container";
 import BreadcrumbItem from "react-bootstrap/BreadcrumbItem";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
@@ -17,6 +17,7 @@ import DiagramaGlobal, {diagramaGlobal} from "../../componentes/DiagramaGlobal/D
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import {MdScreenShare} from "react-icons/md";
+import Spinner from "react-bootstrap/Spinner";
 
 var datosCompartidos;
 
@@ -33,16 +34,19 @@ class SalaReunion extends Component {
     }
 
     componentDidMount() {
-        const datosDiagramaExistentes = this.state.sala.diagramasPorUsuario
-            .filter(
-                (diagramaPorUsuario) => {
-                    return diagramaPorUsuario.sala.id === this.state.sala.id && diagramaPorUsuario.usuario.id === localStorage.getItem('usuario')
-                }
-            );
-        const existenDiagramasExistentes = datosDiagramaExistentes.length > 0;
-        if (existenDiagramasExistentes) {
-            const datosACargar = datosDiagramaExistentes[0].diagrama.datos;
-            diagramaEditable.model = go.Model.fromJson(JSON.parse(datosACargar));
+        const existenDiagramasEnSala = this.state.sala.diagramasPorUsuario.length > 0;
+        if (existenDiagramasEnSala) {
+            const datosDiagramaExistentes = this.state.sala.diagramasPorUsuario
+                .filter(
+                    (diagramaPorUsuario) => {
+                        return diagramaPorUsuario.sala.id === this.state.sala.id && diagramaPorUsuario.usuario.id === localStorage.getItem('usuario')
+                    }
+                );
+            const esUsuarioYTieneDiagramaSala =  this.props.history.location.pathname.includes('usuario') && datosDiagramaExistentes.length > 0;
+            if (esUsuarioYTieneDiagramaSala) {
+                const datosACargar = datosDiagramaExistentes[0].diagrama.datos;
+                diagramaEditable.model = go.Model.fromJson(JSON.parse(datosACargar));
+            }
         }
     }
 
@@ -152,16 +156,16 @@ class SalaReunion extends Component {
                     </BreadcrumbItem>
 
                     {esAdmin ?
-                        <BreadcrumbItem href="/admin/menu">
+                        <BreadcrumbItem href={window.location.protocol + '//' + window.location.host + '/admin/menu'}>
                             Menú
                         </BreadcrumbItem> : ''
                     }
 
                     {esAdmin ?
-                        <BreadcrumbItem href="/admin/listar-salas">
+                        <BreadcrumbItem href={window.location.protocol + '//' + window.location.host + '/admin/listar-salas'}>
                             Lista de salas
                         </BreadcrumbItem> :
-                        <BreadcrumbItem href="/usuario/listar-salas">
+                        <BreadcrumbItem href={window.location.protocol + '//' + window.location.host + '/usuario/listar-salas'}>
                             Lista de salas
                         </BreadcrumbItem>
                     }
@@ -231,7 +235,7 @@ class SalaReunion extends Component {
                         </Container> : (
                             <Query query={USUARIOS_EN_SALA}>
                                 {({loading, error, data, subscribeToMore}) => {
-                                    if (loading) return <p>Cargando ...</p>;
+                                    if (loading) return <Spinner id="spinner" animation="border"/>;
                                     if (error) return <p>Error ...</p>;
 
                                     this.subscribeNuevoUsuarioSala(subscribeToMore, {variables: {id: this.state.sala}});
