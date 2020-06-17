@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {Mutation} from 'react-apollo';
 import {CREAR_SALA} from "../../constantes/mutations";
+import BreadcrumbItem from "react-bootstrap/BreadcrumbItem";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
+import Container from "react-bootstrap/Container";
 
 class CrearSala extends Component {
     constructor(props) {
@@ -41,34 +44,50 @@ class CrearSala extends Component {
     render() {
         const {sala, error} = this.state;
         return (
-            <div id="login">
-                <Mutation mutation={CREAR_SALA}>
-                    {(crearSala, {data}) => (
-                        <form id="formulario" onSubmit={
-                            evento => {
-                                const {usuario} = this.state;
-                                evento.preventDefault();
-                                crearSala({variables: {nombre: sala}});
-                                this.props.history.push({
-                                    pathname: '/admin/listar-salas',
-                                    state: {usuarioAdmin: usuario}
-                                });
-                            }
-                        }>
-                            <label htmlFor="sala">
-                                <h2>Ingrese el nombre de la sala</h2>
-                            </label>
-                            <input type="text"
-                                   id="sala"
-                                   value={sala}
-                                   placeholder={'Ingrese un nombre para la sala. EJ: Sala 1'}
-                                   onChange={this.escucharCambiosFormulario}
-                            />
-                            <div>{error ? error : null}</div>
-                        </form>
-                    )}
-                </Mutation>
-            </div>
+            <Container fluid>
+                <Breadcrumb>
+                    <BreadcrumbItem href="/">
+                        Inicio
+                    </BreadcrumbItem>
+
+                    <BreadcrumbItem href={window.location.protocol + '//' + window.location.host + '/admin/menu'}>
+                        Menú
+                    </BreadcrumbItem>
+
+                    <BreadcrumbItem active>
+                        Crear sala
+                    </BreadcrumbItem>
+                </Breadcrumb>
+
+                <div id="login">
+                    <Mutation mutation={CREAR_SALA}>
+                        {(crearSala, {data}) => (
+                            <form id="formulario" onSubmit={
+                                evento => {
+                                    const {usuario} = this.state;
+                                    evento.preventDefault();
+                                    crearSala({variables: {nombre: sala}});
+                                    this.props.history.push({
+                                        pathname: '/admin/listar-salas',
+                                        state: {usuarioAdmin: usuario}
+                                    });
+                                }
+                            }>
+                                <label htmlFor="sala">
+                                    <h2>Ingrese el nombre de la sala</h2>
+                                </label>
+                                <input type="text"
+                                       id="sala"
+                                       value={sala}
+                                       placeholder={'Ingrese un nombre para la sala. EJ: Sala 1'}
+                                       onChange={this.escucharCambiosFormulario}
+                                />
+                                <div>{error ? error : null}</div>
+                            </form>
+                        )}
+                    </Mutation>
+                </div>
+            </Container>
         )
     }
 }

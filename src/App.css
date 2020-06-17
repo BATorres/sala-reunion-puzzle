@@ -58,3 +58,12 @@
   top: 50%;
   position: absolute;
 }
+
+.react-icons {
+  size: 10em 10em;
+  vertical-align: middle;
+}
+
+.card-title {
+  text-align: center;
+}

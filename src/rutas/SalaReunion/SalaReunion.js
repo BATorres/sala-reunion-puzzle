@@ -9,7 +9,7 @@ import {Query, graphql} from 'react-apollo';
 import {flowRight as compose} from 'lodash';
 import {CAMBIOS_DIAGRAMA_USUARIO, CAMBIOS_USUARIO, NUEVO_USUARIO_SALA} from "../../constantes/subscriptors";
 import {ACCIONES_USUARIO_SALA, GUARDAR_DIAGRAMA_USUARIO} from "../../constantes/mutations";
-import {USUARIOS_EN_SALA, VERIFICAR_DIAGRAMA_USUARIO} from "../../constantes/queries";
+import {USUARIOS_EN_SALA} from "../../constantes/queries";
 import Container from "react-bootstrap/Container";
 import BreadcrumbItem from "react-bootstrap/BreadcrumbItem";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
@@ -156,16 +156,16 @@ class SalaReunion extends Component {
                     </BreadcrumbItem>
 
                     {esAdmin ?
-                        <BreadcrumbItem href="/admin/menu">
+                        <BreadcrumbItem href={window.location.protocol + '//' + window.location.host + '/admin/menu'}>
                             Menú
                         </BreadcrumbItem> : ''
                     }
 
                     {esAdmin ?
-                        <BreadcrumbItem href="/admin/listar-salas">
+                        <BreadcrumbItem href={window.location.protocol + '//' + window.location.host + '/admin/listar-salas'}>
                             Lista de salas
                         </BreadcrumbItem> :
-                        <BreadcrumbItem href="/usuario/listar-salas">
+                        <BreadcrumbItem href={window.location.protocol + '//' + window.location.host + '/usuario/listar-salas'}>
                             Lista de salas
                         </BreadcrumbItem>
                     }

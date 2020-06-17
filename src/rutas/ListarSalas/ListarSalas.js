@@ -87,7 +87,7 @@ class ListarSalas extends Component {
                                             </BreadcrumbItem>
 
                                             {esAdmin ?
-                                                <BreadcrumbItem href="/admin/menu">
+                                                <BreadcrumbItem href={window.location.protocol + '//' + window.location.host + '/admin/menu'}>
                                                     Menú
                                                 </BreadcrumbItem> : ''
                                             }
@@ -98,12 +98,14 @@ class ListarSalas extends Component {
                                         </Breadcrumb>
 
                                         <Row>
-                                            {salasAMostrar.map(sala => <Col xs={3}>
+                                            {salasAMostrar.map(sala => <Col xs={2}>
                                                 <Card key={sala.id}>
                                                     <Card.Body>
-                                                        <Card.Text>
+                                                        <Card.Title className="card-title">
                                                             {sala.nombre}
-                                                        </Card.Text>
+                                                        </Card.Title>
+
+                                                        <Card.Img src={require('../../assets/imagenes/project.svg')}/>
 
                                                         <Button
                                                             type="primary"

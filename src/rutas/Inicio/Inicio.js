@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Container, Row} from "react-bootstrap";
 import Col from "react-bootstrap/Col";
+import {FaTrash, FaUser, FaUserCog} from "react-icons/fa";
 
 class Inicio extends Component {
     constructor(props) {
@@ -18,7 +19,7 @@ class Inicio extends Component {
                 <Row>
                     <Col>
                         <Button
-                            variant="primary"
+                            variant="outline-dark"
                             block
                             onClick={() => {
                                 if (this.state.usuarioAdmin) {
@@ -28,13 +29,16 @@ class Inicio extends Component {
                                 }
                             }}
                         >
+                            <div className="react-icons">
+                                <FaUserCog/>
+                            </div>
                             Soy admin
                         </Button>
                     </Col>
 
                     <Col>
                         <Button
-                            variant="info"
+                            variant="outline-dark"
                             block
                             onClick={() => {
                                 if (this.state.usuario) {
@@ -44,18 +48,24 @@ class Inicio extends Component {
                                 }
                             }}
                         >
+                            <div className="react-icons">
+                                <FaUser/>
+                            </div>
                             Soy usuario
                         </Button>
                     </Col>
 
                     <Col>
                         <Button
-                            variant="danger"
+                            variant="outline-danger"
                             block
                             onClick={() => {
                                 localStorage.clear();
                             }}
                         >
+                            <div className="react-icons">
+                                <FaTrash/>
+                            </div>
                             Limpiar local storage
                         </Button>
                     </Col>
