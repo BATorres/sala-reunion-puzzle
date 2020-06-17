@@ -52,3 +52,9 @@
   height: 200px;
   width: 200px;
 }
+
+#spinner {
+  left: 50%;
+  top: 50%;
+  position: absolute;
+}
