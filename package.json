@@ -27,6 +27,8 @@
     "lodash": "^4.17.15",
     "nodemon": "^1.19.4",
     "open": "^7.0.3",
+    "primeicons": "^4.0.0",
+    "primereact": "^4.2.2",
     "prisma-binding": "^2.3.16",
     "prisma-client-lib": "^1.34.10",
     "react": "^16.13.0",
