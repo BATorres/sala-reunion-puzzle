@@ -152,6 +152,20 @@ export function crearConfirmacion(graphObject, esDiagramaEditable) {
                     stroke: 'green'
                 },
             ),
+            graphObject(
+                go.Panel,
+                'Auto',
+                graphObject(
+                    go.TextBlock,
+                    {
+                        name: 'Texto',
+                    },
+                    new go.Binding(
+                        'text',
+                        'key',
+                    ).makeTwoWay()
+                )
+            ),
         )
     }
 }

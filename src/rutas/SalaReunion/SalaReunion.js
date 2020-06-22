@@ -129,6 +129,16 @@ class SalaReunion extends Component {
         })
     };
 
+    cancelar = () => {
+        this.props.accionesUsuarioSala({
+            variables: {
+                idSala: this.state.sala.id,
+                idUsuario: localStorage.getItem('usuario'),
+                tipoAccion: 'Cancelar'
+            }
+        });
+    };
+
     cargarDatosCompartidos = (usuario) => {
         const lleganDatosCompartidos = datosCompartidos !== undefined;
 
@@ -186,33 +196,27 @@ class SalaReunion extends Component {
                                     <Row>
                                         <Col>
                                             <Paleta/>
-                                            <OverlayTrigger
-                                                placement="right"
-                                                overlay={
-                                                    <Tooltip id="tooltip-levantar-mano">
-                                                        Pedir la palabra
-                                                    </Tooltip>
-                                                }>
-                                                <Button
-                                                    variant="success"
-                                                    onClick={this.pedirLaPalabra}>
-                                                    <FaRegHandPaper/>
-                                                </Button>
-                                            </OverlayTrigger>
 
-                                            <OverlayTrigger
-                                                placement="right"
-                                                overlay={
-                                                    <Tooltip id="tooltip-compartir-pantalla">
-                                                        Compartir pantalla
-                                                    </Tooltip>
-                                                }>
-                                                <Button
-                                                    variant="info"
-                                                    onClick={this.compartirPantalla}>
-                                                    <MdScreenShare/>
-                                                </Button>
-                                            </OverlayTrigger>
+                                            <Button
+                                                variant="success"
+                                                block
+                                                onClick={this.pedirLaPalabra}>
+                                                <FaRegHandPaper/> Pedir la palabra
+                                            </Button>
+
+                                            <Button
+                                                variant="info"
+                                                block
+                                                onClick={this.compartirPantalla}>
+                                                <MdScreenShare/> Compartir pantalla
+                                            </Button>
+
+                                            <Button
+                                                variant="danger"
+                                                block
+                                                onClick={this.cancelar}>
+                                                Cancelar
+                                            </Button>
                                         </Col>
                                     </Row>
                                 </Col>
@@ -234,7 +238,7 @@ class SalaReunion extends Component {
                                                         <Button
                                                             block
                                                         >
-                                                           Guardar
+                                                            Guardar
                                                         </Button>
                                                     </Row>
                                                 </Col>
@@ -265,34 +269,32 @@ class SalaReunion extends Component {
                                                                     {
                                                                         !existenUsuariosEnSala ?
                                                                             <h2>No existen usuarios en sala</h2> :
-                                                                            <Container fluid>
-                                                                                <Col>
-                                                                                    {usuariosEnSala.map(
-                                                                                        (usuarios, indice) =>
-                                                                                            <Button
-                                                                                                key={indice}
-                                                                                                block
-                                                                                                disabled={!usuarios.compartirPantalla}
-                                                                                                onClick={
-                                                                                                    () => this.cargarDatosCompartidos(usuarios)
-                                                                                                }
-                                                                                            >
-                                                                                                {
-                                                                                                    usuarios.compartirPantalla
-                                                                                                        ?
-                                                                                                        <FaSatelliteDish/>
-                                                                                                        : (
-                                                                                                            !usuarios.levantarMano
-                                                                                                                ?
-                                                                                                                <FaLock/> :
-                                                                                                                <FaRegHandPaper/>
-                                                                                                        )
-                                                                                                }
-                                                                                                {usuarios.usuario.nombre}
-                                                                                            </Button>
-                                                                                    )}
-                                                                                </Col>
-                                                                            </Container>
+                                                                            <Col>
+                                                                                {usuariosEnSala.map(
+                                                                                    (usuarios, indice) =>
+                                                                                        <Button
+                                                                                            key={indice}
+                                                                                            block
+                                                                                            disabled={!usuarios.compartirPantalla}
+                                                                                            onClick={
+                                                                                                () => this.cargarDatosCompartidos(usuarios)
+                                                                                            }
+                                                                                        >
+                                                                                            {
+                                                                                                usuarios.compartirPantalla
+                                                                                                    ?
+                                                                                                    <FaSatelliteDish/>
+                                                                                                    : (
+                                                                                                        !usuarios.levantarMano
+                                                                                                            ?
+                                                                                                            <FaLock/> :
+                                                                                                            <FaRegHandPaper/>
+                                                                                                    )
+                                                                                            }
+                                                                                            {usuarios.usuario.nombre}
+                                                                                        </Button>
+                                                                                )}
+                                                                            </Col>
                                                                     }
                                                                 </div>
                                                             )
@@ -418,3 +420,34 @@ export default compose(
             }}
         </Query>)
 }*/
+
+{/*<OverlayTrigger
+    placement="right"
+    overlay={
+        <Tooltip id="tooltip-levantar-mano">
+            Pedir la palabra
+        </Tooltip>
+    }>
+    <Button
+        variant="success"
+        block
+        onClick={this.pedirLaPalabra}>
+        <FaRegHandPaper/>
+    </Button>
+</OverlayTrigger>
+
+<OverlayTrigger
+placement="right"
+overlay={
+<Tooltip id="tooltip-compartir-pantalla">
+    Compartir pantalla
+</Tooltip>
+}>
+<Button
+variant="info"
+block
+onClick={this.compartirPantalla}>
+    <MdScreenShare/>
+    </Button>
+</OverlayTrigger>*/
+}

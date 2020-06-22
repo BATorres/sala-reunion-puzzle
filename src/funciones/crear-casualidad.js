@@ -162,6 +162,16 @@ export function crearCasualidad(graphObject, esDiagramaEditable) {
                     toArrow: 'OpenTriangle'
                 }
             ),
+            graphObject(
+                go.TextBlock,
+                {
+                    name: 'Texto'
+                },
+                new go.Binding(
+                    'text',
+                    'key',
+                ).makeTwoWay()
+            ),
         )
     }
 }
