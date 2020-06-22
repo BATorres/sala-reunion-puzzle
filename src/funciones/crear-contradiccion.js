@@ -146,6 +146,16 @@ export function crearContradiccion(graphObject, esDiagramaEditable) {
                     stroke: 'red'
                 },
             ),
+            graphObject(
+                go.TextBlock,
+                {
+                    name: 'Texto'
+                },
+                new go.Binding(
+                    'text',
+                    'key',
+                ).makeTwoWay()
+            ),
         )
     }
 }

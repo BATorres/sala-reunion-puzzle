@@ -6,6 +6,9 @@ import {ApolloProvider} from "react-apollo";
 import {WebSocketLink} from "apollo-link-ws";
 import {getMainDefinition} from "apollo-utilities";
 import {HttpLink} from "apollo-link-http";
+import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 
 const webSocketLink = new WebSocketLink({
     uri: `wss://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev`,
