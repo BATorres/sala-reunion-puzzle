@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {Apollo} from 'apollo-angular';
-import {LISTAR_SALAS} from '../../../../constantes/queries';
+import {Component, OnInit} from '@angular/core';
+import {BuscarSalasService} from '../../../../servicios/query/buscar-salas.service';
 
 @Component({
   selector: 'app-ruta-listar-salas',
@@ -10,16 +9,18 @@ import {LISTAR_SALAS} from '../../../../constantes/queries';
 export class RutaListarSalasComponent implements OnInit {
 
   constructor(
-    private readonly _apollo: Apollo
-  ) { }
+    private readonly _buscarSalasService: BuscarSalasService,
+  ) {
+  }
 
   ngOnInit(): void {
-    this._apollo.watchQuery({
-      query: LISTAR_SALAS
-    }).valueChanges.subscribe(
-      (salas) => {
-        console.log('salas', salas);
-      }
-    )
+    this._buscarSalasService
+      .watch()
+      .valueChanges
+      .subscribe(
+        (salas) => {
+          console.log('salas', salas)
+        }
+      )
   }
 }

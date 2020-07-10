@@ -7,6 +7,9 @@ import {GraphQLModule} from './apollo.config';
 import {RutaInicioComponent} from './rutas/ruta-inicio/ruta-inicio.component';
 import {RutaNoEncontradaComponent} from './rutas/ruta-no-encontrada/ruta-no-encontrada.component';
 import {SalasModule} from './modulos/salas/salas.module';
+import {BuscarUsuariosService} from './servicios/query/buscar-usuarios.service';
+import {BuscarSalasService} from './servicios/query/buscar-salas.service';
+import {BuscarUsuariosEnSalaService} from './servicios/query/buscar-usuarios-en-sala.service';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,11 @@ import {SalasModule} from './modulos/salas/salas.module';
     GraphQLModule,
     SalasModule
   ],
-  providers: [],
+  providers: [
+    BuscarSalasService,
+    BuscarUsuariosEnSalaService,
+    BuscarUsuariosService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

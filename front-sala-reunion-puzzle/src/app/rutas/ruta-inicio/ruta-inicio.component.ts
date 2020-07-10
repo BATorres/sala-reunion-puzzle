@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {BuscarUsuariosService} from '../../servicios/query/buscar-usuarios.service';
 
 @Component({
   selector: 'app-ruta-inicio',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RutaInicioComponent implements OnInit {
 
-  constructor() { }
+  cargando: boolean = true;
+
+  constructor(
+    private readonly _buscarUsuario: BuscarUsuariosService
+  ) { }
 
   ngOnInit(): void {
+    this._buscarUsuario.watch({nombre: 'Wendy'}).valueChanges.subscribe(
+      (usuario) => {
+        this.cargando = usuario.loading;
+        console.log('usuario', usuario)
+      }
+    );
   }
 
 }
