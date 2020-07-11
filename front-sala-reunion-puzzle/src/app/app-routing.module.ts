@@ -20,7 +20,7 @@ const routes: Routes = [
     component: RutaListarSalasComponent,
   },
   {
-    path: 'sala-reunion/:idSala',
+    path: 'sala-reunion',
     component: RutaSalaReunionComponent,
   },
   {
