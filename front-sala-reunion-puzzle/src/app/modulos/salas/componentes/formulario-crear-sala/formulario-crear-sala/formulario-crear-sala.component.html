@@ -1,0 +1,58 @@
+<form novalidate
+      [formGroup]="formularioCrearSala"
+      (ngSubmit)="crearSala()"
+>
+  <fieldset class="col-sm-12">
+    <div class="row">
+      <div class="col-sm-6 form-group">
+        <label for="nombreSala">
+          Nombre
+        </label>
+
+        <input
+          id="nombreSala"
+          class="form-control"
+          formControlName="nombre"
+          type="text"
+          placeholder="EJ: Nueva sala"
+          aria-describedby="ayudaNombreSala"
+        >
+
+        <small
+          id="ayudaNombreSala"
+          class="form-text text-muted"
+        >
+          Ingrese el nombre de la nueva sala
+        </small>
+      </div>
+
+      <div class="col-sm-6 form-group">
+        <label for="nombreSala">
+          Descripción
+        </label>
+
+        <input
+          id="descripcionSala"
+          class="form-control"
+          formControlName="descripcion"
+          type="text"
+          placeholder="EJ: Esta sala es ..."
+          aria-describedby="ayudaDescripcionSala"
+        >
+
+        <small
+          id="ayudaDescripcionSala"
+          class="form-text text-muted"
+        >
+          Ingrese una descripción para la sala
+        </small>
+      </div>
+
+      <button class="btn btn-success"
+              [disabled]="formularioCrearSala.invalid"
+              type="submit">
+        CREAR
+      </button>
+    </div>
+  </fieldset>
+</form>

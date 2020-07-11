@@ -303,7 +303,9 @@ export type SalaOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC"
   | "nombre_ASC"
-  | "nombre_DESC";
+  | "nombre_DESC"
+  | "descripcion_ASC"
+  | "descripcion_DESC";
 
 export type UsuarioOrderByInput =
   | "id_ASC"
@@ -314,6 +316,8 @@ export type UsuarioOrderByInput =
   | "updatedAt_DESC"
   | "nombre_ASC"
   | "nombre_DESC"
+  | "password_ASC"
+  | "password_DESC"
   | "esAdmin_ASC"
   | "esAdmin_DESC";
 
@@ -426,6 +430,20 @@ export interface UsuarioWhereInput {
   nombre_not_starts_with?: Maybe<String>;
   nombre_ends_with?: Maybe<String>;
   nombre_not_ends_with?: Maybe<String>;
+  password?: Maybe<String>;
+  password_not?: Maybe<String>;
+  password_in?: Maybe<String[] | String>;
+  password_not_in?: Maybe<String[] | String>;
+  password_lt?: Maybe<String>;
+  password_lte?: Maybe<String>;
+  password_gt?: Maybe<String>;
+  password_gte?: Maybe<String>;
+  password_contains?: Maybe<String>;
+  password_not_contains?: Maybe<String>;
+  password_starts_with?: Maybe<String>;
+  password_not_starts_with?: Maybe<String>;
+  password_ends_with?: Maybe<String>;
+  password_not_ends_with?: Maybe<String>;
   esAdmin?: Maybe<Boolean>;
   esAdmin_not?: Maybe<Boolean>;
   usuariosEnSala_every?: Maybe<UsuarioSalaWhereInput>;
@@ -489,6 +507,7 @@ export interface UsuarioUpdateOneRequiredWithoutUsuariosEnSalaInput {
 export interface UsuarioCreateWithoutDiagramasPorUsuarioInput {
   id?: Maybe<ID_Input>;
   nombre: String;
+  password?: Maybe<String>;
   esAdmin?: Maybe<Boolean>;
   usuariosEnSala?: Maybe<UsuarioSalaCreateManyWithoutUsuarioInput>;
 }
@@ -605,6 +624,7 @@ export interface UsuarioSalaUpdateManyMutationInput {
 export interface SalaCreateWithoutUsuariosEnSalaInput {
   id?: Maybe<ID_Input>;
   nombre: String;
+  descripcion?: Maybe<String>;
   diagramasPorUsuario?: Maybe<DiagramaUsuarioCreateManyWithoutSalaInput>;
 }
 
@@ -624,6 +644,7 @@ export interface DiagramaUsuarioCreateManyWithoutSalaInput {
 
 export interface UsuarioUpdateManyMutationInput {
   nombre?: Maybe<String>;
+  password?: Maybe<String>;
   esAdmin?: Maybe<Boolean>;
 }
 
@@ -644,6 +665,7 @@ export interface DiagramaUpdateInput {
 
 export interface SalaUpdateManyMutationInput {
   nombre?: Maybe<String>;
+  descripcion?: Maybe<String>;
 }
 
 export interface DiagramaUsuarioUpdateManyWithoutDiagramaInput {
@@ -679,6 +701,7 @@ export interface DiagramaUsuarioUpdateManyWithoutDiagramaInput {
 export interface SalaCreateInput {
   id?: Maybe<ID_Input>;
   nombre: String;
+  descripcion?: Maybe<String>;
   usuariosEnSala?: Maybe<UsuarioSalaCreateManyWithoutSalaInput>;
   diagramasPorUsuario?: Maybe<DiagramaUsuarioCreateManyWithoutSalaInput>;
 }
@@ -717,6 +740,7 @@ export type UsuarioSalaWhereUniqueInput = AtLeastOne<{
 
 export interface SalaUpdateWithoutDiagramasPorUsuarioDataInput {
   nombre?: Maybe<String>;
+  descripcion?: Maybe<String>;
   usuariosEnSala?: Maybe<UsuarioSalaUpdateManyWithoutSalaInput>;
 }
 
@@ -818,6 +842,20 @@ export interface SalaWhereInput {
   nombre_not_starts_with?: Maybe<String>;
   nombre_ends_with?: Maybe<String>;
   nombre_not_ends_with?: Maybe<String>;
+  descripcion?: Maybe<String>;
+  descripcion_not?: Maybe<String>;
+  descripcion_in?: Maybe<String[] | String>;
+  descripcion_not_in?: Maybe<String[] | String>;
+  descripcion_lt?: Maybe<String>;
+  descripcion_lte?: Maybe<String>;
+  descripcion_gt?: Maybe<String>;
+  descripcion_gte?: Maybe<String>;
+  descripcion_contains?: Maybe<String>;
+  descripcion_not_contains?: Maybe<String>;
+  descripcion_starts_with?: Maybe<String>;
+  descripcion_not_starts_with?: Maybe<String>;
+  descripcion_ends_with?: Maybe<String>;
+  descripcion_not_ends_with?: Maybe<String>;
   usuariosEnSala_every?: Maybe<UsuarioSalaWhereInput>;
   usuariosEnSala_some?: Maybe<UsuarioSalaWhereInput>;
   usuariosEnSala_none?: Maybe<UsuarioSalaWhereInput>;
@@ -848,6 +886,7 @@ export interface UsuarioCreateOneWithoutUsuariosEnSalaInput {
 
 export interface UsuarioUpdateWithoutUsuariosEnSalaDataInput {
   nombre?: Maybe<String>;
+  password?: Maybe<String>;
   esAdmin?: Maybe<Boolean>;
   diagramasPorUsuario?: Maybe<DiagramaUsuarioUpdateManyWithoutUsuarioInput>;
 }
@@ -955,6 +994,7 @@ export interface DiagramaUpdateWithoutDiagramasPorUsuarioDataInput {
 export interface UsuarioCreateInput {
   id?: Maybe<ID_Input>;
   nombre: String;
+  password?: Maybe<String>;
   esAdmin?: Maybe<Boolean>;
   usuariosEnSala?: Maybe<UsuarioSalaCreateManyWithoutUsuarioInput>;
   diagramasPorUsuario?: Maybe<DiagramaUsuarioCreateManyWithoutUsuarioInput>;
@@ -1149,6 +1189,7 @@ export interface UsuarioSalaUpdateManyDataInput {
 
 export interface UsuarioUpdateInput {
   nombre?: Maybe<String>;
+  password?: Maybe<String>;
   esAdmin?: Maybe<Boolean>;
   usuariosEnSala?: Maybe<UsuarioSalaUpdateManyWithoutUsuarioInput>;
   diagramasPorUsuario?: Maybe<DiagramaUsuarioUpdateManyWithoutUsuarioInput>;
@@ -1181,6 +1222,7 @@ export interface DiagramaCreateInput {
 
 export interface UsuarioUpdateWithoutDiagramasPorUsuarioDataInput {
   nombre?: Maybe<String>;
+  password?: Maybe<String>;
   esAdmin?: Maybe<Boolean>;
   usuariosEnSala?: Maybe<UsuarioSalaUpdateManyWithoutUsuarioInput>;
 }
@@ -1188,6 +1230,7 @@ export interface UsuarioUpdateWithoutDiagramasPorUsuarioDataInput {
 export interface UsuarioCreateWithoutUsuariosEnSalaInput {
   id?: Maybe<ID_Input>;
   nombre: String;
+  password?: Maybe<String>;
   esAdmin?: Maybe<Boolean>;
   diagramasPorUsuario?: Maybe<DiagramaUsuarioCreateManyWithoutUsuarioInput>;
 }
@@ -1229,6 +1272,7 @@ export interface UsuarioSalaUpdateInput {
 
 export interface SalaUpdateWithoutUsuariosEnSalaDataInput {
   nombre?: Maybe<String>;
+  descripcion?: Maybe<String>;
   diagramasPorUsuario?: Maybe<DiagramaUsuarioUpdateManyWithoutSalaInput>;
 }
 
@@ -1252,6 +1296,7 @@ export interface UsuarioSalaUpdateWithWhereUniqueWithoutUsuarioInput {
 
 export interface SalaUpdateInput {
   nombre?: Maybe<String>;
+  descripcion?: Maybe<String>;
   usuariosEnSala?: Maybe<UsuarioSalaUpdateManyWithoutSalaInput>;
   diagramasPorUsuario?: Maybe<DiagramaUsuarioUpdateManyWithoutSalaInput>;
 }
@@ -1276,6 +1321,7 @@ export interface UsuarioSalaSubscriptionWhereInput {
 export interface SalaCreateWithoutDiagramasPorUsuarioInput {
   id?: Maybe<ID_Input>;
   nombre: String;
+  descripcion?: Maybe<String>;
   usuariosEnSala?: Maybe<UsuarioSalaCreateManyWithoutSalaInput>;
 }
 
@@ -1665,6 +1711,7 @@ export interface Sala {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   nombre: String;
+  descripcion?: String;
 }
 
 export interface SalaPromise extends Promise<Sala>, Fragmentable {
@@ -1672,6 +1719,7 @@ export interface SalaPromise extends Promise<Sala>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   nombre: () => Promise<String>;
+  descripcion: () => Promise<String>;
   usuariosEnSala: <T = FragmentableArray<UsuarioSala>>(args?: {
     where?: UsuarioSalaWhereInput;
     orderBy?: UsuarioSalaOrderByInput;
@@ -1699,6 +1747,7 @@ export interface SalaSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   nombre: () => Promise<AsyncIterator<String>>;
+  descripcion: () => Promise<AsyncIterator<String>>;
   usuariosEnSala: <T = Promise<AsyncIterator<UsuarioSalaSubscription>>>(args?: {
     where?: UsuarioSalaWhereInput;
     orderBy?: UsuarioSalaOrderByInput;
@@ -1728,6 +1777,7 @@ export interface SalaNullablePromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   nombre: () => Promise<String>;
+  descripcion: () => Promise<String>;
   usuariosEnSala: <T = FragmentableArray<UsuarioSala>>(args?: {
     where?: UsuarioSalaWhereInput;
     orderBy?: UsuarioSalaOrderByInput;
@@ -1820,6 +1870,7 @@ export interface UsuarioPreviousValues {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   nombre: String;
+  password?: String;
   esAdmin: Boolean;
 }
 
@@ -1830,6 +1881,7 @@ export interface UsuarioPreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   nombre: () => Promise<String>;
+  password: () => Promise<String>;
   esAdmin: () => Promise<Boolean>;
 }
 
@@ -1840,6 +1892,7 @@ export interface UsuarioPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   nombre: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
   esAdmin: () => Promise<AsyncIterator<Boolean>>;
 }
 
@@ -1945,6 +1998,7 @@ export interface SalaPreviousValues {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   nombre: String;
+  descripcion?: String;
 }
 
 export interface SalaPreviousValuesPromise
@@ -1954,6 +2008,7 @@ export interface SalaPreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   nombre: () => Promise<String>;
+  descripcion: () => Promise<String>;
 }
 
 export interface SalaPreviousValuesSubscription
@@ -1963,6 +2018,7 @@ export interface SalaPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   nombre: () => Promise<AsyncIterator<String>>;
+  descripcion: () => Promise<AsyncIterator<String>>;
 }
 
 export interface SalaSubscriptionPayload {
@@ -1995,6 +2051,7 @@ export interface Usuario {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   nombre: String;
+  password?: String;
   esAdmin: Boolean;
 }
 
@@ -2003,6 +2060,7 @@ export interface UsuarioPromise extends Promise<Usuario>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   nombre: () => Promise<String>;
+  password: () => Promise<String>;
   esAdmin: () => Promise<Boolean>;
   usuariosEnSala: <T = FragmentableArray<UsuarioSala>>(args?: {
     where?: UsuarioSalaWhereInput;
@@ -2031,6 +2089,7 @@ export interface UsuarioSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   nombre: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
   esAdmin: () => Promise<AsyncIterator<Boolean>>;
   usuariosEnSala: <T = Promise<AsyncIterator<UsuarioSalaSubscription>>>(args?: {
     where?: UsuarioSalaWhereInput;
@@ -2061,6 +2120,7 @@ export interface UsuarioNullablePromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   nombre: () => Promise<String>;
+  password: () => Promise<String>;
   esAdmin: () => Promise<Boolean>;
   usuariosEnSala: <T = FragmentableArray<UsuarioSala>>(args?: {
     where?: UsuarioSalaWhereInput;

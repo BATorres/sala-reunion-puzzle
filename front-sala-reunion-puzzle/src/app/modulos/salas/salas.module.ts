@@ -7,6 +7,7 @@ import {DiagramaEditableModule} from '../../componentes/diagrama-editable/diagra
 import {PaletaModule} from '../../componentes/paleta/paleta.module';
 import {PantallaInteractivaUsuarioModule} from './componentes/pantalla-interactiva-usuario/pantalla-interactiva-usuario.module';
 import {PantallaInteractivaAdministradorModule} from './componentes/pantalla-interactiva-administrador/pantalla-interactiva-administrador.module';
+import {FormularioCrearSalaModule} from './componentes/formulario-crear-sala/formulario-crear-sala.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {PantallaInteractivaAdministradorModule} from './componentes/pantalla-int
     DiagramaEditableModule,
     PaletaModule,
     PantallaInteractivaUsuarioModule,
-    PantallaInteractivaAdministradorModule
+    PantallaInteractivaAdministradorModule,
+    FormularioCrearSalaModule
   ]
 })
 export class SalasModule {

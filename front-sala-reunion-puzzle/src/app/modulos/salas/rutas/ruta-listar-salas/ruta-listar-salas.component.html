@@ -6,21 +6,27 @@
   </div>
 
   <div class="row">
-    <div
-      class="col-sm-3"
-      *ngFor="let sala of salas">
-      <div class="card">
-        <div class="card-body">
-          <div class="card-title">
-            {{sala.nombre}}
-          </div>
-          <div
-            class="btn btn-primary btn-block"
-            (click)="irASala(sala.id)">
-            IR A SALA
+    <div *ngIf="!existenSalas; else mostrarSalas">
+      No existen salas de reunión
+    </div>
+
+    <ng-template #mostrarSalas>
+      <div
+        class="col-sm-3"
+        *ngFor="let sala of salas">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-title">
+              {{sala.nombre}}
+            </div>
+            <div
+              class="btn btn-primary btn-block"
+              (click)="irASala(sala.id)">
+              IR A SALA
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </ng-template>
   </div>
 </div>

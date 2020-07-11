@@ -14,6 +14,8 @@ export class RutaListarSalasComponent implements OnInit {
 
   salas: SalaInterface[];
 
+  existenSalas: boolean;
+
   constructor(
     private readonly _buscarSalasService: BuscarSalasService,
     private readonly _router: Router,
@@ -28,6 +30,7 @@ export class RutaListarSalasComponent implements OnInit {
         respuestaQuerySalas => {
           this.estaCargando = respuestaQuerySalas.loading;
           this.salas = respuestaQuerySalas.data.salas;
+          this.existenSalas = this.salas.length > 0;
         }
       )
   }

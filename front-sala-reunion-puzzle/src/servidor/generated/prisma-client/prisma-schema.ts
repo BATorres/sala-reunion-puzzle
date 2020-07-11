@@ -515,6 +515,7 @@ type Sala {
   createdAt: DateTime!
   updatedAt: DateTime!
   nombre: String!
+  descripcion: String
   usuariosEnSala(where: UsuarioSalaWhereInput, orderBy: UsuarioSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UsuarioSala!]
   diagramasPorUsuario(where: DiagramaUsuarioWhereInput, orderBy: DiagramaUsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DiagramaUsuario!]
 }
@@ -528,6 +529,7 @@ type SalaConnection {
 input SalaCreateInput {
   id: ID
   nombre: String!
+  descripcion: String
   usuariosEnSala: UsuarioSalaCreateManyWithoutSalaInput
   diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutSalaInput
 }
@@ -545,12 +547,14 @@ input SalaCreateOneWithoutUsuariosEnSalaInput {
 input SalaCreateWithoutDiagramasPorUsuarioInput {
   id: ID
   nombre: String!
+  descripcion: String
   usuariosEnSala: UsuarioSalaCreateManyWithoutSalaInput
 }
 
 input SalaCreateWithoutUsuariosEnSalaInput {
   id: ID
   nombre: String!
+  descripcion: String
   diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutSalaInput
 }
 
@@ -568,6 +572,8 @@ enum SalaOrderByInput {
   updatedAt_DESC
   nombre_ASC
   nombre_DESC
+  descripcion_ASC
+  descripcion_DESC
 }
 
 type SalaPreviousValues {
@@ -575,6 +581,7 @@ type SalaPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   nombre: String!
+  descripcion: String
 }
 
 type SalaSubscriptionPayload {
@@ -597,12 +604,14 @@ input SalaSubscriptionWhereInput {
 
 input SalaUpdateInput {
   nombre: String
+  descripcion: String
   usuariosEnSala: UsuarioSalaUpdateManyWithoutSalaInput
   diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutSalaInput
 }
 
 input SalaUpdateManyMutationInput {
   nombre: String
+  descripcion: String
 }
 
 input SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput {
@@ -621,11 +630,13 @@ input SalaUpdateOneRequiredWithoutUsuariosEnSalaInput {
 
 input SalaUpdateWithoutDiagramasPorUsuarioDataInput {
   nombre: String
+  descripcion: String
   usuariosEnSala: UsuarioSalaUpdateManyWithoutSalaInput
 }
 
 input SalaUpdateWithoutUsuariosEnSalaDataInput {
   nombre: String
+  descripcion: String
   diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutSalaInput
 }
 
@@ -684,6 +695,20 @@ input SalaWhereInput {
   nombre_not_starts_with: String
   nombre_ends_with: String
   nombre_not_ends_with: String
+  descripcion: String
+  descripcion_not: String
+  descripcion_in: [String!]
+  descripcion_not_in: [String!]
+  descripcion_lt: String
+  descripcion_lte: String
+  descripcion_gt: String
+  descripcion_gte: String
+  descripcion_contains: String
+  descripcion_not_contains: String
+  descripcion_starts_with: String
+  descripcion_not_starts_with: String
+  descripcion_ends_with: String
+  descripcion_not_ends_with: String
   usuariosEnSala_every: UsuarioSalaWhereInput
   usuariosEnSala_some: UsuarioSalaWhereInput
   usuariosEnSala_none: UsuarioSalaWhereInput
@@ -712,6 +737,7 @@ type Usuario {
   createdAt: DateTime!
   updatedAt: DateTime!
   nombre: String!
+  password: String
   esAdmin: Boolean!
   usuariosEnSala(where: UsuarioSalaWhereInput, orderBy: UsuarioSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UsuarioSala!]
   diagramasPorUsuario(where: DiagramaUsuarioWhereInput, orderBy: DiagramaUsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DiagramaUsuario!]
@@ -726,6 +752,7 @@ type UsuarioConnection {
 input UsuarioCreateInput {
   id: ID
   nombre: String!
+  password: String
   esAdmin: Boolean
   usuariosEnSala: UsuarioSalaCreateManyWithoutUsuarioInput
   diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutUsuarioInput
@@ -744,6 +771,7 @@ input UsuarioCreateOneWithoutUsuariosEnSalaInput {
 input UsuarioCreateWithoutDiagramasPorUsuarioInput {
   id: ID
   nombre: String!
+  password: String
   esAdmin: Boolean
   usuariosEnSala: UsuarioSalaCreateManyWithoutUsuarioInput
 }
@@ -751,6 +779,7 @@ input UsuarioCreateWithoutDiagramasPorUsuarioInput {
 input UsuarioCreateWithoutUsuariosEnSalaInput {
   id: ID
   nombre: String!
+  password: String
   esAdmin: Boolean
   diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutUsuarioInput
 }
@@ -769,6 +798,8 @@ enum UsuarioOrderByInput {
   updatedAt_DESC
   nombre_ASC
   nombre_DESC
+  password_ASC
+  password_DESC
   esAdmin_ASC
   esAdmin_DESC
 }
@@ -778,6 +809,7 @@ type UsuarioPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   nombre: String!
+  password: String
   esAdmin: Boolean!
 }
 
@@ -1059,6 +1091,7 @@ input UsuarioSubscriptionWhereInput {
 
 input UsuarioUpdateInput {
   nombre: String
+  password: String
   esAdmin: Boolean
   usuariosEnSala: UsuarioSalaUpdateManyWithoutUsuarioInput
   diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutUsuarioInput
@@ -1066,6 +1099,7 @@ input UsuarioUpdateInput {
 
 input UsuarioUpdateManyMutationInput {
   nombre: String
+  password: String
   esAdmin: Boolean
 }
 
@@ -1085,12 +1119,14 @@ input UsuarioUpdateOneRequiredWithoutUsuariosEnSalaInput {
 
 input UsuarioUpdateWithoutDiagramasPorUsuarioDataInput {
   nombre: String
+  password: String
   esAdmin: Boolean
   usuariosEnSala: UsuarioSalaUpdateManyWithoutUsuarioInput
 }
 
 input UsuarioUpdateWithoutUsuariosEnSalaDataInput {
   nombre: String
+  password: String
   esAdmin: Boolean
   diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutUsuarioInput
 }
@@ -1150,6 +1186,20 @@ input UsuarioWhereInput {
   nombre_not_starts_with: String
   nombre_ends_with: String
   nombre_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
   esAdmin: Boolean
   esAdmin_not: Boolean
   usuariosEnSala_every: UsuarioSalaWhereInput

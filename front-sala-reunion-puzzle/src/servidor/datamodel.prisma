@@ -13,6 +13,7 @@ type Sala {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   nombre: String!
+  descripcion: String
   usuariosEnSala: [UsuarioSala] @relation
   diagramasPorUsuario: [DiagramaUsuario] @relation
 }
@@ -22,6 +23,7 @@ type Usuario {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   nombre: String!
+  password: String
   esAdmin: Boolean! @default(value: false)
   usuariosEnSala: [UsuarioSala] @relation
   diagramasPorUsuario: [DiagramaUsuario] @relation
