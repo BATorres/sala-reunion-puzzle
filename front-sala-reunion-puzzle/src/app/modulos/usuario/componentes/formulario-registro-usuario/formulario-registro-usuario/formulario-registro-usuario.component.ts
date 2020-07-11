@@ -71,6 +71,8 @@ export class FormularioRegistroUsuarioComponent implements OnInit {
               })
               .subscribe(
                 () => {
+                  this._router.navigate(['login']);
+
                   this._toasterService.pop(
                     'success',
                     'ÉXITO',

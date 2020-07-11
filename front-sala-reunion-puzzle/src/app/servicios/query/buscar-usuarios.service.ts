@@ -19,6 +19,7 @@ export class BuscarUsuariosService extends Query<{ usuarios: UsuarioInterface[] 
             ) {
                 id
                 nombre
+                esAdmin
             }
         }
     `;
