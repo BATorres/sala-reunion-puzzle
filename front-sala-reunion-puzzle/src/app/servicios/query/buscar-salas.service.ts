@@ -8,8 +8,8 @@ import gql from 'graphql-tag';
 })
 export class BuscarSalasService extends Query<{salas: SalaInterface[]}>{
     document = gql`
-        query BuscarSalas {
-            salas {
+        query BuscarSalas($nombreSala: String) {
+            salas(where: {nombre: $nombreSala}) {
                 id
                 nombre
             }

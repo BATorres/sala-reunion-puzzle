@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+.spinner-border {
+  left: 50%;
+  top: 50%;
+  position: absolute;
+}
+
+.card-title {
+  text-align: center;
+}

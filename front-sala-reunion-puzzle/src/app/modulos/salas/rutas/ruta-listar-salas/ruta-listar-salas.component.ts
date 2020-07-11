@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BuscarSalasService} from '../../../../servicios/query/buscar-salas.service';
+import {SalaInterface} from '../../../../interfaces/sala.interface';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-ruta-listar-salas',
@@ -8,8 +10,13 @@ import {BuscarSalasService} from '../../../../servicios/query/buscar-salas.servi
 })
 export class RutaListarSalasComponent implements OnInit {
 
+  cargando: boolean = true;
+
+  salas: SalaInterface[];
+
   constructor(
     private readonly _buscarSalasService: BuscarSalasService,
+    private readonly _router: Router,
   ) {
   }
 
@@ -18,9 +25,19 @@ export class RutaListarSalasComponent implements OnInit {
       .watch()
       .valueChanges
       .subscribe(
-        (salas) => {
-          console.log('salas', salas)
+        (respuestaQuerySalas) => {
+          this.cargando = respuestaQuerySalas.loading;
+          this.salas = respuestaQuerySalas.data.salas;
         }
       )
+  }
+
+  irASala(idSala: string) {
+    this._router
+      .navigate(
+        [
+          `/sala-reunion/${idSala}`
+        ]
+      );
   }
 }
