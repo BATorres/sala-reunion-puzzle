@@ -6,10 +6,17 @@ import {UsuarioInterface} from '../../interfaces/usuario.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class BuscarUsuariosService extends Query<{usuarios: UsuarioInterface[]}>{
+export class BuscarUsuariosService extends Query<{ usuarios: UsuarioInterface[] }> {
     document = gql`
-        query BuscarUsuarios($nombre: String!) {
-            usuarios(where: {nombre: $nombre}) {
+        query BuscarUsuarios($nombre: String!, $password: String!) {
+            usuarios(
+                where: {
+                    AND: [{
+                        nombre: $nombre,
+                        password: $password
+                    }]
+                }
+            ) {
                 id
                 nombre
             }

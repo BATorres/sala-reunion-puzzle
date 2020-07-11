@@ -9,7 +9,7 @@ export const RUTAS_MODULO_SALA: Routes = [
     component: RutaCrearSalaComponent,
   },
   {
-    path: 'listar-sala',
+    path: 'listar-salas',
     component: RutaListarSalasComponent,
   },
   {

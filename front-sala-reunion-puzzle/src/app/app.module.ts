@@ -11,6 +11,8 @@ import {BuscarUsuariosService} from './servicios/query/buscar-usuarios.service';
 import {BuscarSalasService} from './servicios/query/buscar-salas.service';
 import {BuscarUsuariosEnSalaService} from './servicios/query/buscar-usuarios-en-sala.service';
 import {UsuarioModule} from './modulos/usuario/usuario.module';
+import {RegistrarUsuarioService} from './servicios/mutation/registrar-usuario.service';
+import {ToasterModule} from 'angular2-toaster';
 
 @NgModule({
   declarations: [
@@ -23,12 +25,14 @@ import {UsuarioModule} from './modulos/usuario/usuario.module';
     AppRoutingModule,
     GraphQLModule,
     SalaModule,
-    UsuarioModule
+    UsuarioModule,
+    ToasterModule.forRoot()
   ],
   providers: [
     BuscarSalasService,
     BuscarUsuariosEnSalaService,
     BuscarUsuariosService,
+    RegistrarUsuarioService
   ],
   bootstrap: [AppComponent]
 })
