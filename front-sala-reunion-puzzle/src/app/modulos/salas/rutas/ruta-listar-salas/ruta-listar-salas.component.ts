@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
 })
 export class RutaListarSalasComponent implements OnInit {
 
-  cargando: boolean = true;
+  estaCargando: boolean = true;
 
   salas: SalaInterface[];
 
@@ -25,8 +25,8 @@ export class RutaListarSalasComponent implements OnInit {
       .watch()
       .valueChanges
       .subscribe(
-        (respuestaQuerySalas) => {
-          this.cargando = respuestaQuerySalas.loading;
+        respuestaQuerySalas => {
+          this.estaCargando = respuestaQuerySalas.loading;
           this.salas = respuestaQuerySalas.data.salas;
         }
       )

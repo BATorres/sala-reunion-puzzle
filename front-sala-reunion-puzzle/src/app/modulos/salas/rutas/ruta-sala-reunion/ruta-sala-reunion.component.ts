@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-ruta-sala-reunion',
@@ -7,9 +8,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RutaSalaReunionComponent implements OnInit {
 
-  constructor() { }
+  idSala: string;
 
-  ngOnInit(): void {
+  constructor(
+    private readonly _activatedRoute: ActivatedRoute,
+  ) {
   }
 
+  ngOnInit(): void {
+    this._activatedRoute
+      .params
+      .subscribe(
+        parametrosRuta => {
+          this.idSala = parametrosRuta.idSala;
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error cargando los parámetros de ruta'
+          })
+        }
+      );
+  }
 }

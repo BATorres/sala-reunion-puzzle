@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-sm-12">
+    <p-tabView>
+      <p-tabPanel header="Diagrama global">
+        <div class="row">
+          <div class="col-sm-2">
+            <app-paleta></app-paleta>
+          </div>
+
+          <div class="col-sm-10">
+            <app-diagrama-editable></app-diagrama-editable>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <p-tabPanel header="Diagrama compartido">
+        <div
+          class="row"
+          *ngIf="!existenUsuariosEnSala; else mostrarUsuarios">
+          <div
+            class="col-sm-12">
+            No existen usuarios en sala
+          </div>
+
+          <div class="col-sm-10">
+            <app-diagrama-global></app-diagrama-global>
+          </div>
+        </div>
+
+        <ng-template #mostrarUsuarios>
+          <div class="row">
+            <div class="col-sm-2">
+              <div
+                class="row"
+                *ngFor="let usuarioEnSala of usuariosEnSala">
+                <div class="col-sm-12">
+                  <button disabled="true" class="btn btn-primary btn-block">
+                    {{usuarioEnSala.nombre}}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-10">
+              <app-diagrama-global></app-diagrama-global>
+            </div>
+          </div>
+        </ng-template>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>
+

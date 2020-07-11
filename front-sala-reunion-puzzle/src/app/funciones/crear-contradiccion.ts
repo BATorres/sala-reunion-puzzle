@@ -5,7 +5,7 @@ import {dibujarConexionConfirmacion} from './dibujar-conexion-confirmacion';
 import {dibujarConexionContradiccion} from './dibujar-conexion-contradiccion';
 import {eliminarNodoOConexion} from './eliminar-nodo-o-conexion';
 
-export function crearContradiccion(graphObject, esDiagramaEditable) {
+export function crearContradiccion(graphObject, esDiagramaEditable = false) {
   if (esDiagramaEditable) {
     return graphObject(
       go.Link,

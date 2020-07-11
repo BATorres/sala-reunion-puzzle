@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as go from 'gojs';
-import {DataSyncService} from 'gojs-angular';
 import {crearNodo} from '../../../funciones/crear-nodo';
 import {crearGrupo} from '../../../funciones/crear-grupo';
 import {crearConexion} from '../../../funciones/crear-conexion';
@@ -232,5 +231,5 @@ export class DiagramaEditableComponent implements OnInit {
   public diagramLinkData = [
     {category: 'Casualidad', from: 'Nodo2', to: 'Nodo'}
   ];
-  public diagramDivClassName: string = 'diagramaEditable';
+  public diagramDivClassName: string = 'diagramaGlobal';
 }

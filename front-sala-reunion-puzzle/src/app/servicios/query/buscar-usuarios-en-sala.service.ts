@@ -6,21 +6,22 @@ import {UsuarioSalaInterface} from '../../interfaces/usuario-sala.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class BuscarUsuariosEnSalaService extends Query<{usuariosSalas: UsuarioSalaInterface[]}> {
+export class BuscarUsuariosEnSalaService extends Query<{usuarioSalas: UsuarioSalaInterface[]}> {
     document = gql`
-        query BuscarUsuariosEnSala($id: ID!) {
+        query BuscarUsuariosEnSala($idSala: ID!) {
             usuarioSalas(
                 where: {
                     sala: {
-                        id: $id
+                        id: $idSala
                     }
                 }
+                orderBy: createdAt_DESC
             ) {
                 id
                 levantarMano
                 compartirPantalla
                 usuario {
-                    id
+                    nombre
                 }
                 sala {
                     id
