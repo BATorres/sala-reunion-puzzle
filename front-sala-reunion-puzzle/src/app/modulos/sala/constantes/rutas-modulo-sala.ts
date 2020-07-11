@@ -3,13 +3,13 @@ import {RutaCrearSalaComponent} from '../rutas/ruta-crear-sala/ruta-crear-sala.c
 import {RutaListarSalasComponent} from '../rutas/ruta-listar-salas/ruta-listar-salas.component';
 import {RutaSalaReunionComponent} from '../rutas/ruta-sala-reunion/ruta-sala-reunion.component';
 
-export const RUTAS_MODULO_SALAS: Routes = [
+export const RUTAS_MODULO_SALA: Routes = [
   {
     path: 'crear-sala',
     component: RutaCrearSalaComponent,
   },
   {
-    path: 'listar-salas',
+    path: 'listar-sala',
     component: RutaListarSalasComponent,
   },
   {

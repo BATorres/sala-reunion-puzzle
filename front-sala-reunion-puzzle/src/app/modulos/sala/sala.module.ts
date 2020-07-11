@@ -24,5 +24,5 @@ import {FormularioCrearSalaModule} from './componentes/formulario-crear-sala/for
     FormularioCrearSalaModule
   ]
 })
-export class SalasModule {
+export class SalaModule {
 }
