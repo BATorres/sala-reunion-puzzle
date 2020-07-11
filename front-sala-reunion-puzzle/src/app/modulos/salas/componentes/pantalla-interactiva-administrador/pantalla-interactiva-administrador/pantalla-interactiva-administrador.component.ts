@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {BuscarUsuariosEnSalaService} from '../../../../../servicios/query/buscar-usuarios-en-sala.service';
-import {UsuarioInterface} from '../../../../../interfaces/usuario.interface';
+import {UsuarioSalaInterface} from '../../../../../interfaces/usuario-sala.interface';
 
 @Component({
   selector: 'app-pantalla-interactiva-administrador',
@@ -16,11 +16,12 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
 
   existenUsuariosEnSala: boolean;
 
-  usuariosEnSala: UsuarioInterface[];
+  usuariosEnSala: UsuarioSalaInterface[];
 
   constructor(
     private readonly _buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this._buscarUsuariosEnSalaService
@@ -31,7 +32,7 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
       .subscribe(
         respuestaQueryUsuarioSala => {
           this.estaCargando = respuestaQueryUsuarioSala.loading;
-          this.usuariosEnSala = respuestaQueryUsuarioSala.data.usuarioSalas.map(usuarioSala => usuarioSala.usuario);
+          this.usuariosEnSala = respuestaQueryUsuarioSala.data.usuarioSalas;
           this.existenUsuariosEnSala = this.usuariosEnSala.length > 0;
         }
       )

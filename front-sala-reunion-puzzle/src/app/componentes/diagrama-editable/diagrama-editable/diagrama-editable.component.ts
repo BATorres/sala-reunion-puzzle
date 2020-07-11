@@ -231,5 +231,5 @@ export class DiagramaEditableComponent implements OnInit {
   public diagramLinkData = [
     {category: 'Casualidad', from: 'Nodo2', to: 'Nodo'}
   ];
-  public diagramDivClassName: string = 'diagramaGlobal';
+  public diagramDivClassName: string = 'diagramaEditable';
 }

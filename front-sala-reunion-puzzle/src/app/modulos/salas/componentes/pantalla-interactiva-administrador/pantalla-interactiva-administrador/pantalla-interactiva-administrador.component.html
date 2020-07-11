@@ -34,8 +34,16 @@
                 class="row"
                 *ngFor="let usuarioEnSala of usuariosEnSala">
                 <div class="col-sm-12">
-                  <button disabled="true" class="btn btn-primary btn-block">
-                    {{usuarioEnSala.nombre}}
+                  <button [disabled]="!usuarioEnSala.compartirPantalla" class="btn btn-primary btn-block">
+                    <i
+                      class="fa"
+                      [ngClass]="{
+                      'fa-hand-paper': usuarioEnSala.levantarMano,
+                      'fa-satellite-dish': usuarioEnSala.compartirPantalla,
+                      'fa-lock': !usuarioEnSala.levantarMano && !usuarioEnSala.compartirPantalla
+                      }">
+                    </i>
+                    {{usuarioEnSala.usuario.nombre}}
                   </button>
                 </div>
               </div>

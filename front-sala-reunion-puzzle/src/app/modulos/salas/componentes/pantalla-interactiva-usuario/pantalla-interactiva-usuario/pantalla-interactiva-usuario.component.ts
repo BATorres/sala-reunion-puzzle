@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {faHandPaper, faSatelliteDish} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-pantalla-interactiva-usuario',
@@ -10,10 +9,6 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
 
   @Input()
   idSala: string;
-
-  iconoLevantarMano = faHandPaper;
-
-  icononoCompartirPantalla = faSatelliteDish;
 
   constructor() {
   }

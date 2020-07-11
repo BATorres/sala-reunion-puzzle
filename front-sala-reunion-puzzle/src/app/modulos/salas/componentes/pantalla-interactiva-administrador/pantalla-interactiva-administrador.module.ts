@@ -5,9 +5,12 @@ import {PaletaModule} from '../../../../componentes/paleta/paleta.module';
 import {DiagramaGlobalModule} from '../../../../componentes/diagrama-global/diagrama-global.module';
 import {TabViewModule} from 'primeng/tabview';
 import {DiagramaEditableModule} from '../../../../componentes/diagrama-editable/diagrama-editable.module';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
-  declarations: [PantallaInteractivaAdministradorComponent],
+  declarations: [
+    PantallaInteractivaAdministradorComponent
+  ],
   exports: [
     PantallaInteractivaAdministradorComponent
   ],
@@ -16,7 +19,8 @@ import {DiagramaEditableModule} from '../../../../componentes/diagrama-editable/
     PaletaModule,
     DiagramaGlobalModule,
     TabViewModule,
-    DiagramaEditableModule
+    DiagramaEditableModule,
+    FormsModule,
   ]
 })
 export class PantallaInteractivaAdministradorModule {
