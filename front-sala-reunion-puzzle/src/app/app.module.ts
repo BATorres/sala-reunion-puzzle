@@ -13,6 +13,8 @@ import {BuscarUsuariosEnSalaService} from './servicios/query/buscar-usuarios-en-
 import {UsuarioModule} from './modulos/usuario/usuario.module';
 import {RegistrarUsuarioService} from './servicios/mutation/registrar-usuario.service';
 import {ToasterModule} from 'angular2-toaster';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {CrearSalaService} from './servicios/mutation/crear-sala.service';
 
 @NgModule({
   declarations: [
@@ -26,13 +28,15 @@ import {ToasterModule} from 'angular2-toaster';
     GraphQLModule,
     SalaModule,
     UsuarioModule,
-    ToasterModule.forRoot()
+    ToasterModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [
     BuscarSalasService,
     BuscarUsuariosEnSalaService,
     BuscarUsuariosService,
-    RegistrarUsuarioService
+    RegistrarUsuarioService,
+    CrearSalaService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {SalaInterface} from '../../../../../interfaces/sala.interface';
 
 @Component({
   selector: 'app-formulario-crear-sala',
@@ -7,6 +8,9 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./formulario-crear-sala.component.css']
 })
 export class FormularioCrearSalaComponent implements OnInit {
+
+  @Output()
+  enviarRegistroValido: EventEmitter<SalaInterface | boolean> = new EventEmitter();
 
   formularioCrearSala: FormGroup;
 
@@ -25,11 +29,21 @@ export class FormularioCrearSalaComponent implements OnInit {
           ''
         )
       });
+    this.verificarFormulario();
   }
 
-  crearSala() {
-    const nombre:string = this.formularioCrearSala.get('nombre').value;
-    const descripcion:string = this.formularioCrearSala.get('descripcion').value;
-    console.log('datos', nombre, descripcion)
+  private verificarFormulario() {
+    this.formularioCrearSala
+      .valueChanges
+      .subscribe(
+        (valoresFormulario: SalaInterface) => {
+          const esFormularioValido: boolean = this.formularioCrearSala.valid;
+          if (esFormularioValido) {
+            this.enviarRegistroValido.emit(valoresFormulario);
+          } else {
+            this.enviarRegistroValido.emit(false);
+          }
+        }
+      )
   }
 }

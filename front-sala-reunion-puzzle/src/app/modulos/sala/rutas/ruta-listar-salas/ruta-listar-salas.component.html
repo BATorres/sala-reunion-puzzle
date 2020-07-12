@@ -5,9 +5,23 @@
     *ngIf="estaCargando">
   </div>
 
+  <div class="row" *ngIf="esAdmin">
+    <div class="col-sm-4">
+      <button
+        class="btn btn-primary btn-block"
+        (click)="abrirModalCrearSala()"
+      >
+        <i class="fa fa-plus"></i>
+        AGREGAR SALA
+      </button>
+    </div>
+  </div>
+
   <div class="row">
     <div *ngIf="!existenSalas; else mostrarSalas">
-      No existen salas de reunión
+      <div class="col-sm-12">
+        No existen salas de reunión
+      </div>
     </div>
 
     <ng-template #mostrarSalas>
@@ -19,6 +33,11 @@
             <div class="card-title">
               {{sala.nombre}}
             </div>
+
+            <p class="card-text">
+              {{sala.descripcion}}
+            </p>
+
             <div
               class="btn btn-primary btn-block"
               (click)="irASala(sala.id)">

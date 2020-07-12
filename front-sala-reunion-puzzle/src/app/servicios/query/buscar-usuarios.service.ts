@@ -8,12 +8,17 @@ import {UsuarioInterface} from '../../interfaces/usuario.interface';
 })
 export class BuscarUsuariosService extends Query<{ usuarios: UsuarioInterface[] }> {
     document = gql`
-        query BuscarUsuarios($nombre: String!, $password: String!) {
+        query BuscarUsuarios($nombre: String, $password: String, $id: ID) {
             usuarios(
                 where: {
+                    OR: [
+                        {
+                            id: $id
+                        },
+                    ]
                     AND: [{
                         nombre: $nombre,
-                        password: $password
+                        password: $password,
                     }]
                 }
             ) {

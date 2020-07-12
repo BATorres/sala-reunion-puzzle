@@ -57,7 +57,7 @@ export class FormularioLoginComponent implements OnInit {
           this.esUsuarioRegistrado = respuestaQueryBuscarUsuario.data.usuarios.length > 0;
           if (this.esUsuarioRegistrado) {
             const usuarioLogeado: UsuarioInterface = respuestaQueryBuscarUsuario.data.usuarios[0];
-            localStorage.setItem('usuario', JSON.stringify({usuario: usuarioLogeado.id, esAdmin: usuarioLogeado.esAdmin}));
+            localStorage.setItem('usuario', usuarioLogeado.id);
             this.irMenuSalas();
           } else {
             this._toasterService.pop(

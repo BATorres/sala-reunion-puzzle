@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h3 mat-dialog-title>
+      <span class="bold">
+        CREAR NUEVA SALA
+      </span>
+    </h3>
+  </div>
+</div>
+
+<div class="mat-dialog-content">
+  <div class="row contenido-modal">
+    <div class="col-sm-12">
+      <p class="descripcion-modal">
+        Ingrese los campos para crear una nueva sala
+      </p>
+    </div>
+
+    <div class="col-sm-12">
+      <app-formulario-crear-sala
+        (enviarRegistroValido)="validarFormulario($event)"
+      ></app-formulario-crear-sala>
+    </div>
+  </div>
+</div>
+
+<mat-dialog-actions class="justify-content-end">
+  <div class="d-flex flex-row-reverse">
+    <div class="p-2">
+      <button
+        mat-dialog-close
+        class="btn btn-primary">
+        CANCELAR
+      </button>
+    </div>
+
+    <div class="p-2">
+      <button
+        class="btn btn-success"
+        (click)="crearSala()"
+        [disabled]="!formularioValido">
+        CREAR
+      </button>
+    </div>
+  </div>
+
+</mat-dialog-actions>
