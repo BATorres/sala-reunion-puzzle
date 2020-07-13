@@ -16,6 +16,9 @@ import {ToasterModule} from 'angular2-toaster';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {CrearSalaService} from './servicios/mutation/crear-sala.service';
 import {NuevaSalaService} from './servicios/subscription/nueva-sala.service';
+import {UnirseSalaService} from './servicios/mutation/unirse-sala.service';
+import {AccionesUsuarioSalaService} from './servicios/mutation/acciones-usuario-sala.service';
+import {NuevoUsuarioSalaService} from './servicios/subscription/nuevo-usuario-sala.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import {NuevaSalaService} from './servicios/subscription/nueva-sala.service';
     BuscarUsuariosService,
     RegistrarUsuarioService,
     CrearSalaService,
-    NuevaSalaService
+    NuevaSalaService,
+    UnirseSalaService,
+    AccionesUsuarioSalaService,
+    NuevoUsuarioSalaService
   ],
   bootstrap: [AppComponent]
 })

@@ -8,12 +8,24 @@ import {UsuarioSalaInterface} from '../../interfaces/usuario-sala.interface';
 })
 export class BuscarUsuariosEnSalaService extends Query<{usuarioSalas: UsuarioSalaInterface[]}> {
     document = gql`
-        query BuscarUsuariosEnSala($idSala: ID!) {
+        query BuscarUsuariosEnSala(
+            $idSala: ID, 
+            $idUsuario: ID
+        ) {
             usuarioSalas(
                 where: {
-                    sala: {
-                        id: $idSala
-                    }
+                    AND: [
+                        {
+                            sala: {
+                                id: $idSala
+                            }
+                        },
+                        {
+                            usuario: {
+                                id: $idUsuario
+                            }
+                        }
+                    ]
                 }
                 orderBy: createdAt_DESC
             ) {
@@ -21,6 +33,7 @@ export class BuscarUsuariosEnSalaService extends Query<{usuarioSalas: UsuarioSal
                 levantarMano
                 compartirPantalla
                 usuario {
+                    id
                     nombre
                 }
                 sala {

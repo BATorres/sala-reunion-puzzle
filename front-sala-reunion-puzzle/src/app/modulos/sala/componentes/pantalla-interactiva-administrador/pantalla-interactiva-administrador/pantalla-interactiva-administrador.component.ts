@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {BuscarUsuariosEnSalaService} from '../../../../../servicios/query/buscar-usuarios-en-sala.service';
 import {UsuarioSalaInterface} from '../../../../../interfaces/usuario-sala.interface';
+import {NuevoUsuarioSalaService} from '../../../../../servicios/subscription/nuevo-usuario-sala.service';
 
 @Component({
   selector: 'app-pantalla-interactiva-administrador',
@@ -19,7 +20,8 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
   usuariosEnSala: UsuarioSalaInterface[];
 
   constructor(
-    private readonly _buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService
+    private readonly _buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService,
+    private readonly _nuevoUsuarioEnSalaService: NuevoUsuarioSalaService,
   ) {
   }
 
@@ -34,7 +36,28 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
           this.estaCargando = respuestaQueryUsuarioSala.loading;
           this.usuariosEnSala = respuestaQueryUsuarioSala.data.usuarioSalas;
           this.existenUsuariosEnSala = this.usuariosEnSala.length > 0;
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error consultado usuarios en sala'
+          })
         }
-      )
+      );
+    this._nuevoUsuarioEnSalaService
+      .subscribe()
+      .subscribe(
+        ({data}) => {
+          const nuevoUsuarioEnSala: UsuarioSalaInterface = data.usuarioSala.node;
+          this.usuariosEnSala.unshift(nuevoUsuarioEnSala);
+          this.existenUsuariosEnSala = true;
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error con el subscriptor de usuario sala'
+          })
+        }
+      );
   }
 }

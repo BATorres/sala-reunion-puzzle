@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import {BuscarUsuariosService} from '../../../../servicios/query/buscar-usuarios.service';
+import {BuscarUsuariosEnSalaService} from '../../../../servicios/query/buscar-usuarios-en-sala.service';
+import {UnirseSalaService} from '../../../../servicios/mutation/unirse-sala.service';
+import {AccionesUsuarioSalaService} from '../../../../servicios/mutation/acciones-usuario-sala.service';
 
 @Component({
   selector: 'app-ruta-sala-reunion',
@@ -12,8 +16,14 @@ export class RutaSalaReunionComponent implements OnInit {
 
   esAdmin: boolean;
 
+  existeUsuarioEnSala: boolean;
+
   constructor(
     private readonly _activatedRoute: ActivatedRoute,
+    private readonly _buscarUsuarioService: BuscarUsuariosService,
+    private readonly _buscarUsuarioEnSalaService: BuscarUsuariosEnSalaService,
+    private readonly _unirseASalaService: UnirseSalaService,
+    private readonly _accionesUsuarioEnSalaService: AccionesUsuarioSalaService
   ) {
   }
 
@@ -23,7 +33,7 @@ export class RutaSalaReunionComponent implements OnInit {
       .subscribe(
         parametrosRuta => {
           this.idSala = parametrosRuta.idSala;
-          this.esAdmin = history.state.esAdmin;
+          this.verificarRolUsuario();
         },
         error => {
           console.error({
@@ -32,5 +42,91 @@ export class RutaSalaReunionComponent implements OnInit {
           })
         }
       );
+    this.verificarUsuarioEnSala();
+  }
+
+  verificarRolUsuario() {
+    this._buscarUsuarioService
+      .watch({
+        id: localStorage.getItem('usuario')
+      })
+      .valueChanges
+      .subscribe(
+        respuestaQueryBuscarUsuario => {
+          this.esAdmin = respuestaQueryBuscarUsuario.data.usuarios[0].esAdmin;
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error verificando rol de usuario'
+          });
+        }
+      );
+  }
+
+  verificarUsuarioEnSala() {
+    this._buscarUsuarioEnSalaService
+      .watch({
+        sala: this.idSala,
+        usuario: localStorage.getItem('usuario')
+      })
+      .valueChanges
+      .subscribe(
+        respuestaQueryUsuarioSala => {
+          this.existeUsuarioEnSala = respuestaQueryUsuarioSala.data.usuarioSalas.length > 0;
+
+          if (!this.esAdmin) {
+            if (!this.existeUsuarioEnSala) {
+              this.unirseASala();
+            } else {
+              const idUsuarioEnSala: string = respuestaQueryUsuarioSala.data.usuarioSalas[0].id;
+              this.resetearAccionesUsuario(idUsuarioEnSala)
+            }
+          }
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error consultado usuarios en sala'
+          })
+        }
+      );
+  }
+
+  unirseASala() {
+    return this._unirseASalaService
+      .mutate({
+        idSala: this.idSala,
+        idUsuario: localStorage.getItem('usuario')
+      })
+      .subscribe(
+        () => {
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error uniendo usuario en sala'
+          })
+        }
+      )
+  }
+
+  resetearAccionesUsuario(idUsuarioSala: string) {
+    return this._accionesUsuarioEnSalaService
+      .mutate({
+        idUsuarioSala: idUsuarioSala,
+        levantarMano: false,
+        compartirPantalla: false
+      })
+      .subscribe(
+        () => {
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error reseteando acciones usuario'
+          })
+        }
+      )
   }
 }
