@@ -3,6 +3,7 @@ import {BuscarUsuariosEnSalaService} from '../../../../../servicios/query/buscar
 import {UsuarioSalaInterface} from '../../../../../interfaces/usuario-sala.interface';
 import {NuevoUsuarioSalaService} from '../../../../../servicios/subscription/nuevo-usuario-sala.service';
 import {EscucharAccionesUsuarioService} from '../../../../../servicios/subscription/escuchar-acciones-usuario.service';
+import {ToasterService} from 'angular2-toaster';
 
 @Component({
   selector: 'app-pantalla-interactiva-administrador',
@@ -24,6 +25,7 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
     private readonly _buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService,
     private readonly _nuevoUsuarioEnSalaService: NuevoUsuarioSalaService,
     private readonly _escucharAccionesUsuario: EscucharAccionesUsuarioService,
+    private readonly _toasterService: ToasterService
   ) {
   }
 
@@ -65,7 +67,34 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
       .subscribe()
       .subscribe(
         ({data}) => {
-          const cambiosUsuario: UsuarioSalaInterface = data.usuarioSala.node;
+          const accionesUsuarioSala: UsuarioSalaInterface = data.usuarioSala.node;
+          const usuario = this.usuariosEnSala.map(
+            usuarioEnSala => {
+              return usuarioEnSala.id
+            }
+          )
+            .indexOf(
+              accionesUsuarioSala.id
+            );
+          console.log('usuario', accionesUsuarioSala)
+          const pidePalabraOCompartePantalla: boolean = accionesUsuarioSala.levantarMano || accionesUsuarioSala.compartirPantalla;
+          let tituloToaster: string;
+          let mensajeToaster: string;
+          if (accionesUsuarioSala.levantarMano) {
+            tituloToaster = 'PIDIENDO LA PALABRA';
+            mensajeToaster = `El usuario ${accionesUsuarioSala.usuario.nombre} está solicitando la palabra`
+          }
+          if (accionesUsuarioSala.compartirPantalla) {
+            tituloToaster = 'COMPARTIENDO PANTALLA';
+            mensajeToaster = `El usuario ${accionesUsuarioSala.usuario.nombre} está compartiendo pantalla`
+          }
+          if (pidePalabraOCompartePantalla) {
+            this._toasterService.pop(
+              'info',
+              `${tituloToaster}`,
+              `${mensajeToaster}`
+            )
+          }
         },
         error => {
           console.error({

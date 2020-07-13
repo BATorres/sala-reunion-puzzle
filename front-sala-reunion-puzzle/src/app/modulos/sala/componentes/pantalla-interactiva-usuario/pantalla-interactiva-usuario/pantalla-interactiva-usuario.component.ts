@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AccionesUsuarioSalaService} from '../../../../../servicios/mutation/acciones-usuario-sala.service';
 import {BuscarUsuariosEnSalaService} from '../../../../../servicios/query/buscar-usuarios-en-sala.service';
+import {UsuarioSalaInterface} from '../../../../../interfaces/usuario-sala.interface';
 
 @Component({
   selector: 'app-pantalla-interactiva-usuario',
@@ -33,7 +34,13 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
       .valueChanges
       .subscribe(
         respuestaQueryUsuarioSala => {
-          this.idUsuarioSala = respuestaQueryUsuarioSala.data.usuarioSalas[0].id;
+          this.idUsuarioSala = respuestaQueryUsuarioSala.data.usuarioSalas.filter(
+            (usuario: UsuarioSalaInterface) =>
+            {
+              return usuario.usuario.id === localStorage.getItem('usuario')
+            }
+          )[0].id;
+          console.log('usuario sala', this.idUsuarioSala)
         },
         error => {
           console.error({
@@ -100,5 +107,4 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
         }
       );
   }
-
 }

@@ -38,6 +38,7 @@ export class BuscarUsuariosEnSalaService extends Query<{usuarioSalas: UsuarioSal
                 }
                 sala {
                     id
+                    nombre
                 }
             }
         }
