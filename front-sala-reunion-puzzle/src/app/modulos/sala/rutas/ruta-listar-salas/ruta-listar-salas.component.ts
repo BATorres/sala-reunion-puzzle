@@ -3,12 +3,9 @@ import {BuscarSalasService} from '../../../../servicios/query/buscar-salas.servi
 import {SalaInterface} from '../../../../interfaces/sala.interface';
 import {Router} from '@angular/router';
 import {BuscarUsuariosService} from '../../../../servicios/query/buscar-usuarios.service';
-import {QueryRef} from 'apollo-angular';
-import {Observable} from 'rxjs';
-import {ApolloQueryResult} from 'apollo-client';
-import {NUEVA_SALA} from '../../constantes/subscriptor-sala';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ModalCrearSalaComponent} from '../../modales/modal-crear-sala/modal-crear-sala/modal-crear-sala.component';
+import {NuevaSalaService} from '../../../../servicios/subscription/nueva-sala.service';
 
 @Component({
   selector: 'app-ruta-listar-salas',
@@ -21,10 +18,6 @@ export class RutaListarSalasComponent implements OnInit {
 
   esAdmin: boolean;
 
-  salasQuery: QueryRef<{ salas: SalaInterface[] }>;
-
-  salasObservable: Observable<ApolloQueryResult<{ salas: SalaInterface[] }>>;
-
   salas: SalaInterface[];
 
   existenSalas: boolean;
@@ -33,14 +26,15 @@ export class RutaListarSalasComponent implements OnInit {
     private readonly _buscarSalasService: BuscarSalasService,
     private readonly _router: Router,
     private readonly _buscarUsuarioService: BuscarUsuariosService,
+    private readonly _nuevaSalaService: NuevaSalaService,
     public matDialog: MatDialog,
   ) {
-    this.salasQuery = this._buscarSalasService.watch();
-    this.salasObservable = this.salasQuery.valueChanges;
   }
 
   ngOnInit(): void {
-    this.salasObservable
+    this._buscarSalasService
+      .watch()
+      .valueChanges
       .subscribe(
         respuestaQuerySalas => {
           this.estaCargando = respuestaQuerySalas.loading;
@@ -54,8 +48,21 @@ export class RutaListarSalasComponent implements OnInit {
           });
         }
       );
+    this._nuevaSalaService
+      .subscribe()
+      .subscribe(
+        ({data}) => {
+          const nuevaSala: SalaInterface = data.sala.node;
+          this.salas.unshift(nuevaSala);
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error con el subscriptor de salas'
+          })
+        }
+      );
     this.verificarRolUsuario();
-    this.subscribeAMasSalas();
   }
 
   verificarRolUsuario() {
@@ -77,28 +84,11 @@ export class RutaListarSalasComponent implements OnInit {
       );
   }
 
-  subscribeAMasSalas() {
-    this.salasQuery.subscribeToMore({
-      document: NUEVA_SALA,
-      updateQuery: (salas, {subscriptionData}) => {
-        console.log('salas', salas);
-        console.log('valores subs', {subscriptionData})
-        return null;
-      }
-    })
-  }
-
   abrirModalCrearSala() {
     const dialogRef: MatDialogRef<ModalCrearSalaComponent> = this.matDialog.open(
       ModalCrearSalaComponent
     );
-    dialogRef
-      .afterClosed()
-      .subscribe(
-        (salaCreada: SalaInterface) => {
-          this.salas.unshift(salaCreada);
-        }
-      )
+    dialogRef.afterClosed();
   }
 
   irASala(idSala: string) {
@@ -106,7 +96,11 @@ export class RutaListarSalasComponent implements OnInit {
       .navigate(
         [
           `/sala-reunion/${idSala}`
-        ]
+        ], {
+          state: {
+            esAdmin: this.esAdmin
+          }
+        }
       );
   }
 }

@@ -1,15 +1,12 @@
 <div class="container-fluid">
-  <div>
-    <app-pantalla-interactiva-usuario
-    [idSala]="idSala"
-    ></app-pantalla-interactiva-usuario>
-  </div>
-</div>
-
-<!--<div class="container-fluid">
-  <div>
+  <div *ngIf="esAdmin; else mostrarPantallaUsuario">
     <app-pantalla-interactiva-administrador
-    [idSala]="idSala"
+      [idSala]="idSala"
     ></app-pantalla-interactiva-administrador>
   </div>
-</div>-->
+  <ng-template #mostrarPantallaUsuario>
+    <app-pantalla-interactiva-usuario
+      [idSala]="idSala"
+    ></app-pantalla-interactiva-usuario>
+  </ng-template>
+</div>

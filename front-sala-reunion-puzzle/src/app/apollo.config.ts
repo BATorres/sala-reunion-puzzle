@@ -24,18 +24,18 @@ export class GraphQLModule {
       uri: linkHttp
     });
 
-    const linkWs: string = 'wss://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev';
+    const linkWs: string = `wss://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev`;
     const ws = new WebSocketLink({
       uri: linkWs,
       options: {
-        reconnect: true
+        reconnect: true,
       }
     });
 
     const link = split(
       ({query}) => {
-        const {tipo, operacion} = getMainDefinition(query);
-        return tipo === 'OperationDefinition' && operacion === 'subscription';
+        const {kind, operation} = getMainDefinition(query);
+        return kind === 'OperationDefinition' && operation === 'subscription';
       },
       ws,
       http

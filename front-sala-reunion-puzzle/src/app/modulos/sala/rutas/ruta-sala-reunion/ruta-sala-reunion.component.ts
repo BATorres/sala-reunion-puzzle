@@ -10,6 +10,8 @@ export class RutaSalaReunionComponent implements OnInit {
 
   idSala: string;
 
+  esAdmin: boolean;
+
   constructor(
     private readonly _activatedRoute: ActivatedRoute,
   ) {
@@ -21,6 +23,7 @@ export class RutaSalaReunionComponent implements OnInit {
       .subscribe(
         parametrosRuta => {
           this.idSala = parametrosRuta.idSala;
+          this.esAdmin = history.state.esAdmin;
         },
         error => {
           console.error({
