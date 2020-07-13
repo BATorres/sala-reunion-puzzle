@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {BuscarUsuariosEnSalaService} from '../../../../../servicios/query/buscar-usuarios-en-sala.service';
 import {UsuarioSalaInterface} from '../../../../../interfaces/usuario-sala.interface';
 import {NuevoUsuarioSalaService} from '../../../../../servicios/subscription/nuevo-usuario-sala.service';
+import {EscucharAccionesUsuarioService} from '../../../../../servicios/subscription/escuchar-acciones-usuario.service';
 
 @Component({
   selector: 'app-pantalla-interactiva-administrador',
@@ -22,6 +23,7 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
   constructor(
     private readonly _buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService,
     private readonly _nuevoUsuarioEnSalaService: NuevoUsuarioSalaService,
+    private readonly _escucharAccionesUsuario: EscucharAccionesUsuarioService,
   ) {
   }
 
@@ -59,5 +61,18 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
           })
         }
       );
+    this._escucharAccionesUsuario
+      .subscribe()
+      .subscribe(
+        ({data}) => {
+          const cambiosUsuario: UsuarioSalaInterface = data.usuarioSala.node;
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error con el subscriptor de acciones usuario'
+          })
+        }
+      )
   }
 }

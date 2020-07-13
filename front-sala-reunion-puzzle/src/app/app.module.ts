@@ -19,6 +19,7 @@ import {NuevaSalaService} from './servicios/subscription/nueva-sala.service';
 import {UnirseSalaService} from './servicios/mutation/unirse-sala.service';
 import {AccionesUsuarioSalaService} from './servicios/mutation/acciones-usuario-sala.service';
 import {NuevoUsuarioSalaService} from './servicios/subscription/nuevo-usuario-sala.service';
+import {EscucharAccionesUsuarioService} from './servicios/subscription/escuchar-acciones-usuario.service';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {NuevoUsuarioSalaService} from './servicios/subscription/nuevo-usuario-sa
     NuevaSalaService,
     UnirseSalaService,
     AccionesUsuarioSalaService,
-    NuevoUsuarioSalaService
+    NuevoUsuarioSalaService,
+    EscucharAccionesUsuarioService
   ],
   bootstrap: [AppComponent]
 })

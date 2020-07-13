@@ -45,16 +45,60 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
   }
 
   pedirLaPalabra() {
-    this._accionesUsuarioEnSalaService
+    return this._accionesUsuarioEnSalaService
+      .mutate({
+        idUsuarioSala: this.idUsuarioSala,
+        levantarMano: true,
+        compartirPantalla: false
+      })
+      .subscribe(
+        () => {
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error al pedir la palabra'
+          })
+        }
+      );
+  }
+
+  compartirPantalla() {
+    return this._accionesUsuarioEnSalaService
+      .mutate({
+        idUsuarioSala: this.idUsuarioSala,
+        levantarMano: false,
+        compartirPantalla: true
+      })
+      .subscribe(
+        () => {
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error al compartir pantalla'
+          })
+        }
+      );
+  }
+
+  cancelar() {
+    return this._accionesUsuarioEnSalaService
       .mutate({
         idUsuarioSala: this.idUsuarioSala,
         levantarMano: false,
         compartirPantalla: false
       })
-  }
-
-  compartirPantalla() {
-
+      .subscribe(
+        () => {
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error al cancelar'
+          })
+        }
+      );
   }
 
 }
