@@ -33,6 +33,7 @@ type Diagrama {
   createdAt: DateTime!
   updatedAt: DateTime!
   datos: String!
+  esDiagramaGlobal: Boolean!
   diagramasPorUsuario(where: DiagramaUsuarioWhereInput, orderBy: DiagramaUsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DiagramaUsuario!]
 }
 
@@ -45,6 +46,7 @@ type DiagramaConnection {
 input DiagramaCreateInput {
   id: ID
   datos: String!
+  esDiagramaGlobal: Boolean
   diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutDiagramaInput
 }
 
@@ -56,6 +58,7 @@ input DiagramaCreateOneWithoutDiagramasPorUsuarioInput {
 input DiagramaCreateWithoutDiagramasPorUsuarioInput {
   id: ID
   datos: String!
+  esDiagramaGlobal: Boolean
 }
 
 type DiagramaEdge {
@@ -72,6 +75,8 @@ enum DiagramaOrderByInput {
   updatedAt_DESC
   datos_ASC
   datos_DESC
+  esDiagramaGlobal_ASC
+  esDiagramaGlobal_DESC
 }
 
 type DiagramaPreviousValues {
@@ -79,6 +84,7 @@ type DiagramaPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   datos: String!
+  esDiagramaGlobal: Boolean!
 }
 
 type DiagramaSubscriptionPayload {
@@ -101,11 +107,13 @@ input DiagramaSubscriptionWhereInput {
 
 input DiagramaUpdateInput {
   datos: String
+  esDiagramaGlobal: Boolean
   diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutDiagramaInput
 }
 
 input DiagramaUpdateManyMutationInput {
   datos: String
+  esDiagramaGlobal: Boolean
 }
 
 input DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput {
@@ -117,6 +125,7 @@ input DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput {
 
 input DiagramaUpdateWithoutDiagramasPorUsuarioDataInput {
   datos: String
+  esDiagramaGlobal: Boolean
 }
 
 input DiagramaUpsertWithoutDiagramasPorUsuarioInput {
@@ -428,6 +437,8 @@ input DiagramaWhereInput {
   datos_not_starts_with: String
   datos_ends_with: String
   datos_not_ends_with: String
+  esDiagramaGlobal: Boolean
+  esDiagramaGlobal_not: Boolean
   diagramasPorUsuario_every: DiagramaUsuarioWhereInput
   diagramasPorUsuario_some: DiagramaUsuarioWhereInput
   diagramasPorUsuario_none: DiagramaUsuarioWhereInput
@@ -819,7 +830,7 @@ type UsuarioSala {
   updatedAt: DateTime!
   levantarMano: Boolean!
   compartirPantalla: Boolean!
-  usuario: Usuario!
+  usuario: Usuario
   sala: Sala!
 }
 
@@ -833,7 +844,7 @@ input UsuarioSalaCreateInput {
   id: ID
   levantarMano: Boolean
   compartirPantalla: Boolean
-  usuario: UsuarioCreateOneWithoutUsuariosEnSalaInput!
+  usuario: UsuarioCreateOneWithoutUsuariosEnSalaInput
   sala: SalaCreateOneWithoutUsuariosEnSalaInput!
 }
 
@@ -851,7 +862,7 @@ input UsuarioSalaCreateWithoutSalaInput {
   id: ID
   levantarMano: Boolean
   compartirPantalla: Boolean
-  usuario: UsuarioCreateOneWithoutUsuariosEnSalaInput!
+  usuario: UsuarioCreateOneWithoutUsuariosEnSalaInput
 }
 
 input UsuarioSalaCreateWithoutUsuarioInput {
@@ -948,7 +959,7 @@ input UsuarioSalaSubscriptionWhereInput {
 input UsuarioSalaUpdateInput {
   levantarMano: Boolean
   compartirPantalla: Boolean
-  usuario: UsuarioUpdateOneRequiredWithoutUsuariosEnSalaInput
+  usuario: UsuarioUpdateOneWithoutUsuariosEnSalaInput
   sala: SalaUpdateOneRequiredWithoutUsuariosEnSalaInput
 }
 
@@ -994,7 +1005,7 @@ input UsuarioSalaUpdateManyWithWhereNestedInput {
 input UsuarioSalaUpdateWithoutSalaDataInput {
   levantarMano: Boolean
   compartirPantalla: Boolean
-  usuario: UsuarioUpdateOneRequiredWithoutUsuariosEnSalaInput
+  usuario: UsuarioUpdateOneWithoutUsuariosEnSalaInput
 }
 
 input UsuarioSalaUpdateWithoutUsuarioDataInput {
@@ -1110,10 +1121,12 @@ input UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput {
   connect: UsuarioWhereUniqueInput
 }
 
-input UsuarioUpdateOneRequiredWithoutUsuariosEnSalaInput {
+input UsuarioUpdateOneWithoutUsuariosEnSalaInput {
   create: UsuarioCreateWithoutUsuariosEnSalaInput
   update: UsuarioUpdateWithoutUsuariosEnSalaDataInput
   upsert: UsuarioUpsertWithoutUsuariosEnSalaInput
+  delete: Boolean
+  disconnect: Boolean
   connect: UsuarioWhereUniqueInput
 }
 

@@ -4,6 +4,9 @@ import {UsuarioSalaInterface} from '../../../../../interfaces/usuario-sala.inter
 import {NuevoUsuarioSalaService} from '../../../../../servicios/subscription/nuevo-usuario-sala.service';
 import {EscucharAccionesUsuarioService} from '../../../../../servicios/subscription/escuchar-acciones-usuario.service';
 import {ToasterService} from 'angular2-toaster';
+import {BuscarDiagramaUsuarioService} from '../../../../../servicios/query/buscar-diagrama-usuario.service';
+import {diagramaGlobal} from '../../../../../componentes/diagrama-global/diagrama-global/diagrama-global.component';
+import * as go from 'gojs';
 
 @Component({
   selector: 'app-pantalla-interactiva-administrador',
@@ -25,7 +28,8 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
     private readonly _buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService,
     private readonly _nuevoUsuarioEnSalaService: NuevoUsuarioSalaService,
     private readonly _escucharAccionesUsuario: EscucharAccionesUsuarioService,
-    private readonly _toasterService: ToasterService
+    private readonly _toasterService: ToasterService,
+    private readonly _buscarDiagramaUsuarioService: BuscarDiagramaUsuarioService
   ) {
   }
 
@@ -68,15 +72,6 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
       .subscribe(
         ({data}) => {
           const accionesUsuarioSala: UsuarioSalaInterface = data.usuarioSala.node;
-          const usuario = this.usuariosEnSala.map(
-            usuarioEnSala => {
-              return usuarioEnSala.id
-            }
-          )
-            .indexOf(
-              accionesUsuarioSala.id
-            );
-          console.log('usuario', accionesUsuarioSala)
           const pidePalabraOCompartePantalla: boolean = accionesUsuarioSala.levantarMano || accionesUsuarioSala.compartirPantalla;
           let tituloToaster: string;
           let mensajeToaster: string;
@@ -101,6 +96,26 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
             error,
             mensaje: 'Error con el subscriptor de acciones usuario'
           })
+        }
+      )
+  }
+  cargarDatosCompartidos(idUsuario: string) {
+    this._buscarDiagramaUsuarioService
+      .watch({
+        idSala: this.idSala,
+        idUsuario: idUsuario
+      })
+      .valueChanges
+      .subscribe(
+        ({data}) => {
+          const datosCompartidos: string = data.diagramaUsuarios[0].diagrama.datos;
+          diagramaGlobal.model = go.Model.fromJson(JSON.parse(datosCompartidos));
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error cargando datos compartidos'
+          });
         }
       )
   }

@@ -4,7 +4,7 @@ type UsuarioSala {
   updatedAt: DateTime! @updatedAt
   levantarMano: Boolean! @default(value: false)
   compartirPantalla: Boolean! @default(value: false)
-  usuario: Usuario!
+  usuario: Usuario
   sala: Sala!
 }
 
@@ -34,6 +34,7 @@ type Diagrama {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   datos: String!
+  esDiagramaGlobal: Boolean! @default(value: false)
   diagramasPorUsuario: [DiagramaUsuario] @relation
 }
 

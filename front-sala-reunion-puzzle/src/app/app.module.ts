@@ -20,6 +20,9 @@ import {UnirseSalaService} from './servicios/mutation/unirse-sala.service';
 import {AccionesUsuarioSalaService} from './servicios/mutation/acciones-usuario-sala.service';
 import {NuevoUsuarioSalaService} from './servicios/subscription/nuevo-usuario-sala.service';
 import {EscucharAccionesUsuarioService} from './servicios/subscription/escuchar-acciones-usuario.service';
+import {BuscarDiagramaUsuarioService} from './servicios/query/buscar-diagrama-usuario.service';
+import {CrearDiagramaService} from './servicios/mutation/crear-diagrama.service';
+import {ActualizarDiagramaService} from './servicios/mutation/actualizar-diagrama.service';
 
 @NgModule({
   declarations: [
@@ -46,7 +49,10 @@ import {EscucharAccionesUsuarioService} from './servicios/subscription/escuchar-
     UnirseSalaService,
     AccionesUsuarioSalaService,
     NuevoUsuarioSalaService,
-    EscucharAccionesUsuarioService
+    EscucharAccionesUsuarioService,
+    BuscarDiagramaUsuarioService,
+    CrearDiagramaService,
+    ActualizarDiagramaService
   ],
   bootstrap: [AppComponent]
 })

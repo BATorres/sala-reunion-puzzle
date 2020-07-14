@@ -34,7 +34,10 @@
                 class="row"
                 *ngFor="let usuarioEnSala of usuariosEnSala">
                 <div class="col-sm-12">
-                  <button [disabled]="!usuarioEnSala.compartirPantalla" class="btn btn-primary btn-block">
+                  <button
+                    class="btn btn-primary btn-block"
+                    (click)="cargarDatosCompartidos(usuarioEnSala.usuario.id)"
+                    [disabled]="!usuarioEnSala.compartirPantalla">
                     <i
                       class="fa"
                       [ngClass]="{
