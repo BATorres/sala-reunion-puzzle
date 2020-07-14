@@ -7,6 +7,9 @@ import {ToasterService} from 'angular2-toaster';
 import {BuscarDiagramaUsuarioService} from '../../../../../servicios/query/buscar-diagrama-usuario.service';
 import {diagramaGlobal} from '../../../../../componentes/diagrama-global/diagrama-global/diagrama-global.component';
 import * as go from 'gojs';
+import {diagramaEditable} from '../../../../../componentes/diagrama-editable/diagrama-editable/diagrama-editable.component';
+import {CrearDiagramaService} from '../../../../../servicios/mutation/crear-diagrama.service';
+import {ActualizarDiagramaService} from '../../../../../servicios/mutation/actualizar-diagrama.service';
 
 @Component({
   selector: 'app-pantalla-interactiva-administrador',
@@ -29,7 +32,9 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
     private readonly _nuevoUsuarioEnSalaService: NuevoUsuarioSalaService,
     private readonly _escucharAccionesUsuario: EscucharAccionesUsuarioService,
     private readonly _toasterService: ToasterService,
-    private readonly _buscarDiagramaUsuarioService: BuscarDiagramaUsuarioService
+    private readonly _buscarDiagramaUsuarioService: BuscarDiagramaUsuarioService,
+    private readonly _crearDiagramaService: CrearDiagramaService,
+    private readonly _actualizarDiagramaService: ActualizarDiagramaService
   ) {
   }
 
@@ -97,8 +102,89 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
             mensaje: 'Error con el subscriptor de acciones usuario'
           })
         }
-      )
+      );
+    this.verificarDiagramaGlobal();
   }
+
+  verificarDiagramaGlobal() {
+    this._buscarDiagramaUsuarioService
+      .watch({
+        idSala: this.idSala,
+        esDiagramaGlobal: true
+      })
+      .valueChanges
+      .subscribe(
+        ({data}) => {
+          const tieneDiagramaGuardado: boolean = data.diagramaUsuarios.length > 0;
+          if (tieneDiagramaGuardado) {
+            const datosACargar = data.diagramaUsuarios[0].diagrama.datos;
+            diagramaEditable.model = go.Model.fromJson(JSON.parse(datosACargar));
+          }
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error verificando diagrama de usuario'
+          });
+        }
+      );
+  }
+
+  guardarDiagramaGlobal() {
+    this._buscarDiagramaUsuarioService
+      .watch({
+        idSala: this.idSala,
+        esDiagramaGlobal: true
+      })
+      .valueChanges
+      .subscribe(
+        ({data}) => {
+          const datos: string = JSON.stringify(diagramaEditable.model.toJson());
+          const existeDiagramaGlobal: boolean = data.diagramaUsuarios.length > 0;
+          if (existeDiagramaGlobal) {
+            const idDiagramaGlobal: string = data.diagramaUsuarios[0].id;
+            return this._actualizarDiagramaService
+              .mutate({
+                idDiagramaSala: idDiagramaGlobal,
+                datos: datos
+              })
+              .subscribe(
+                () => {},
+                error => {
+                  console.error({
+                    error,
+                    mensaje: 'Error actualizando los datos del diagrama'
+                  })
+                }
+              )
+          } else {
+            return this._crearDiagramaService
+              .mutate({
+                datos: datos,
+                idSala: this.idSala,
+                idUsuario: localStorage.getItem('usuario'),
+                esDiagramaGlobal: true
+              })
+              .subscribe(
+                () => {},
+                error => {
+                  console.error({
+                    error,
+                    mensaje: 'Error creando diagrama usuario'
+                  })
+                }
+              );
+          }
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error buscando el diagrama global'
+          })
+        }
+      );
+  }
+
   cargarDatosCompartidos(idUsuario: string) {
     this._buscarDiagramaUsuarioService
       .watch({

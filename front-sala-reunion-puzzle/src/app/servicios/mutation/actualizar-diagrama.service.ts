@@ -18,7 +18,7 @@ export class ActualizarDiagramaService extends Mutation {
           data: {
               diagrama: {
                   update: {
-                      datos: $datos
+                      datos: $datos,
                   }
               }
           }

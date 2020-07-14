@@ -42,13 +42,16 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
       })
       .valueChanges
       .subscribe(
-        respuestaQueryUsuarioSala => {
-          this.idUsuarioSala = respuestaQueryUsuarioSala.data.usuarioSalas.filter(
+        ({data}) => {
+          const usuarioFiltrado = data.usuarioSalas.filter(
             (usuario: UsuarioSalaInterface) =>
             {
               return usuario.usuario.id === localStorage.getItem('usuario')
             }
-          )[0].id;
+          )[0];
+          if (usuarioFiltrado) {
+            this.idUsuarioSala = usuarioFiltrado.id;
+          }
         },
         error => {
           console.error({
@@ -73,8 +76,14 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
             const datosACargar = respuestaBuscarDiagramaUsuario.data.diagramaUsuarios[0].diagrama.datos;
             diagramaEditable.model = go.Model.fromJson(JSON.parse(datosACargar));
           }
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error verificando diagrama de usuario'
+          });
         }
-      )
+      );
   }
 
   pedirLaPalabra() {
@@ -161,7 +170,7 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
                     mensaje: 'Error actualizando los datos del diagrama'
                   })
                 }
-              )
+              );
 
           } else {
             return this._crearDiagramaService

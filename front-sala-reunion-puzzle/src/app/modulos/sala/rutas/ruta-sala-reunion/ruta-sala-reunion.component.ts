@@ -72,14 +72,14 @@ export class RutaSalaReunionComponent implements OnInit {
       })
       .valueChanges
       .subscribe(
-        respuestaQueryUsuarioSala => {
-          this.existeUsuarioEnSala = respuestaQueryUsuarioSala.data.usuarioSalas.length > 0;
+        ({data}) => {
+          this.existeUsuarioEnSala = data.usuarioSalas.length > 0;
 
           if (!this.esAdmin) {
             if (!this.existeUsuarioEnSala) {
               this.unirseASala();
             } else {
-              const idUsuarioEnSala: string = respuestaQueryUsuarioSala.data.usuarioSalas[0].id;
+              const idUsuarioEnSala: string = data.usuarioSalas[0].id;
               this.resetearAccionesUsuario(idUsuarioEnSala)
             }
           }

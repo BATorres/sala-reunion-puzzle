@@ -10,13 +10,15 @@ export class CrearDiagramaService extends Mutation {
   mutation CrearDiagrama(
       $datos: String!,
       $idSala: ID,
-      $idUsuario: ID
+      $idUsuario: ID,
+      $esDiagramaGlobal: Boolean
   ) {
       createDiagramaUsuario(
           data: {
               diagrama: {
                   create: {
-                      datos: $datos
+                      datos: $datos,
+                      esDiagramaGlobal: $esDiagramaGlobal
                   }
               },
               sala: {
