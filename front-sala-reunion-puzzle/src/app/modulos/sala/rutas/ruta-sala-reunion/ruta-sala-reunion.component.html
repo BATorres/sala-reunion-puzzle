@@ -1,4 +1,26 @@
 <div class="container-fluid">
+  <h1>
+    Sala de reunión: {{nombreSala}}
+  </h1>
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="#">
+          Inicio
+        </a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="/listar-salas">
+          Lista de salas
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Sala de reunión
+      </li>
+    </ol>
+  </nav>
+
   <div *ngIf="esAdmin; else mostrarPantallaUsuario">
     <app-pantalla-interactiva-administrador
       [idSala]="idSala"

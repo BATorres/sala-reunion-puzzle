@@ -1,12 +1,23 @@
 <div class="container-fluid">
-  <div
-    class="spinner-border"
-    role="status"
-    *ngIf="estaCargando">
-  </div>
+  <h1>Salas disponibles</h1>
 
-  <div class="row" *ngIf="esAdmin">
-    <div class="col-sm-4">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="#">
+          Inicio
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Lista de salas
+      </li>
+    </ol>
+  </nav>
+
+  <div class="row separacion-top-1" *ngIf="esAdmin">
+    <div class="col-sm-8"></div>
+
+    <div class="col-sm-4 separacion-bottom-1">
       <button
         class="btn btn-primary btn-block"
         (click)="abrirModalCrearSala()"
@@ -17,7 +28,9 @@
     </div>
   </div>
 
-  <div class="row">
+  <br>
+
+  <div class="row separacion-top-1">
     <div *ngIf="!existenSalas; else mostrarSalas">
       <div class="col-sm-12">
         No existen salas de reunión
@@ -26,22 +39,34 @@
 
     <ng-template #mostrarSalas>
       <div
-        class="col-sm-3"
+        class="col-sm-3 separacion-top-1"
         *ngFor="let sala of salas">
         <div class="card">
           <div class="card-body">
-            <div class="card-title">
-              {{sala.nombre}}
-            </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <img
+                  class="card-img-left img-fluid mx-auto d-block"
+                  src="../../../assets/imagenes/project.svg"
+                  href="sala-reunion"
+                >
+              </div>
 
-            <p class="card-text">
-              {{sala.descripcion}}
-            </p>
+              <div class="col-sm-8">
+                <h3 class="card-title">
+                  {{sala.nombre}}
+                </h3>
 
-            <div
-              class="btn btn-primary btn-block"
-              (click)="irASala(sala.id)">
-              IR A SALA
+                <p class="card-text">
+                  {{sala.descripcion}}
+                </p>
+
+                <div
+                  class="btn btn-primary btn-block"
+                  (click)="irASala(sala.id)">
+                  IR A SALA
+                </div>
+              </div>
             </div>
           </div>
         </div>

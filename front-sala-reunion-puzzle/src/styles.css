@@ -9,5 +9,11 @@
   text-align: center;
 }
 
+h1 {
+  padding-top: 1rem;
+  text-align: center;
+  color: #007bff;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

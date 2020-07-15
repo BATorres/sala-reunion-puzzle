@@ -4,6 +4,7 @@ import {BuscarUsuariosService} from '../../../../servicios/query/buscar-usuarios
 import {BuscarUsuariosEnSalaService} from '../../../../servicios/query/buscar-usuarios-en-sala.service';
 import {UnirseSalaService} from '../../../../servicios/mutation/unirse-sala.service';
 import {AccionesUsuarioSalaService} from '../../../../servicios/mutation/acciones-usuario-sala.service';
+import {BuscarSalasService} from '../../../../servicios/query/buscar-salas.service';
 
 @Component({
   selector: 'app-ruta-sala-reunion',
@@ -18,12 +19,15 @@ export class RutaSalaReunionComponent implements OnInit {
 
   existeUsuarioEnSala: boolean;
 
+  nombreSala: string;
+
   constructor(
     private readonly _activatedRoute: ActivatedRoute,
     private readonly _buscarUsuarioService: BuscarUsuariosService,
     private readonly _buscarUsuarioEnSalaService: BuscarUsuariosEnSalaService,
     private readonly _unirseASalaService: UnirseSalaService,
-    private readonly _accionesUsuarioEnSalaService: AccionesUsuarioSalaService
+    private readonly _accionesUsuarioEnSalaService: AccionesUsuarioSalaService,
+    private readonly _buscarSalasService: BuscarSalasService
   ) {
   }
 
@@ -34,6 +38,7 @@ export class RutaSalaReunionComponent implements OnInit {
         parametrosRuta => {
           this.idSala = parametrosRuta.idSala;
           this.verificarRolUsuario();
+          this.setearNombreSala();
         },
         error => {
           console.error({
@@ -88,6 +93,25 @@ export class RutaSalaReunionComponent implements OnInit {
           console.error({
             error,
             mensaje: 'Error consultado usuarios en sala'
+          })
+        }
+      );
+  }
+
+  setearNombreSala() {
+    return this._buscarSalasService
+      .watch({
+        id: this.idSala
+      })
+      .valueChanges
+      .subscribe(
+        ({data}) => {
+          this.nombreSala = data.salas[0].nombre;
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error buscando sala'
           })
         }
       );
