@@ -1,0 +1,14 @@
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <i class="fa fa-puzzle-piece"></i>
+    Sala de reunión
+  </a>
+  <div *ngIf="usuario">
+    Bienvenido/a: {{usuario}}
+    <button
+      class="btn btn-outline-primary"
+      (click)="salir()">
+      Salir
+    </button>
+  </div>
+</nav>

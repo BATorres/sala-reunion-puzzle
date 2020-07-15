@@ -8,9 +8,17 @@ import gql from 'graphql-tag';
 })
 export class BuscarSalasService extends Query<{salas: SalaInterface[]}>{
     document = gql`
-        query BuscarSalas($nombreSala: String) {
+        query BuscarSalas(
+            $nombreSala: String,
+            $id: ID
+        ) {
             salas(
                 where: {
+                    OR: [
+                        {
+                            id: $id
+                        }
+                    ],
                     nombre: $nombreSala
                 }
                 orderBy: createdAt_DESC

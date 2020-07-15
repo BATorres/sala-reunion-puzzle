@@ -23,6 +23,8 @@ import {EscucharAccionesUsuarioService} from './servicios/subscription/escuchar-
 import {BuscarDiagramaUsuarioService} from './servicios/query/buscar-diagrama-usuario.service';
 import {CrearDiagramaService} from './servicios/mutation/crear-diagrama.service';
 import {ActualizarDiagramaService} from './servicios/mutation/actualizar-diagrama.service';
+import {CabeceraModule} from './componentes/cabecera/cabecera.module';
+import {EstaLogueadoGuard} from './servicios/esta-logueado.guard';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import {ActualizarDiagramaService} from './servicios/mutation/actualizar-diagram
     SalaModule,
     UsuarioModule,
     ToasterModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CabeceraModule
   ],
   providers: [
     BuscarSalasService,
@@ -52,7 +55,8 @@ import {ActualizarDiagramaService} from './servicios/mutation/actualizar-diagram
     EscucharAccionesUsuarioService,
     BuscarDiagramaUsuarioService,
     CrearDiagramaService,
-    ActualizarDiagramaService
+    ActualizarDiagramaService,
+    EstaLogueadoGuard
   ],
   bootstrap: [AppComponent]
 })
