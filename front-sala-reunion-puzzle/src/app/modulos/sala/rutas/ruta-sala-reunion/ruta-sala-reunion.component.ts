@@ -27,7 +27,7 @@ export class RutaSalaReunionComponent implements OnInit {
     private readonly _buscarUsuarioEnSalaService: BuscarUsuariosEnSalaService,
     private readonly _unirseASalaService: UnirseSalaService,
     private readonly _accionesUsuarioEnSalaService: AccionesUsuarioSalaService,
-    private readonly _buscarSalasService: BuscarSalasService
+    private readonly _buscarSalasService: BuscarSalasService,
   ) {
   }
 

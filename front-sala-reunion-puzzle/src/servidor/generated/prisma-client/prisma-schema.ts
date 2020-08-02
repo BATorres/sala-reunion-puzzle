@@ -139,7 +139,7 @@ type DiagramaUsuario {
   updatedAt: DateTime!
   diagrama: Diagrama!
   sala: Sala!
-  usuario: Usuario!
+  usuario: Usuario
 }
 
 type DiagramaUsuarioConnection {
@@ -152,7 +152,7 @@ input DiagramaUsuarioCreateInput {
   id: ID
   diagrama: DiagramaCreateOneWithoutDiagramasPorUsuarioInput!
   sala: SalaCreateOneWithoutDiagramasPorUsuarioInput!
-  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput!
+  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput
 }
 
 input DiagramaUsuarioCreateManyWithoutDiagramaInput {
@@ -173,13 +173,13 @@ input DiagramaUsuarioCreateManyWithoutUsuarioInput {
 input DiagramaUsuarioCreateWithoutDiagramaInput {
   id: ID
   sala: SalaCreateOneWithoutDiagramasPorUsuarioInput!
-  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput!
+  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput
 }
 
 input DiagramaUsuarioCreateWithoutSalaInput {
   id: ID
   diagrama: DiagramaCreateOneWithoutDiagramasPorUsuarioInput!
-  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput!
+  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput
 }
 
 input DiagramaUsuarioCreateWithoutUsuarioInput {
@@ -265,7 +265,7 @@ input DiagramaUsuarioSubscriptionWhereInput {
 input DiagramaUsuarioUpdateInput {
   diagrama: DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
   sala: SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
-  usuario: UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+  usuario: UsuarioUpdateOneWithoutDiagramasPorUsuarioInput
 }
 
 input DiagramaUsuarioUpdateManyWithoutDiagramaInput {
@@ -303,12 +303,12 @@ input DiagramaUsuarioUpdateManyWithoutUsuarioInput {
 
 input DiagramaUsuarioUpdateWithoutDiagramaDataInput {
   sala: SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
-  usuario: UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+  usuario: UsuarioUpdateOneWithoutDiagramasPorUsuarioInput
 }
 
 input DiagramaUsuarioUpdateWithoutSalaDataInput {
   diagrama: DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
-  usuario: UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+  usuario: UsuarioUpdateOneWithoutDiagramasPorUsuarioInput
 }
 
 input DiagramaUsuarioUpdateWithoutUsuarioDataInput {
@@ -1114,10 +1114,12 @@ input UsuarioUpdateManyMutationInput {
   esAdmin: Boolean
 }
 
-input UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput {
+input UsuarioUpdateOneWithoutDiagramasPorUsuarioInput {
   create: UsuarioCreateWithoutDiagramasPorUsuarioInput
   update: UsuarioUpdateWithoutDiagramasPorUsuarioDataInput
   upsert: UsuarioUpsertWithoutDiagramasPorUsuarioInput
+  delete: Boolean
+  disconnect: Boolean
   connect: UsuarioWhereUniqueInput
 }
 

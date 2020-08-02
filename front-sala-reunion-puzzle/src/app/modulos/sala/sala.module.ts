@@ -9,6 +9,7 @@ import {PantallaInteractivaAdministradorModule} from './componentes/pantalla-int
 import {FormularioCrearSalaModule} from './componentes/formulario-crear-sala/formulario-crear-sala.module';
 import {MatDialogModule} from '@angular/material/dialog';
 import {ModalCrearSalaModule} from './modales/modal-crear-sala/modal-crear-sala.module';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {ModalCrearSalaModule} from './modales/modal-crear-sala/modal-crear-sala.
     PantallaInteractivaAdministradorModule,
     FormularioCrearSalaModule,
     MatDialogModule,
-    ModalCrearSalaModule
+    ModalCrearSalaModule,
+    RouterModule
   ]
 })
 export class SalaModule {

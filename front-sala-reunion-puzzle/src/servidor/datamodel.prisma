@@ -44,5 +44,5 @@ type DiagramaUsuario {
   updatedAt: DateTime! @updatedAt
   diagrama: Diagrama!
   sala: Sala!
-  usuario: Usuario!
+  usuario: Usuario
 }

@@ -327,7 +327,7 @@ export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export interface DiagramaUsuarioUpdateWithoutDiagramaDataInput {
   sala?: Maybe<SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
-  usuario?: Maybe<UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
+  usuario?: Maybe<UsuarioUpdateOneWithoutDiagramasPorUsuarioInput>;
 }
 
 export type DiagramaWhereUniqueInput = AtLeastOne<{
@@ -669,7 +669,7 @@ export interface UsuarioUpdateInput {
 export interface DiagramaUsuarioCreateWithoutSalaInput {
   id?: Maybe<ID_Input>;
   diagrama: DiagramaCreateOneWithoutDiagramasPorUsuarioInput;
-  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput;
+  usuario?: Maybe<UsuarioCreateOneWithoutDiagramasPorUsuarioInput>;
 }
 
 export type SalaWhereUniqueInput = AtLeastOne<{
@@ -722,7 +722,7 @@ export interface DiagramaUsuarioUpdateManyWithoutDiagramaInput {
 export interface DiagramaUsuarioUpdateInput {
   diagrama?: Maybe<DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
   sala?: Maybe<SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
-  usuario?: Maybe<UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
+  usuario?: Maybe<UsuarioUpdateOneWithoutDiagramasPorUsuarioInput>;
 }
 
 export interface DiagramaUsuarioUpdateWithWhereUniqueWithoutDiagramaInput {
@@ -734,12 +734,12 @@ export interface DiagramaUsuarioCreateInput {
   id?: Maybe<ID_Input>;
   diagrama: DiagramaCreateOneWithoutDiagramasPorUsuarioInput;
   sala: SalaCreateOneWithoutDiagramasPorUsuarioInput;
-  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput;
+  usuario?: Maybe<UsuarioCreateOneWithoutDiagramasPorUsuarioInput>;
 }
 
 export interface DiagramaUsuarioUpdateWithoutSalaDataInput {
   diagrama?: Maybe<DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
-  usuario?: Maybe<UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput>;
+  usuario?: Maybe<UsuarioUpdateOneWithoutDiagramasPorUsuarioInput>;
 }
 
 export interface DiagramaUsuarioUpsertWithWhereUniqueWithoutDiagramaInput {
@@ -1103,7 +1103,7 @@ export interface UsuarioUpsertWithoutUsuariosEnSalaInput {
 export interface DiagramaUsuarioCreateWithoutDiagramaInput {
   id?: Maybe<ID_Input>;
   sala: SalaCreateOneWithoutDiagramasPorUsuarioInput;
-  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput;
+  usuario?: Maybe<UsuarioCreateOneWithoutDiagramasPorUsuarioInput>;
 }
 
 export interface UsuarioSalaUpsertWithWhereUniqueWithoutSalaInput {
@@ -1214,10 +1214,12 @@ export interface DiagramaUpdateManyMutationInput {
   esDiagramaGlobal?: Maybe<Boolean>;
 }
 
-export interface UsuarioUpdateOneRequiredWithoutDiagramasPorUsuarioInput {
+export interface UsuarioUpdateOneWithoutDiagramasPorUsuarioInput {
   create?: Maybe<UsuarioCreateWithoutDiagramasPorUsuarioInput>;
   update?: Maybe<UsuarioUpdateWithoutDiagramasPorUsuarioDataInput>;
   upsert?: Maybe<UsuarioUpsertWithoutDiagramasPorUsuarioInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
   connect?: Maybe<UsuarioWhereUniqueInput>;
 }
 
