@@ -9,10 +9,30 @@
   text-align: center;
 }
 
-h1 {
+.imagen-card {
+  height: 75px;
+  width: auto;
+}
+
+.row > .col-sm-11 > h1 {
   padding-top: 1rem;
-  text-align: center;
+  text-align: left;
   color: #007bff;
+  font-size: 2.5rem;
+}
+
+.titulo-ayuda {
+  font-size: 1rem;
+}
+
+.imagen-titulo {
+  height: 75px;
+  width: auto;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 4px;
+  border: 1px solid;
+  border-radius: 100%;
 }
 
 html, body { height: 100%; }
