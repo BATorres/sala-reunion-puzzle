@@ -35,5 +35,20 @@
   border-radius: 100%;
 }
 
+.contenido-formulario {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.titulo-formulario {
+  color: #007bff;
+  font-size: 1.5rem;
+  padding-top: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

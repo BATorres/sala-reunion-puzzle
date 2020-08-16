@@ -86,7 +86,10 @@ export class RutaListarSalasComponent implements OnInit {
 
   abrirModalCrearSala() {
     const dialogRef: MatDialogRef<ModalCrearSalaComponent> = this.matDialog.open(
-      ModalCrearSalaComponent
+      ModalCrearSalaComponent,
+      {
+        width: '500px'
+      }
     );
     dialogRef.afterClosed();
   }

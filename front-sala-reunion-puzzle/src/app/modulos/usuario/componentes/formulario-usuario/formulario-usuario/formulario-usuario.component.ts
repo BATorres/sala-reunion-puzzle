@@ -1,25 +1,27 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {SalaInterface} from '../../../../../interfaces/sala.interface';
+import {AbstractControl, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {
-  MENSAJES_VALIDACION_NOMBRE_SALA,
-  VALIDACIONES_NOMBRE_SALA
-} from '../../../constantes/validaciones-formulario-sala';
+  MENSAJES_VALIDACION_NOMBRE_USUARIO, MENSAJES_VALIDACION_PASSWORD_USUARIO,
+  VALIDACIONES_NOMBRE_USUARIO,
+  VALIDACIONES_PASSWORD_USUARIO
+} from '../../../constantes/validaciones-formulario-usuario';
+import {UsuarioInterface} from '../../../../../interfaces/usuario.interface';
 
 @Component({
-  selector: 'app-formulario-crear-sala',
-  templateUrl: './formulario-crear-sala.component.html',
-  styleUrls: ['./formulario-crear-sala.component.css']
+  selector: 'app-formulario-usuario',
+  templateUrl: './formulario-usuario.component.html',
+  styleUrls: ['./formulario-usuario.component.css']
 })
-export class FormularioCrearSalaComponent implements OnInit {
+export class FormularioUsuarioComponent implements OnInit {
 
   @Output()
-  enviarRegistroValido: EventEmitter<SalaInterface | boolean> = new EventEmitter();
+  enviarRegistroValido: EventEmitter<UsuarioInterface | boolean> = new EventEmitter();
 
-  formularioCrearSala: FormGroup;
+  formularioUsuario: FormGroup;
 
   mensajesError = {
-    nombre: []
+    nombre: [],
+    password: []
   };
 
   constructor(
@@ -33,11 +35,15 @@ export class FormularioCrearSalaComponent implements OnInit {
   }
 
   private inicializarFormulario() {
-    this.formularioCrearSala = this._formBuilder
+    this.formularioUsuario = this._formBuilder
       .group({
         nombre: new FormControl(
           '',
-          VALIDACIONES_NOMBRE_SALA,
+          VALIDACIONES_NOMBRE_USUARIO,
+        ),
+        password: new FormControl(
+          '',
+          VALIDACIONES_PASSWORD_USUARIO
         )
       });
   }
@@ -45,16 +51,20 @@ export class FormularioCrearSalaComponent implements OnInit {
   private verificarCamposFormulario() {
     this.verificarCampoFormControl(
       'nombre',
-      MENSAJES_VALIDACION_NOMBRE_SALA
+      MENSAJES_VALIDACION_NOMBRE_USUARIO
     );
+    this.verificarCampoFormControl(
+      'password',
+      MENSAJES_VALIDACION_PASSWORD_USUARIO
+    )
   }
 
   private verificarFormulario() {
-    this.formularioCrearSala
+    this.formularioUsuario
       .valueChanges
       .subscribe(
-        (valoresFormulario: SalaInterface) => {
-          const esFormularioValido: boolean = this.formularioCrearSala.valid;
+        (valoresFormulario: UsuarioInterface) => {
+          const esFormularioValido: boolean = this.formularioUsuario.valid;
           if (esFormularioValido) {
             this.enviarRegistroValido.emit(valoresFormulario);
           } else {
@@ -65,7 +75,7 @@ export class FormularioCrearSalaComponent implements OnInit {
   }
 
   verificarCampoFormControl(campo, mensajesValidacion) {
-    const nombreCampo: AbstractControl = this.formularioCrearSala.get(campo);
+    const nombreCampo: AbstractControl = this.formularioUsuario.get(campo);
     nombreCampo
       .valueChanges
       .pipe()

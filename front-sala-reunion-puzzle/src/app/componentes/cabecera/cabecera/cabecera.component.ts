@@ -9,6 +9,8 @@ import {Router} from '@angular/router';
 })
 export class CabeceraComponent implements OnInit {
 
+  estaLogueado: boolean = false;
+
   usuario: string;
 
   constructor(
@@ -25,6 +27,7 @@ export class CabeceraComponent implements OnInit {
       .subscribe(
         ({data}) => {
           this.usuario = data.usuarios[0].nombre;
+          this.estaLogueado = true;
         },
         error => {
           console.error({
@@ -37,6 +40,7 @@ export class CabeceraComponent implements OnInit {
 
   salir() {
     localStorage.removeItem('usuario');
+    this.estaLogueado = false;
     this._router.navigate(['/']);
   }
 }

@@ -1,49 +1,25 @@
 <form novalidate
       [formGroup]="formularioCrearSala"
 >
-  <div class="row">
-    <div class="col-sm-6 form-group">
-      <label for="nombreSala">
-        Nombre
-      </label>
+  <fieldset>
+    <div class="row">
+      <div class="col-sm-12">
+        <mat-form-field>
+          <mat-label>Nombre</mat-label>
 
-      <input
-        id="nombreSala"
-        class="form-control"
-        formControlName="nombre"
-        type="text"
-        placeholder="EJ: Nueva sala"
-        aria-describedby="ayudaNombreSala"
-      >
+          <input
+            matInput
+            placeholder="EJ: Nueva sala"
+            formControlName="nombre"
+            aria-describedby="ayudaNombreSala"
+            required>
 
-      <small
-        id="ayudaNombreSala"
-        class="form-text text-muted"
-      >
-        Ingrese el nombre de la nueva sala
-      </small>
+          <mat-error *ngIf="mensajesError.nombre.length > 0">
+            <div *ngFor="let mensaje of mensajesError.nombre">{{mensaje}}</div>
+          </mat-error>
+        </mat-form-field>
+      </div>
     </div>
-
-    <div class="col-sm-6 form-group">
-      <label for="descripcionSala">
-        Descripción
-      </label>
-
-      <input
-        id="descripcionSala"
-        class="form-control"
-        formControlName="descripcion"
-        type="text"
-        placeholder="EJ: Esta sala es ..."
-        aria-describedby="ayudaDescripcionSala"
-      >
-
-      <small
-        id="ayudaDescripcionSala"
-        class="form-text text-muted"
-      >
-        Ingrese una descripción para la sala
-      </small>
-    </div>
-  </div>
+  </fieldset>
+  <ng-content></ng-content>
 </form>

@@ -1,12 +1,14 @@
 <div class="row">
   <div class="col-sm-12">
-    <h3 mat-dialog-title>
+    <h3 class="mat-dialog-title">
       <span class="bold">
         CREAR NUEVA SALA
       </span>
     </h3>
   </div>
 </div>
+
+<mat-divider></mat-divider>
 
 <div class="mat-dialog-content">
   <div class="row contenido-modal">
@@ -24,24 +26,25 @@
   </div>
 </div>
 
+<mat-divider></mat-divider>
+
 <mat-dialog-actions class="justify-content-end">
   <div class="d-flex flex-row-reverse">
     <div class="p-2">
       <button
         mat-dialog-close
-        class="btn btn-primary">
+        class="btn btn-primary btn-block">
         CANCELAR
       </button>
     </div>
 
     <div class="p-2">
       <button
-        class="btn btn-success"
+        class="btn btn-success btn-block"
         (click)="crearSala()"
         [disabled]="!formularioValido">
         CREAR
       </button>
     </div>
   </div>
-
 </mat-dialog-actions>

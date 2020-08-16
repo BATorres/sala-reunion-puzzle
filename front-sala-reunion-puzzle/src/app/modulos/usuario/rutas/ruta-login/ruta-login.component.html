@@ -1,13 +1,34 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-3"></div>
-    <div class="col-sm-6">
+    <div class="col-sm-4"></div>
+    <div class="contenido-formulario col-sm-4">
       <div class="card">
-        <div class="card-title">
+        <div class="titulo-formulario card-title">
           LOGIN
         </div>
         <div class="card-body">
-          <app-formulario-login></app-formulario-login>
+          <app-formulario-usuario
+            (enviarRegistroValido)="validarFormulario($event)"
+          ></app-formulario-usuario>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="col-sm-12">
+                <button class="btn btn-success btn-block"
+                        [disabled]="!formularioValido"
+                        (click)="ingresarAlSistema()"
+                        type="submit">
+                  INGRESAR
+                </button>
+
+                <button class="btn btn-info btn-block"
+                        (click)="volverMenuInicio()"
+                >
+                  CANCELAR
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

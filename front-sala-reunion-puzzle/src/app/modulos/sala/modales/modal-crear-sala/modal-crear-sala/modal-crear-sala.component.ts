@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SalaInterface} from '../../../../../interfaces/sala.interface';
 import {CrearSalaService} from '../../../../../servicios/mutation/crear-sala.service';
 import {ToasterService} from 'angular2-toaster';
@@ -25,8 +25,8 @@ export class ModalCrearSalaComponent implements OnInit {
   }
 
   validarFormulario(sala: SalaInterface) {
-    const reciboNoticia = sala;
-    if (reciboNoticia) {
+    const reciboDatosSala = sala;
+    if (reciboDatosSala) {
       this.salaACrear = sala;
       this.formularioValido = true;
     } else {
