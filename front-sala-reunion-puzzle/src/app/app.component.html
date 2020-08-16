@@ -1,3 +1,27 @@
 <app-cabecera></app-cabecera>
+<p-blockUI [blocked]="bloqueado">
+  <div class="centrado">
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6">
+        <div class="lds-css ng-scope">
+          <div style="width:100%;height:100%" class="lds-wedges">
+            <div>
+              <div><div></div></div>
+              <div><div></div></div>
+              <div><div></div></div>
+              <div><div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3"></div>
+      <div class="col-sm-12">
+        <p class="cargando-texto">Cargando ...</p>
+      </div>
+    </div>
+  </div>
+
+</p-blockUI>
 <router-outlet></router-outlet>
 <toaster-container></toaster-container>

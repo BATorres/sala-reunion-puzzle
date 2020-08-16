@@ -1,4 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+.centrado {
+  left: 33%;
+  position: fixed;
+  top: 33%;
+}
+
+.cargando-texto {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
 .spinner-border {
   left: 50%;
   top: 50%;
