@@ -28,10 +28,39 @@
     </ol>
   </nav>
 
-  <div class="row separacion-top-1" *ngIf="esAdmin">
-    <div class="col-sm-8"></div>
+  <div class="row separacion-top-1">
+    <div class="col-sm-9">
+      <form class="form-inline" novalidate autocomplete="off">
+        <div class="col-sm-12">
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              aria-describedby="ayudaBusquedaSalas"
+              placeholder="Ingrese su búsqueda. EJ: Sala 1"
+              #busqueda
+            >
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary"
+                (click)="buscarSala(busqueda.value)"
+              >
+                <i class="fas fa-search"></i>
+                BUSCAR
+              </button>
+            </div>
+          </div>
+          <small
+            id="ayudaBusquedaSalas"
+            class="form-text text-muted"
+          >
+            Busque una sala por su nombre
+          </small>
+        </div>
+      </form>
+    </div>
 
-    <div class="col-sm-4 separacion-bottom-1">
+    <div class="col-sm-3 separacion-bottom-1" *ngIf="esAdmin">
       <button
         class="btn btn-primary btn-block"
         (click)="abrirModalCrearSala()"
@@ -46,14 +75,14 @@
 
   <div class="row separacion-top-1">
     <div *ngIf="!existenSalas; else mostrarSalas">
-      <div class="col-sm-12">
-        No existen salas de reunión
+      <div class="col-sm-12 mensaje-registros">
+        No existen registros
       </div>
     </div>
 
     <ng-template #mostrarSalas>
       <div
-        class="col-sm-3 separacion-top-1"
+        class="card-sala col-sm-3 separacion-top-1"
         *ngFor="let sala of salas">
         <div class="card">
           <div class="card-body">

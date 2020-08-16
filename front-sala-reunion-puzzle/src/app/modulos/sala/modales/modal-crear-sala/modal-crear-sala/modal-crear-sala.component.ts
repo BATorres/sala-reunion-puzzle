@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {SalaInterface} from '../../../../../interfaces/sala.interface';
-import {CrearSalaService} from '../../../../../servicios/mutation/crear-sala.service';
 import {ToasterService} from 'angular2-toaster';
 import {MatDialogRef} from '@angular/material/dialog';
+import {SalaService} from '../../../../../servicios/sala.service';
+import {CargandoService} from '../../../../../servicios/cargando.service';
 
 @Component({
   selector: 'app-modal-crear-sala',
@@ -17,8 +18,9 @@ export class ModalCrearSalaComponent implements OnInit {
 
   constructor(
     public matDialog: MatDialogRef<ModalCrearSalaComponent>,
-    private readonly _crearSalaService: CrearSalaService,
-    private readonly _toasterService: ToasterService
+    private readonly _toasterService: ToasterService,
+    private readonly _salaService: SalaService,
+    private readonly _cargandoService: CargandoService
   ) { }
 
   ngOnInit(): void {
@@ -35,13 +37,12 @@ export class ModalCrearSalaComponent implements OnInit {
   }
 
   crearSala() {
-    this._crearSalaService
-      .mutate({
-        nombre: this.salaACrear.nombre,
-        descripcion: this.salaACrear.descripcion
-      })
+    this._cargandoService.habilitarCargando();
+    this._salaService
+      .crearSala(this.salaACrear.nombre)
       .subscribe(
         () => {
+          this._cargandoService.deshabilitarCargando();
           this.matDialog.close(this.salaACrear);
           this._toasterService.pop(
             'success',
@@ -50,6 +51,7 @@ export class ModalCrearSalaComponent implements OnInit {
           );
         },
         error => {
+          this._cargandoService.deshabilitarCargando();
           console.error({
             error,
             mensaje: 'Error creando la nueva sala'

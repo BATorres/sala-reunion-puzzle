@@ -4,7 +4,9 @@ import {BuscarUsuariosService} from '../../../../servicios/query/buscar-usuarios
 import {BuscarUsuariosEnSalaService} from '../../../../servicios/query/buscar-usuarios-en-sala.service';
 import {UnirseSalaService} from '../../../../servicios/mutation/unirse-sala.service';
 import {AccionesUsuarioSalaService} from '../../../../servicios/mutation/acciones-usuario-sala.service';
-import {BuscarSalasService} from '../../../../servicios/query/buscar-salas.service';
+import {SalaService} from '../../../../servicios/sala.service';
+import {CargandoService} from '../../../../servicios/cargando.service';
+import {SalaInterface} from '../../../../interfaces/sala.interface';
 
 @Component({
   selector: 'app-ruta-sala-reunion',
@@ -27,7 +29,8 @@ export class RutaSalaReunionComponent implements OnInit {
     private readonly _buscarUsuarioEnSalaService: BuscarUsuariosEnSalaService,
     private readonly _unirseASalaService: UnirseSalaService,
     private readonly _accionesUsuarioEnSalaService: AccionesUsuarioSalaService,
-    private readonly _buscarSalasService: BuscarSalasService,
+    private readonly _salaService: SalaService,
+    private readonly _cargandoService: CargandoService
   ) {
   }
 
@@ -99,14 +102,13 @@ export class RutaSalaReunionComponent implements OnInit {
   }
 
   setearNombreSala() {
-    return this._buscarSalasService
-      .watch({
-        id: this.idSala
-      })
-      .valueChanges
+    return this._salaService
+      .findOne(
+        this.idSala
+      )
       .subscribe(
-        ({data}) => {
-          this.nombreSala = data.salas[0].nombre;
+        (salaEncontrada: { sala: SalaInterface }) => {
+          this.nombreSala = salaEncontrada.sala.nombre;
         },
         error => {
           console.error({

@@ -10,6 +10,7 @@ import {FormularioCrearSalaModule} from './componentes/formulario-crear-sala/for
 import {MatDialogModule} from '@angular/material/dialog';
 import {ModalCrearSalaModule} from './modales/modal-crear-sala/modal-crear-sala.module';
 import {RouterModule} from '@angular/router';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {RouterModule} from '@angular/router';
     FormularioCrearSalaModule,
     MatDialogModule,
     ModalCrearSalaModule,
-    RouterModule
+    RouterModule,
+    FormsModule
   ]
 })
 export class SalaModule {

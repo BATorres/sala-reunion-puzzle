@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {BuscarSalasService} from '../../../../servicios/query/buscar-salas.service';
 import {SalaInterface} from '../../../../interfaces/sala.interface';
 import {Router} from '@angular/router';
 import {BuscarUsuariosService} from '../../../../servicios/query/buscar-usuarios.service';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ModalCrearSalaComponent} from '../../modales/modal-crear-sala/modal-crear-sala/modal-crear-sala.component';
 import {NuevaSalaService} from '../../../../servicios/subscription/nueva-sala.service';
+import {SalaService} from '../../../../servicios/sala.service';
+import {CargandoService} from '../../../../servicios/cargando.service';
 
 @Component({
   selector: 'app-ruta-listar-salas',
@@ -23,31 +24,17 @@ export class RutaListarSalasComponent implements OnInit {
   existenSalas: boolean;
 
   constructor(
-    private readonly _buscarSalasService: BuscarSalasService,
     private readonly _router: Router,
     private readonly _buscarUsuarioService: BuscarUsuariosService,
     private readonly _nuevaSalaService: NuevaSalaService,
+    private readonly _salaService: SalaService,
+    private readonly _cargandoService: CargandoService,
     public matDialog: MatDialog,
   ) {
   }
 
   ngOnInit(): void {
-    this._buscarSalasService
-      .watch()
-      .valueChanges
-      .subscribe(
-        respuestaQuerySalas => {
-          this.estaCargando = respuestaQuerySalas.loading;
-          this.salas = respuestaQuerySalas.data.salas;
-          this.existenSalas = this.salas.length > 0;
-        },
-        error => {
-          console.error({
-            error,
-            mensaje: 'Error buscando salas'
-          });
-        }
-      );
+    this.cargarSalas();
     this._nuevaSalaService
       .subscribe()
       .subscribe(
@@ -63,6 +50,50 @@ export class RutaListarSalasComponent implements OnInit {
         }
       );
     this.verificarRolUsuario();
+  }
+
+  cargarSalas() {
+    this._cargandoService.habilitarCargando();
+    this._salaService
+      .findAll()
+      .subscribe(
+        (respuestaQuerySalas: {salas: SalaInterface[]}) => {
+          this._cargandoService.deshabilitarCargando();
+          this.salas = respuestaQuerySalas.salas;
+          this.existenSalas = this.salas.length > 0;
+        },
+        error => {
+          this._cargandoService.deshabilitarCargando();
+          console.error({
+            error,
+            mensaje: 'Error buscando salas'
+          });
+        }
+      );
+  }
+
+  buscarSala(busqueda: string) {
+    const esBusquedaVacia: boolean = busqueda === '';
+    if (esBusquedaVacia) {
+      this.cargarSalas();
+    } else {
+      this._salaService
+        .buscarPorNombre(busqueda.trim())
+        .subscribe(
+          (respuestaQuerySalas: {salas: SalaInterface[]}) => {
+            this._cargandoService.deshabilitarCargando();
+            this.salas = respuestaQuerySalas.salas;
+            this.existenSalas = this.salas.length > 0;
+          },
+          error => {
+            this._cargandoService.deshabilitarCargando();
+            console.error({
+              error,
+              mensaje: 'Error buscando salas'
+            });
+          }
+        );
+    }
   }
 
   verificarRolUsuario() {
