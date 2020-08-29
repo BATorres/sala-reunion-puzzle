@@ -1,0 +1,9 @@
+img {
+  height: 250px;
+  width: 250px;
+}
+
+.centrar-elemento {
+  top: 33%;
+  position: fixed;
+}

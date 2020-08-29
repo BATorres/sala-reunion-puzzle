@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {BuscarUsuariosService} from '../../servicios/query/buscar-usuarios.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -9,20 +8,11 @@ import {Router} from '@angular/router';
 })
 export class RutaInicioComponent implements OnInit {
 
-  cargando: boolean = true;
-
   constructor(
-    private readonly _router: Router,
-    private readonly _buscarUsuario: BuscarUsuariosService,
+    private readonly _router: Router
   ) { }
 
   ngOnInit(): void {
-    this._buscarUsuario.watch({nombre: 'Wendy'}).valueChanges.subscribe(
-      (usuario) => {
-        this.cargando = usuario.loading;
-        console.log('usuario', usuario)
-      }
-    );
   }
 
   irARegistrarUsuario() {
@@ -32,5 +22,4 @@ export class RutaInicioComponent implements OnInit {
   irALogin() {
     this._router.navigate(['login'])
   }
-
 }
