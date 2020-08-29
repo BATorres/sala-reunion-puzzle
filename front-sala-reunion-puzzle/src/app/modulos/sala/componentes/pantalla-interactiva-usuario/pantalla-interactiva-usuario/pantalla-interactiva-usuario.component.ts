@@ -1,12 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {AccionesUsuarioSalaService} from '../../../../../servicios/mutation/acciones-usuario-sala.service';
-import {BuscarUsuariosEnSalaService} from '../../../../../servicios/query/buscar-usuarios-en-sala.service';
 import {UsuarioSalaInterface} from '../../../../../interfaces/usuario-sala.interface';
 import {BuscarDiagramaUsuarioService} from '../../../../../servicios/query/buscar-diagrama-usuario.service';
 import {CrearDiagramaService} from '../../../../../servicios/mutation/crear-diagrama.service';
 import {ActualizarDiagramaService} from '../../../../../servicios/mutation/actualizar-diagrama.service';
 import {diagramaEditable} from '../../../../../componentes/diagrama-editable/diagrama-editable/diagrama-editable.component';
 import * as go from 'gojs';
+import {UsuarioSalaService} from '../../../../../servicios/usuario-sala.service';
 
 @Component({
   selector: 'app-pantalla-interactiva-usuario',
@@ -21,11 +20,10 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
   idUsuarioSala: string;
 
   constructor(
-    private readonly _buscarUsuarioEnSalaService: BuscarUsuariosEnSalaService,
-    private readonly _accionesUsuarioEnSalaService: AccionesUsuarioSalaService,
     private readonly _buscarDiagramaUsuarioService: BuscarDiagramaUsuarioService,
     private readonly _crearDiagramaService: CrearDiagramaService,
-    private readonly _actualizarDiagramaService: ActualizarDiagramaService
+    private readonly _actualizarDiagramaService: ActualizarDiagramaService,
+    private readonly _usuarioEnSalaService: UsuarioSalaService
   ) {
   }
 
@@ -35,22 +33,17 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
   }
 
   verificarUsuarioEnSala() {
-    this._buscarUsuarioEnSalaService
-      .watch({
-        sala: this.idSala,
-        usuario: localStorage.getItem('usuario')
-      })
-      .valueChanges
+    this._usuarioEnSalaService
+      .buscarUsuarioEnSala(
+        this.idSala,
+        localStorage.getItem('usuario')
+      )
       .subscribe(
-        ({data}) => {
-          const usuarioFiltrado = data.usuarioSalas.filter(
-            (usuario: UsuarioSalaInterface) =>
-            {
-              return usuario.usuario.id === localStorage.getItem('usuario')
-            }
-          )[0];
-          if (usuarioFiltrado) {
-            this.idUsuarioSala = usuarioFiltrado.id;
+        (usuariosEnSala: { usuarioSalas: UsuarioSalaInterface[]}) => {
+          const existeUsuarioSala: boolean = usuariosEnSala.usuarioSalas.length > 0;
+
+          if (existeUsuarioSala) {
+            this.idUsuarioSala = usuariosEnSala.usuarioSalas[0].id;
           }
         },
         error => {
@@ -87,60 +80,29 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
   }
 
   pedirLaPalabra() {
-    return this._accionesUsuarioEnSalaService
-      .mutate({
-        idUsuarioSala: this.idUsuarioSala,
-        levantarMano: true,
-        compartirPantalla: false
-      })
-      .subscribe(
-        () => {
-        },
-        error => {
-          console.error({
-            error,
-            mensaje: 'Error al pedir la palabra'
-          })
-        }
+    return this._usuarioEnSalaService
+      .accionesUsuarioEnSala(
+        localStorage.getItem('usuario'),
+        true,
+        false
       );
   }
 
   compartirPantalla() {
-    return this._accionesUsuarioEnSalaService
-      .mutate({
-        idUsuarioSala: this.idUsuarioSala,
-        levantarMano: false,
-        compartirPantalla: true
-      })
-      .subscribe(
-        () => {
-          this.guardarDiagramaUsuario();
-        },
-        error => {
-          console.error({
-            error,
-            mensaje: 'Error al compartir pantalla'
-          })
-        }
+    return this._usuarioEnSalaService
+      .accionesUsuarioEnSala(
+        localStorage.getItem('usuario'),
+        false,
+        true
       );
   }
 
   cancelar() {
-    return this._accionesUsuarioEnSalaService
-      .mutate({
-        idUsuarioSala: this.idUsuarioSala,
-        levantarMano: false,
-        compartirPantalla: false
-      })
-      .subscribe(
-        () => {
-        },
-        error => {
-          console.error({
-            error,
-            mensaje: 'Error al cancelar'
-          })
-        }
+    return this._usuarioEnSalaService
+      .accionesUsuarioEnSala(
+        localStorage.getItem('usuario'),
+        false,
+        false
       );
   }
 

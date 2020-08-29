@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {SalaInterface} from '../../../../interfaces/sala.interface';
 import {Router} from '@angular/router';
-import {BuscarUsuariosService} from '../../../../servicios/query/buscar-usuarios.service';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ModalCrearSalaComponent} from '../../modales/modal-crear-sala/modal-crear-sala/modal-crear-sala.component';
 import {NuevaSalaService} from '../../../../servicios/subscription/nueva-sala.service';
 import {SalaService} from '../../../../servicios/sala.service';
 import {CargandoService} from '../../../../servicios/cargando.service';
+import {UsuarioService} from '../../../../servicios/usuario.service';
 
 @Component({
   selector: 'app-ruta-listar-salas',
@@ -14,8 +14,6 @@ import {CargandoService} from '../../../../servicios/cargando.service';
   styleUrls: ['./ruta-listar-salas.component.css']
 })
 export class RutaListarSalasComponent implements OnInit {
-
-  estaCargando: boolean = true;
 
   esAdmin: boolean;
 
@@ -25,9 +23,9 @@ export class RutaListarSalasComponent implements OnInit {
 
   constructor(
     private readonly _router: Router,
-    private readonly _buscarUsuarioService: BuscarUsuariosService,
     private readonly _nuevaSalaService: NuevaSalaService,
     private readonly _salaService: SalaService,
+    private readonly _usuarioService: UsuarioService,
     private readonly _cargandoService: CargandoService,
     public matDialog: MatDialog,
   ) {
@@ -97,14 +95,11 @@ export class RutaListarSalasComponent implements OnInit {
   }
 
   verificarRolUsuario() {
-    this._buscarUsuarioService
-      .watch({
-        id: localStorage.getItem('usuario')
-      })
-      .valueChanges
+    this._usuarioService
+      .verificarEsAdmin(localStorage.getItem('usuario'))
       .subscribe(
-        respuestaQueryBuscarUsuario => {
-          this.esAdmin = respuestaQueryBuscarUsuario.data.usuarios[0].esAdmin;
+        esUsuarioAdmin => {
+          this.esAdmin = esUsuarioAdmin;
         },
         error => {
           console.error({

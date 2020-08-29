@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {BuscarUsuariosService} from '../../../../servicios/query/buscar-usuarios.service';
-import {BuscarUsuariosEnSalaService} from '../../../../servicios/query/buscar-usuarios-en-sala.service';
-import {UnirseSalaService} from '../../../../servicios/mutation/unirse-sala.service';
-import {AccionesUsuarioSalaService} from '../../../../servicios/mutation/acciones-usuario-sala.service';
 import {SalaService} from '../../../../servicios/sala.service';
 import {CargandoService} from '../../../../servicios/cargando.service';
 import {SalaInterface} from '../../../../interfaces/sala.interface';
+import {UsuarioService} from '../../../../servicios/usuario.service';
+import {UsuarioSalaService} from '../../../../servicios/usuario-sala.service';
+import {UsuarioSalaInterface} from '../../../../interfaces/usuario-sala.interface';
 
 @Component({
   selector: 'app-ruta-sala-reunion',
@@ -25,16 +24,15 @@ export class RutaSalaReunionComponent implements OnInit {
 
   constructor(
     private readonly _activatedRoute: ActivatedRoute,
-    private readonly _buscarUsuarioService: BuscarUsuariosService,
-    private readonly _buscarUsuarioEnSalaService: BuscarUsuariosEnSalaService,
-    private readonly _unirseASalaService: UnirseSalaService,
-    private readonly _accionesUsuarioEnSalaService: AccionesUsuarioSalaService,
+    private readonly _usuarioService: UsuarioService,
     private readonly _salaService: SalaService,
+    private readonly _usuarioSalaService: UsuarioSalaService,
     private readonly _cargandoService: CargandoService
   ) {
   }
 
   ngOnInit(): void {
+    this._cargandoService.habilitarCargando();
     this._activatedRoute
       .params
       .subscribe(
@@ -42,26 +40,27 @@ export class RutaSalaReunionComponent implements OnInit {
           this.idSala = parametrosRuta.idSala;
           this.verificarRolUsuario();
           this.setearNombreSala();
+          this.verificarUsuarioEnSala();
+          this._cargandoService.deshabilitarCargando();
         },
         error => {
+          this._cargandoService.deshabilitarCargando();
           console.error({
             error,
             mensaje: 'Error cargando los parámetros de ruta'
           })
         }
       );
-    this.verificarUsuarioEnSala();
   }
 
   verificarRolUsuario() {
-    this._buscarUsuarioService
-      .watch({
-        id: localStorage.getItem('usuario')
-      })
-      .valueChanges
+    this._usuarioService
+      .verificarEsAdmin(
+        localStorage.getItem('usuario')
+      )
       .subscribe(
-        respuestaQueryBuscarUsuario => {
-          this.esAdmin = respuestaQueryBuscarUsuario.data.usuarios[0].esAdmin;
+        (esUsuarioAdmin: boolean) => {
+          this.esAdmin = esUsuarioAdmin;
         },
         error => {
           console.error({
@@ -73,22 +72,27 @@ export class RutaSalaReunionComponent implements OnInit {
   }
 
   verificarUsuarioEnSala() {
-    this._buscarUsuarioEnSalaService
-      .watch({
-        sala: this.idSala,
-        usuario: localStorage.getItem('usuario')
-      })
-      .valueChanges
+    return this._usuarioSalaService.buscarUsuarioEnSala(
+      this.idSala,
+      localStorage.getItem('usuario')
+    )
       .subscribe(
-        ({data}) => {
-          this.existeUsuarioEnSala = data.usuarioSalas.length > 0;
+        (usuario: { usuarioSalas: UsuarioSalaInterface[] }) => {
+          this.existeUsuarioEnSala = usuario.usuarioSalas.length > 0;
 
           if (!this.esAdmin) {
             if (!this.existeUsuarioEnSala) {
-              this.unirseASala();
+              this._usuarioSalaService.unirseASala(
+                this.idSala,
+                localStorage.getItem('usuario')
+              );
             } else {
-              const idUsuarioEnSala: string = data.usuarioSalas[0].id;
-              this.resetearAccionesUsuario(idUsuarioEnSala)
+              const idUsuarioEnSala: string = usuario.usuarioSalas[0].id;
+              this._usuarioSalaService.accionesUsuarioEnSala(
+                idUsuarioEnSala,
+                false,
+                false
+              )
             }
           }
         },
@@ -98,7 +102,7 @@ export class RutaSalaReunionComponent implements OnInit {
             mensaje: 'Error consultado usuarios en sala'
           })
         }
-      );
+      )
   }
 
   setearNombreSala() {
@@ -117,42 +121,5 @@ export class RutaSalaReunionComponent implements OnInit {
           })
         }
       );
-  }
-
-  unirseASala() {
-    return this._unirseASalaService
-      .mutate({
-        idSala: this.idSala,
-        idUsuario: localStorage.getItem('usuario')
-      })
-      .subscribe(
-        () => {
-        },
-        error => {
-          console.error({
-            error,
-            mensaje: 'Error uniendo usuario en sala'
-          })
-        }
-      )
-  }
-
-  resetearAccionesUsuario(idUsuarioSala: string) {
-    return this._accionesUsuarioEnSalaService
-      .mutate({
-        idUsuarioSala: idUsuarioSala,
-        levantarMano: false,
-        compartirPantalla: false
-      })
-      .subscribe(
-        () => {
-        },
-        error => {
-          console.error({
-            error,
-            mensaje: 'Error reseteando acciones usuario'
-          })
-        }
-      )
   }
 }

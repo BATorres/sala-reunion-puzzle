@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {BuscarUsuariosService} from '../../../../servicios/query/buscar-usuarios.service';
-import {RegistrarUsuarioService} from '../../../../servicios/mutation/registrar-usuario.service';
 import {ToasterService} from 'angular2-toaster';
 import {UsuarioInterface} from '../../../../interfaces/usuario.interface';
+import {UsuarioService} from '../../../../servicios/usuario.service';
 
 @Component({
   selector: 'app-ruta-registrar-usuario',
@@ -20,8 +19,7 @@ export class RutaRegistrarUsuarioComponent implements OnInit {
 
   constructor(
     private readonly _router: Router,
-    private readonly _buscarUsuariosService: BuscarUsuariosService,
-    private readonly _registrarUsuarioService: RegistrarUsuarioService,
+    private readonly _usuarioService: UsuarioService,
     private readonly _toasterService: ToasterService
   ) {
     const existeUsuarioLogeado: string = localStorage.getItem('usuario');
@@ -44,15 +42,13 @@ export class RutaRegistrarUsuarioComponent implements OnInit {
   }
 
   registrarUsuario() {
-    this._buscarUsuariosService
-      .watch({
-        nombre: this.usuarioARegistrar.nombre,
-        password: this.usuarioARegistrar.password
-      })
-      .valueChanges
-      .subscribe(
-        respuestaQueryBuscarUsuario => {
-          this.esUsuarioYaRegistrado = respuestaQueryBuscarUsuario.data.usuarios.length > 0;
+    this._usuarioService
+      .findAll(
+        this.usuarioARegistrar.nombre,
+        this.usuarioARegistrar.password
+      )
+      .subscribe((usuarioRegistrado: { usuarios: UsuarioInterface[] }) => {
+          this.esUsuarioYaRegistrado = usuarioRegistrado.usuarios.length > 0;
 
           if (this.esUsuarioYaRegistrado) {
             this._toasterService.pop(
@@ -61,11 +57,11 @@ export class RutaRegistrarUsuarioComponent implements OnInit {
               'El usuario ingresado ya se encuentra registrado'
             )
           } else {
-            this._registrarUsuarioService
-              .mutate({
-                nombre: this.usuarioARegistrar.nombre,
-                password: this.usuarioARegistrar.password
-              })
+            this._usuarioService
+              .registrarUsuario(
+                this.usuarioARegistrar.nombre,
+                this.usuarioARegistrar.password
+              )
               .subscribe(
                 () => {
                   this._router.navigate(['login']);

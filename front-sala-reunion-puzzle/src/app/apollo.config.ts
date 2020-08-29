@@ -24,11 +24,12 @@ export class GraphQLModule {
       uri: linkHttp
     });
 
-    const linkWs: string = `wss://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev`;
+    const linkWs: string = 'wss://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev';
     const ws = new WebSocketLink({
       uri: linkWs,
       options: {
         reconnect: true,
+        timeout: 50000
       }
     });
 

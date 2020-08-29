@@ -6,6 +6,7 @@ import {DiagramaGlobalModule} from '../../../../componentes/diagrama-global/diag
 import {TabViewModule} from 'primeng/tabview';
 import {DiagramaEditableModule} from '../../../../componentes/diagrama-editable/diagrama-editable.module';
 import {FormsModule} from '@angular/forms';
+import {VirtualScrollerModule} from 'primeng';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import {FormsModule} from '@angular/forms';
     TabViewModule,
     DiagramaEditableModule,
     FormsModule,
+    VirtualScrollerModule,
   ]
 })
 export class PantallaInteractivaAdministradorModule {

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {UsuarioInterface} from '../../../../interfaces/usuario.interface';
 import {Router} from '@angular/router';
-import {BuscarUsuariosService} from '../../../../servicios/query/buscar-usuarios.service';
 import {ToasterService} from 'angular2-toaster';
+import {UsuarioService} from '../../../../servicios/usuario.service';
 
 @Component({
   selector: 'app-ruta-login',
@@ -19,7 +19,7 @@ export class RutaLoginComponent implements OnInit {
 
   constructor(
     private readonly _router: Router,
-    private readonly _buscarUsuariosService: BuscarUsuariosService,
+    private readonly _usuarioService: UsuarioService,
     private readonly _toasterService: ToasterService
   ) {
     const existeUsuarioLogeado: string = localStorage.getItem('usuario');
@@ -42,17 +42,17 @@ export class RutaLoginComponent implements OnInit {
   }
 
   ingresarAlSistema() {
-    this._buscarUsuariosService
-      .watch({
-        nombre: this.usuarioALoguearse.nombre,
-        password: this.usuarioALoguearse.password
-      })
-      .valueChanges
+    this._usuarioService
+      .findAll(
+        this.usuarioALoguearse.nombre,
+        this.usuarioALoguearse.password
+      )
       .subscribe(
-        respuestaQueryBuscarUsuario => {
-          this.esUsuarioYaRegistrado = respuestaQueryBuscarUsuario.data.usuarios.length > 0;
+        (usuario: { usuarios: UsuarioInterface[]} ) => {
+          this.esUsuarioYaRegistrado = usuario.usuarios.length > 0;
+
           if (this.esUsuarioYaRegistrado) {
-            const usuarioLogeado: UsuarioInterface = respuestaQueryBuscarUsuario.data.usuarios[0];
+            const usuarioLogeado: UsuarioInterface = usuario.usuarios[0];
             localStorage.setItem('usuario', usuarioLogeado.id);
             this.irMenuSalas();
           } else {
@@ -69,7 +69,7 @@ export class RutaLoginComponent implements OnInit {
             mensaje: 'Error registrando nuevo usuario'
           });
         }
-      );
+      )
   }
 
   volverMenuInicio() {

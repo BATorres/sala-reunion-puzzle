@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {BuscarUsuariosEnSalaService} from '../../../../../servicios/query/buscar-usuarios-en-sala.service';
 import {UsuarioSalaInterface} from '../../../../../interfaces/usuario-sala.interface';
 import {NuevoUsuarioSalaService} from '../../../../../servicios/subscription/nuevo-usuario-sala.service';
 import {EscucharAccionesUsuarioService} from '../../../../../servicios/subscription/escuchar-acciones-usuario.service';
@@ -10,6 +9,7 @@ import * as go from 'gojs';
 import {diagramaEditable} from '../../../../../componentes/diagrama-editable/diagrama-editable/diagrama-editable.component';
 import {CrearDiagramaService} from '../../../../../servicios/mutation/crear-diagrama.service';
 import {ActualizarDiagramaService} from '../../../../../servicios/mutation/actualizar-diagrama.service';
+import {UsuarioSalaService} from '../../../../../servicios/usuario-sala.service';
 
 @Component({
   selector: 'app-pantalla-interactiva-administrador',
@@ -21,33 +21,29 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
   @Input()
   idSala: string;
 
-  estaCargando: boolean = true;
-
   existenUsuariosEnSala: boolean;
 
   usuariosEnSala: UsuarioSalaInterface[];
 
   constructor(
-    private readonly _buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService,
     private readonly _nuevoUsuarioEnSalaService: NuevoUsuarioSalaService,
     private readonly _escucharAccionesUsuario: EscucharAccionesUsuarioService,
     private readonly _toasterService: ToasterService,
     private readonly _buscarDiagramaUsuarioService: BuscarDiagramaUsuarioService,
     private readonly _crearDiagramaService: CrearDiagramaService,
-    private readonly _actualizarDiagramaService: ActualizarDiagramaService
+    private readonly _actualizarDiagramaService: ActualizarDiagramaService,
+    private readonly _usuarioEnSalaService: UsuarioSalaService
   ) {
   }
 
   ngOnInit(): void {
-    this._buscarUsuariosEnSalaService
-      .watch({
-        idSala: this.idSala
-      })
-      .valueChanges
+    this._usuarioEnSalaService
+      .buscarUsuarioEnSala(
+        this.idSala
+      )
       .subscribe(
-        respuestaQueryUsuarioSala => {
-          this.estaCargando = respuestaQueryUsuarioSala.loading;
-          this.usuariosEnSala = respuestaQueryUsuarioSala.data.usuarioSalas;
+        (usuariosEnSala: {usuarioSalas: UsuarioSalaInterface[]}) => {
+          this.usuariosEnSala = usuariosEnSala.usuarioSalas;
           this.existenUsuariosEnSala = this.usuariosEnSala.length > 0;
         },
         error => {
