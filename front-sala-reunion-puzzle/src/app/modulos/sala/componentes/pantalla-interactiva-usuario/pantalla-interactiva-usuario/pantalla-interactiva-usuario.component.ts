@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {UsuarioSalaInterface} from '../../../../../interfaces/usuario-sala.interface';
-import {BuscarDiagramaUsuarioService} from '../../../../../servicios/query/buscar-diagrama-usuario.service';
-import {CrearDiagramaService} from '../../../../../servicios/mutation/crear-diagrama.service';
-import {ActualizarDiagramaService} from '../../../../../servicios/mutation/actualizar-diagrama.service';
 import {diagramaEditable} from '../../../../../componentes/diagrama-editable/diagrama-editable/diagrama-editable.component';
 import * as go from 'gojs';
 import {UsuarioSalaService} from '../../../../../servicios/usuario-sala.service';
+import {CargandoService} from '../../../../../servicios/cargando.service';
+import {DiagramaUsuarioService} from '../../../../../servicios/diagrama-usuario.service';
+import {DiagramaUsuarioInterface} from '../../../../../interfaces/diagrama-usuario.interface';
+import {UsuarioSalaInterface} from '../../../../../interfaces/usuario-sala.interface';
 
 @Component({
   selector: 'app-pantalla-interactiva-usuario',
@@ -20,10 +20,9 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
   idUsuarioSala: string;
 
   constructor(
-    private readonly _buscarDiagramaUsuarioService: BuscarDiagramaUsuarioService,
-    private readonly _crearDiagramaService: CrearDiagramaService,
-    private readonly _actualizarDiagramaService: ActualizarDiagramaService,
-    private readonly _usuarioEnSalaService: UsuarioSalaService
+    private readonly _usuarioEnSalaService: UsuarioSalaService,
+    private readonly _diagramaUsuarioService: DiagramaUsuarioService,
+    private readonly _cargandoService: CargandoService
   ) {
   }
 
@@ -33,16 +32,18 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
   }
 
   verificarUsuarioEnSala() {
+    this._cargandoService.habilitarCargando();
     this._usuarioEnSalaService
       .buscarUsuarioEnSala(
         this.idSala,
         localStorage.getItem('usuario')
       )
       .subscribe(
-        (usuariosEnSala: { usuarioSalas: UsuarioSalaInterface[]}) => {
+        (usuariosEnSala: {usuarioSalas: UsuarioSalaInterface[]}) => {
           const existeUsuarioSala: boolean = usuariosEnSala.usuarioSalas.length > 0;
 
           if (existeUsuarioSala) {
+            this._cargandoService.deshabilitarCargando();
             this.idUsuarioSala = usuariosEnSala.usuarioSalas[0].id;
           }
         },
@@ -56,17 +57,16 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
   }
 
   verificarDiagramaUsuario() {
-    this._buscarDiagramaUsuarioService
-      .watch({
-        idSala: this.idSala,
-        idUsuario: localStorage.getItem('usuario')
-      })
-      .valueChanges
+    return this._diagramaUsuarioService
+      .buscarDiagramaUsuario(
+        this.idSala,
+        localStorage.getItem('usuario')
+      )
       .subscribe(
-        respuestaBuscarDiagramaUsuario => {
-          const tieneDiagramaGuardado: boolean = respuestaBuscarDiagramaUsuario.data.diagramaUsuarios.length > 0;
+        (diagramaUsuario: { diagramaUsuarios: DiagramaUsuarioInterface[]}) => {
+          const tieneDiagramaGuardado: boolean = diagramaUsuario.diagramaUsuarios.length > 0;
           if (tieneDiagramaGuardado) {
-            const datosACargar = respuestaBuscarDiagramaUsuario.data.diagramaUsuarios[0].diagrama.datos;
+            const datosACargar = diagramaUsuario.diagramaUsuarios[0].diagrama.datos;
             diagramaEditable.model = go.Model.fromJson(JSON.parse(datosACargar));
           }
         },
@@ -82,16 +82,17 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
   pedirLaPalabra() {
     return this._usuarioEnSalaService
       .accionesUsuarioEnSala(
-        localStorage.getItem('usuario'),
+        this.idUsuarioSala,
         true,
         false
       );
   }
 
   compartirPantalla() {
+    this.guardarDiagramaUsuario();
     return this._usuarioEnSalaService
       .accionesUsuarioEnSala(
-        localStorage.getItem('usuario'),
+        this.idUsuarioSala,
         false,
         true
       );
@@ -100,58 +101,18 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
   cancelar() {
     return this._usuarioEnSalaService
       .accionesUsuarioEnSala(
-        localStorage.getItem('usuario'),
+        this.idUsuarioSala,
         false,
         false
       );
   }
 
   guardarDiagramaUsuario() {
-    return this._buscarDiagramaUsuarioService
-      .watch({
-        idSala: this.idSala,
-        idUsuario: localStorage.getItem('usuario')
-      })
-      .valueChanges
-      .subscribe(
-        respuestaQueryGuardarDiagrama => {
-          const datos: string = JSON.stringify(diagramaEditable.model.toJson());
-          const tieneDiagramaUsuario: boolean = respuestaQueryGuardarDiagrama.data.diagramaUsuarios.length > 0;
-          if (tieneDiagramaUsuario) {
-            const idDiagramaUsuario: string = respuestaQueryGuardarDiagrama.data.diagramaUsuarios[0].id;
-            return this._actualizarDiagramaService
-              .mutate({
-                idDiagramaSala: idDiagramaUsuario,
-                datos: datos
-              })
-              .subscribe(
-                () => {},
-                error => {
-                  console.error({
-                    error,
-                    mensaje: 'Error actualizando los datos del diagrama'
-                  })
-                }
-              );
-
-          } else {
-            return this._crearDiagramaService
-              .mutate({
-                datos: datos,
-                idSala: this.idSala,
-                idUsuario: localStorage.getItem('usuario')
-              })
-              .subscribe(
-                () => {},
-                error => {
-                  console.error({
-                    error,
-                    mensaje: 'Error creando diagrama usuario'
-                  })
-                }
-              );
-          }
-        }
-      )
+    this._diagramaUsuarioService
+      .guardarDiagrama(
+        JSON.stringify(diagramaEditable.model.toJson()),
+        this.idSala,
+        localStorage.getItem('usuario'),
+      );
   }
 }

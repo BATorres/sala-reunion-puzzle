@@ -12,9 +12,6 @@ import {ToasterModule} from 'angular2-toaster';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {NuevoUsuarioSalaService} from './servicios/subscription/nuevo-usuario-sala.service';
 import {EscucharAccionesUsuarioService} from './servicios/subscription/escuchar-acciones-usuario.service';
-import {BuscarDiagramaUsuarioService} from './servicios/query/buscar-diagrama-usuario.service';
-import {CrearDiagramaService} from './servicios/mutation/crear-diagrama.service';
-import {ActualizarDiagramaService} from './servicios/mutation/actualizar-diagrama.service';
 import {CabeceraModule} from './componentes/cabecera/cabecera.module';
 import {EstaLogueadoGuard} from './servicios/esta-logueado.guard';
 import {SalaService} from './servicios/sala.service';
@@ -22,6 +19,8 @@ import {CargandoService} from './servicios/cargando.service';
 import {BlockUIModule} from 'primeng';
 import {UsuarioSalaService} from './servicios/usuario-sala.service';
 import {UsuarioService} from './servicios/usuario.service';
+import {BuscarUsuariosEnSalaService} from './servicios/query/buscar-usuarios-en-sala.service';
+import {DiagramaUsuarioService} from './servicios/diagrama-usuario.service';
 
 @NgModule({
   declarations: [
@@ -43,14 +42,13 @@ import {UsuarioService} from './servicios/usuario.service';
   providers: [
     NuevoUsuarioSalaService,
     EscucharAccionesUsuarioService,
-    BuscarDiagramaUsuarioService,
-    CrearDiagramaService,
-    ActualizarDiagramaService,
     EstaLogueadoGuard,
     SalaService,
     CargandoService,
     UsuarioSalaService,
-    UsuarioService
+    UsuarioService,
+    BuscarUsuariosEnSalaService,
+    DiagramaUsuarioService
   ],
   bootstrap: [AppComponent]
 })

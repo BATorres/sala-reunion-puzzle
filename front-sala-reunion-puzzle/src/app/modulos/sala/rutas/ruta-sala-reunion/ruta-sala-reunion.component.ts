@@ -5,7 +5,7 @@ import {CargandoService} from '../../../../servicios/cargando.service';
 import {SalaInterface} from '../../../../interfaces/sala.interface';
 import {UsuarioService} from '../../../../servicios/usuario.service';
 import {UsuarioSalaService} from '../../../../servicios/usuario-sala.service';
-import {UsuarioSalaInterface} from '../../../../interfaces/usuario-sala.interface';
+import {BuscarUsuariosEnSalaService} from '../../../../servicios/query/buscar-usuarios-en-sala.service';
 
 @Component({
   selector: 'app-ruta-sala-reunion',
@@ -27,6 +27,7 @@ export class RutaSalaReunionComponent implements OnInit {
     private readonly _usuarioService: UsuarioService,
     private readonly _salaService: SalaService,
     private readonly _usuarioSalaService: UsuarioSalaService,
+    private readonly _buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService,
     private readonly _cargandoService: CargandoService
   ) {
   }
@@ -72,13 +73,15 @@ export class RutaSalaReunionComponent implements OnInit {
   }
 
   verificarUsuarioEnSala() {
-    return this._usuarioSalaService.buscarUsuarioEnSala(
-      this.idSala,
-      localStorage.getItem('usuario')
-    )
+    this._buscarUsuariosEnSalaService
+      .watch({
+        sala: this.idSala,
+        usuario: localStorage.getItem('usuario')
+      })
+      .valueChanges
       .subscribe(
-        (usuario: { usuarioSalas: UsuarioSalaInterface[] }) => {
-          this.existeUsuarioEnSala = usuario.usuarioSalas.length > 0;
+        (usuario) => {
+          this.existeUsuarioEnSala = usuario.data.usuarioSalas.length > 0;
 
           if (!this.esAdmin) {
             if (!this.existeUsuarioEnSala) {
@@ -87,7 +90,7 @@ export class RutaSalaReunionComponent implements OnInit {
                 localStorage.getItem('usuario')
               );
             } else {
-              const idUsuarioEnSala: string = usuario.usuarioSalas[0].id;
+              const idUsuarioEnSala: string = usuario.data.usuarioSalas[0].id;
               this._usuarioSalaService.accionesUsuarioEnSala(
                 idUsuarioEnSala,
                 false,

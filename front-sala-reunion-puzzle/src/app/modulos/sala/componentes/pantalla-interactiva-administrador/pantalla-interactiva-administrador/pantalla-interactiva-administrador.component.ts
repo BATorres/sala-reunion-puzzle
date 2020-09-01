@@ -3,13 +3,14 @@ import {UsuarioSalaInterface} from '../../../../../interfaces/usuario-sala.inter
 import {NuevoUsuarioSalaService} from '../../../../../servicios/subscription/nuevo-usuario-sala.service';
 import {EscucharAccionesUsuarioService} from '../../../../../servicios/subscription/escuchar-acciones-usuario.service';
 import {ToasterService} from 'angular2-toaster';
-import {BuscarDiagramaUsuarioService} from '../../../../../servicios/query/buscar-diagrama-usuario.service';
 import {diagramaGlobal} from '../../../../../componentes/diagrama-global/diagrama-global/diagrama-global.component';
 import * as go from 'gojs';
 import {diagramaEditable} from '../../../../../componentes/diagrama-editable/diagrama-editable/diagrama-editable.component';
-import {CrearDiagramaService} from '../../../../../servicios/mutation/crear-diagrama.service';
-import {ActualizarDiagramaService} from '../../../../../servicios/mutation/actualizar-diagrama.service';
 import {UsuarioSalaService} from '../../../../../servicios/usuario-sala.service';
+import {BuscarUsuariosEnSalaService} from '../../../../../servicios/query/buscar-usuarios-en-sala.service';
+import {DiagramaUsuarioService} from '../../../../../servicios/diagrama-usuario.service';
+import {DiagramaUsuarioInterface} from '../../../../../interfaces/diagrama-usuario.interface';
+import {CargandoService} from '../../../../../servicios/cargando.service';
 
 @Component({
   selector: 'app-pantalla-interactiva-administrador',
@@ -29,21 +30,30 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
     private readonly _nuevoUsuarioEnSalaService: NuevoUsuarioSalaService,
     private readonly _escucharAccionesUsuario: EscucharAccionesUsuarioService,
     private readonly _toasterService: ToasterService,
-    private readonly _buscarDiagramaUsuarioService: BuscarDiagramaUsuarioService,
-    private readonly _crearDiagramaService: CrearDiagramaService,
-    private readonly _actualizarDiagramaService: ActualizarDiagramaService,
-    private readonly _usuarioEnSalaService: UsuarioSalaService
+    private readonly _usuarioEnSalaService: UsuarioSalaService,
+    private readonly _buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService,
+    private readonly _diagramaUsuarioService: DiagramaUsuarioService,
+    private readonly _cargandoService: CargandoService
   ) {
   }
 
   ngOnInit(): void {
-    this._usuarioEnSalaService
-      .buscarUsuarioEnSala(
-        this.idSala
-      )
+    this.setearUsuariosEnSala();
+    this.escucharNuevoUsuarioEnSala();
+    this.escucharAccionesUsuario();
+    this.verificarDiagramaGlobal();
+  }
+
+  setearUsuariosEnSala() {
+    this._buscarUsuariosEnSalaService
+      .watch({
+        sala: this.idSala,
+        usuario: localStorage.getItem('usuario')
+      })
+      .valueChanges
       .subscribe(
-        (usuariosEnSala: {usuarioSalas: UsuarioSalaInterface[]}) => {
-          this.usuariosEnSala = usuariosEnSala.usuarioSalas;
+        (usuariosEnSala) => {
+          this.usuariosEnSala = usuariosEnSala.data.usuarioSalas;
           this.existenUsuariosEnSala = this.usuariosEnSala.length > 0;
         },
         error => {
@@ -53,6 +63,9 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
           })
         }
       );
+  }
+
+  escucharNuevoUsuarioEnSala() {
     this._nuevoUsuarioEnSalaService
       .subscribe()
       .subscribe(
@@ -68,10 +81,14 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
           })
         }
       );
+  }
+
+  escucharAccionesUsuario() {
     this._escucharAccionesUsuario
       .subscribe()
       .subscribe(
         ({data}) => {
+          console.log('llega data', data);
           const accionesUsuarioSala: UsuarioSalaInterface = data.usuarioSala.node;
           const pidePalabraOCompartePantalla: boolean = accionesUsuarioSala.levantarMano || accionesUsuarioSala.compartirPantalla;
           let tituloToaster: string;
@@ -99,21 +116,21 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
           })
         }
       );
-    this.verificarDiagramaGlobal();
   }
 
   verificarDiagramaGlobal() {
-    this._buscarDiagramaUsuarioService
-      .watch({
-        idSala: this.idSala,
-        esDiagramaGlobal: true
-      })
-      .valueChanges
+    this._cargandoService.habilitarCargando();
+    return this._diagramaUsuarioService
+      .buscarDiagramaGlobal(
+        this.idSala
+      )
       .subscribe(
-        ({data}) => {
-          const tieneDiagramaGuardado: boolean = data.diagramaUsuarios.length > 0;
+        (diagramaGlobal: {diagramaUsuarios: DiagramaUsuarioInterface[]}) => {
+          console.log('hay o no hay', diagramaGlobal)
+          this._cargandoService.deshabilitarCargando();
+          const tieneDiagramaGuardado: boolean = diagramaGlobal.diagramaUsuarios.length > 0;
           if (tieneDiagramaGuardado) {
-            const datosACargar = data.diagramaUsuarios[0].diagrama.datos;
+            const datosACargar = diagramaGlobal.diagramaUsuarios[0].diagrama.datos;
             diagramaEditable.model = go.Model.fromJson(JSON.parse(datosACargar));
           }
         },
@@ -127,71 +144,24 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
   }
 
   guardarDiagramaGlobal() {
-    this._buscarDiagramaUsuarioService
-      .watch({
-        idSala: this.idSala,
-        esDiagramaGlobal: true
-      })
-      .valueChanges
-      .subscribe(
-        ({data}) => {
-          const datos: string = JSON.stringify(diagramaEditable.model.toJson());
-          const existeDiagramaGlobal: boolean = data.diagramaUsuarios.length > 0;
-          if (existeDiagramaGlobal) {
-            const idDiagramaGlobal: string = data.diagramaUsuarios[0].id;
-            return this._actualizarDiagramaService
-              .mutate({
-                idDiagramaSala: idDiagramaGlobal,
-                datos: datos
-              })
-              .subscribe(
-                () => {},
-                error => {
-                  console.error({
-                    error,
-                    mensaje: 'Error actualizando los datos del diagrama'
-                  })
-                }
-              )
-          } else {
-            return this._crearDiagramaService
-              .mutate({
-                datos: datos,
-                idSala: this.idSala,
-                idUsuario: localStorage.getItem('usuario'),
-                esDiagramaGlobal: true
-              })
-              .subscribe(
-                () => {},
-                error => {
-                  console.error({
-                    error,
-                    mensaje: 'Error creando diagrama usuario'
-                  })
-                }
-              );
-          }
-        },
-        error => {
-          console.error({
-            error,
-            mensaje: 'Error buscando el diagrama global'
-          })
-        }
+    this._diagramaUsuarioService
+      .guardarDiagramaGlobal(
+        JSON.stringify(diagramaEditable.model.toJson()),
+        this.idSala,
+        localStorage.getItem('usuario')
       );
   }
 
   cargarDatosCompartidos(idUsuario: string) {
-    this._buscarDiagramaUsuarioService
-      .watch({
-        idSala: this.idSala,
-        idUsuario: idUsuario
-      })
-      .valueChanges
+    return this._diagramaUsuarioService
+      .buscarDiagramaUsuario(
+        this.idSala,
+        idUsuario
+      )
       .subscribe(
-        ({data}) => {
-          const datosCompartidos: string = data.diagramaUsuarios[0].diagrama.datos;
-          diagramaGlobal.model = go.Model.fromJson(JSON.parse(datosCompartidos));
+        (datosCompartidos: {diagramaUsuarios: DiagramaUsuarioInterface[]}) => {
+          const diagramaCompartido: string = datosCompartidos.diagramaUsuarios[0].diagrama.datos;
+          diagramaGlobal.model = go.Model.fromJson(JSON.parse(diagramaCompartido));
         },
         error => {
           console.error({
