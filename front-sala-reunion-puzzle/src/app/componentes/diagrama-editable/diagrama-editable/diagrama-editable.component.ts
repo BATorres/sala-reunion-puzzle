@@ -9,6 +9,7 @@ import {crearConfirmacion} from '../../../funciones/crear-confirmacion';
 import {eliminarNodoOConexion} from '../../../funciones/eliminar-nodo-o-conexion';
 import {COLORES} from '../../../constantes/colores';
 import {crearEditarTexto} from '../../../funciones/crear-editar-texto';
+import {nodoExpandido} from '../../../funciones/nodo-expandido';
 
 export var diagramaEditable;
 
@@ -48,7 +49,10 @@ export class DiagramaEditableComponent implements OnInit {
       });
 
     // creación de nodos
-    diagramaEditable.nodeTemplate = crearNodo($);
+    const configuracionesNodo = new go.Map();
+    configuracionesNodo.add('simple', crearNodo($));
+    configuracionesNodo.add('expandido', nodoExpandido($));
+    diagramaEditable.nodeTemplateMap = configuracionesNodo;
 
     // creación de grupos
     diagramaEditable.groupTemplate = crearGrupo($);
@@ -69,6 +73,7 @@ export class DiagramaEditableComponent implements OnInit {
     );
 
     // definir los botones para los nodos
+    diagramaEditable.nodeTemplate = configuracionesNodo.get('simple');
     diagramaEditable.nodeTemplate.selectionAdornmentTemplate = $(
       go.Adornment, 'Spot',
       $(go.Panel, 'Auto',
@@ -225,8 +230,8 @@ export class DiagramaEditableComponent implements OnInit {
   }
 
   public diagramNodeData = [
-    {key: 'Nodo', loc: '-57.899993896484375 -164', text: 'Tema 1'},
-    {key: 'Nodo2', loc: '39.100006103515625 -25', text: 'Tema 2'}
+    {key: 'Nodo', loc: '-57.899993896484375 -164', text: 'Tema 1', descripcion: 'Sin descripcion', autor: 'Sin autor'},
+    {key: 'Nodo2', loc: '39.100006103515625 -25', text: 'Tema 2', descripcion: 'Sin descripcion', autor: 'Sin autor'}
   ];
   public diagramLinkData = [
     {category: 'Casualidad', from: 'Nodo2', to: 'Nodo'}

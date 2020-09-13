@@ -1,5 +1,6 @@
 import * as go from 'gojs';
 import {crearContextMenu} from './crear-context-menu';
+import {expandirNodo} from './expandir-nodo';
 
 export function crearNodo(graphObject) {
   return graphObject(
@@ -28,12 +29,29 @@ export function crearNodo(graphObject) {
       {
         name: 'Texto',
         margin: 6,
-        text: 'Nuevo'
+        text: 'Nuevo tema'
       },
       new go.Binding(
         'text',
         'text'
       ).makeTwoWay(),
+    ),
+    graphObject(
+      'Button',
+      {
+        alignment: go.Spot.TopRight
+      },
+      graphObject(
+        go.Shape,
+        'PlusLine',
+        {
+          width: 8,
+          height: 8
+        }
+      ),
+      {
+        click: expandirNodo
+      }
     ),
     new go.Binding(
       'location',

@@ -48,7 +48,7 @@ export class PaletaComponent implements OnInit {
   }
 
   public paletteNodeData = [
-    {key: 'Nodo'}
+    {key: 'Nuevo tema', descripcion: 'Sin descripcion', autor: 'Sin autor'}
   ];
   public paletteDivClassName = 'paleta';
 }

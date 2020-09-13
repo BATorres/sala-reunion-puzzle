@@ -7,6 +7,7 @@ import {crearConexion} from '../../../funciones/crear-conexion';
 import {crearCasualidad} from '../../../funciones/crear-casualidad';
 import {crearConfirmacion} from '../../../funciones/crear-confirmacion';
 import {crearContradiccion} from '../../../funciones/crear-contradiccion';
+import {nodoExpandido} from '../../../funciones/nodo-expandido';
 
 export var diagramaGlobal;
 
@@ -47,7 +48,12 @@ export class DiagramaGlobalComponent implements OnInit {
     diagramaGlobal.isReadOnly = true;
 
     // creación de nodos
-    diagramaGlobal.nodeTemplate = crearNodo($);
+    const configuracionesNodo = new go.Map();
+    configuracionesNodo.add('simple', crearNodo($));
+    configuracionesNodo.add('expandido', nodoExpandido($));
+    diagramaGlobal.nodeTemplateMap = configuracionesNodo;
+
+    diagramaGlobal.nodeTemplate = configuracionesNodo.get('simple');
 
     // creación de grupos
     diagramaGlobal.groupTemplate = crearGrupo($);
@@ -71,8 +77,8 @@ export class DiagramaGlobalComponent implements OnInit {
   }
 
   public diagramNodeData = [
-    {key: 'Nodo', loc: '-57.899993896484375 -164', text: 'Tema 1'},
-    {key: 'Nodo2', loc: '39.100006103515625 -25', text: 'Tema 2'}
+    {key: 'Nodo', loc: '-57.899993896484375 -164', text: 'Tema 1', descripcion: 'Sin descripcion', autor: 'Sin autor'},
+    {key: 'Nodo2', loc: '39.100006103515625 -25', text: 'Tema 2', descripcion: 'Sin descripcion', autor: 'Sin autor'}
   ];
   public diagramLinkData = [
     {category: 'Casualidad', from: 'Nodo2', to: 'Nodo'}
