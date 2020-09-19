@@ -1,7 +1,7 @@
 import * as go from 'gojs';
 import {crearContextMenu} from './crear-context-menu';
 
-export function crearGrupo(graphObject) {
+export function crearGrupo(graphObject): any {
   return graphObject(
     go.Group,
     'Vertical',

@@ -26,7 +26,7 @@ export class ModalCrearSalaComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  validarFormulario(sala: SalaInterface) {
+  validarFormulario(sala: SalaInterface): void {
     const reciboDatosSala = sala;
     if (reciboDatosSala) {
       this.salaACrear = sala;
@@ -36,7 +36,7 @@ export class ModalCrearSalaComponent implements OnInit {
     }
   }
 
-  crearSala() {
+  crearSala(): void {
     this._cargandoService.habilitarCargando();
     this._salaService
       .crearSala(this.salaACrear.nombre)

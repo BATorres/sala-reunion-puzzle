@@ -5,7 +5,7 @@ export interface CargandoServiceInterface {
 
   cambioEstado: EventEmitter<boolean>;
 
-  habilitarCargando();
+  habilitarCargando(): void;
 
-  deshabilitarCargando();
+  deshabilitarCargando(): void;
 }

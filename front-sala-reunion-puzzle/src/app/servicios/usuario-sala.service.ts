@@ -25,8 +25,8 @@ export class UsuarioSalaService {
       .query<{ usuarioSalas: UsuarioSalaInterface[] }>({
         query: BUSCAR_USUARIO_SALA,
         variables: {
-          idSala: idSala,
-          idUsuario: idUsuario
+          idSala,
+          idUsuario
         }
       })
       .pipe(
@@ -37,7 +37,7 @@ export class UsuarioSalaService {
   verificarUsuarioSala(
     idSala: string,
     idUsuario: string
-  ) {
+  ): any {
     return this.buscarUsuarioEnSala(idSala, idUsuario)
       .subscribe(
         (usuario: { usuarioSalas: UsuarioSalaInterface[] }) => {
@@ -56,7 +56,7 @@ export class UsuarioSalaService {
                       idUsuarioEnSala,
                       false,
                       false
-                    )
+                    );
                   }
                 }
               },
@@ -64,7 +64,7 @@ export class UsuarioSalaService {
                 console.error({
                   error,
                   mensaje: 'Error verificando rol usuario'
-                })
+                });
               }
             );
         },
@@ -72,7 +72,7 @@ export class UsuarioSalaService {
           console.error({
             error,
             mensaje: 'Error consultado usuarios en sala'
-          })
+          });
         }
       );
   }
@@ -80,13 +80,13 @@ export class UsuarioSalaService {
   unirseASala(
     idSala: string,
     idUsuario: string
-  ) {
+  ): any {
     return this._apollo
       .mutate({
         mutation: UNIRSE_A_SALA,
         variables: {
-          idSala: idSala,
-          idUsuario: idUsuario
+          idSala,
+          idUsuario
         }
       })
       .subscribe(
@@ -96,7 +96,7 @@ export class UsuarioSalaService {
           console.error({
             error,
             mensaje: 'Error uniendo usuario en sala'
-          })
+          });
         }
       );
   }
@@ -105,14 +105,14 @@ export class UsuarioSalaService {
     idUsuarioSala: string,
     levantarMano: boolean,
     compartirPantalla: boolean
-  ) {
+  ): any {
     return this._apollo
       .mutate({
         mutation: ACCIONES_USUARIO_EN_SALA,
         variables: {
-          idUsuarioSala: idUsuarioSala,
-          levantarMano: levantarMano,
-          compartirPantalla: compartirPantalla
+          idUsuarioSala,
+          levantarMano,
+          compartirPantalla
         }
       })
       .subscribe(
@@ -122,7 +122,7 @@ export class UsuarioSalaService {
           console.error({
             error,
             mensaje: 'Error con las acciones de usuario en sala'
-          })
+          });
         }
       );
   }

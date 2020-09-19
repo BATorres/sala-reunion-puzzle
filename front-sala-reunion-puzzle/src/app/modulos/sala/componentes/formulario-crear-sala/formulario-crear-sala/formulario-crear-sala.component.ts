@@ -32,7 +32,7 @@ export class FormularioCrearSalaComponent implements OnInit {
     this.verificarFormulario();
   }
 
-  private inicializarFormulario() {
+  private inicializarFormulario(): void {
     this.formularioCrearSala = this._formBuilder
       .group({
         nombre: new FormControl(
@@ -42,14 +42,14 @@ export class FormularioCrearSalaComponent implements OnInit {
       });
   }
 
-  private verificarCamposFormulario() {
+  private verificarCamposFormulario(): void {
     this.verificarCampoFormControl(
       'nombre',
       MENSAJES_VALIDACION_NOMBRE_SALA
     );
   }
 
-  private verificarFormulario() {
+  private verificarFormulario(): void {
     this.formularioCrearSala
       .valueChanges
       .subscribe(
@@ -61,10 +61,10 @@ export class FormularioCrearSalaComponent implements OnInit {
             this.enviarRegistroValido.emit(false);
           }
         }
-      )
+      );
   }
 
-  verificarCampoFormControl(campo, mensajesValidacion) {
+  verificarCampoFormControl(campo, mensajesValidacion): void {
     const nombreCampo: AbstractControl = this.formularioCrearSala.get(campo);
     nombreCampo
       .valueChanges
@@ -90,7 +90,7 @@ export class FormularioCrearSalaComponent implements OnInit {
             data: {
               mensajes: mensajesValidacion
             }
-          })
+          });
         }
       );
   }

@@ -16,19 +16,19 @@ export class CabeceraComponent implements OnInit {
   usuario: string;
 
   constructor(
-    private readonly _usuarioService: UsuarioService,
-    private readonly _router: Router,
-    private readonly _cargandoService: CargandoService
+    private readonly usuarioService: UsuarioService,
+    private readonly router: Router,
+    private readonly cargandoService: CargandoService
   ) {}
 
   ngOnInit(): void {
     this.setearUsuario();
   }
 
-  setearUsuario() {
+  setearUsuario(): void {
     const usuarioLogueado = localStorage.getItem('usuario');
     if (usuarioLogueado) {
-      this._usuarioService
+      this.usuarioService
         .findOne(usuarioLogueado)
         .subscribe(
           (usuarioEncontrado: {usuario: UsuarioInterface}) => {
@@ -45,9 +45,9 @@ export class CabeceraComponent implements OnInit {
     }
   }
 
-  salir() {
+  salir(): void {
     localStorage.removeItem('usuario');
     this.estaLogueado = false;
-    this._router.navigate(['/']);
+    this.router.navigate(['/']);
   }
 }

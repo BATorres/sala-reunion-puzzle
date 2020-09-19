@@ -15,11 +15,11 @@ export class RutaInicioComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  irARegistrarUsuario() {
-    this._router.navigate(['registrarse'])
+  irARegistrarUsuario(): void {
+    this._router.navigate(['registrarse']);
   }
 
-  irALogin() {
-    this._router.navigate(['login'])
+  irALogin(): void {
+    this._router.navigate(['login']);
   }
 }

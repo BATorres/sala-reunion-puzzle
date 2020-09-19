@@ -31,7 +31,7 @@ export class RutaRegistrarUsuarioComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  validarFormulario(usuario: UsuarioInterface) {
+  validarFormulario(usuario: UsuarioInterface): void {
     const reciboDatosUsuario = usuario;
     if (reciboDatosUsuario) {
       this.formularioValido = true;
@@ -41,7 +41,7 @@ export class RutaRegistrarUsuarioComponent implements OnInit {
     }
   }
 
-  registrarUsuario() {
+  registrarUsuario(): void {
     this._usuarioService
       .findAll(
         this.usuarioARegistrar.nombre,
@@ -55,7 +55,7 @@ export class RutaRegistrarUsuarioComponent implements OnInit {
               'warning',
               'CUIDADO',
               'El usuario ingresado ya se encuentra registrado'
-            )
+            );
           } else {
             this._usuarioService
               .registrarUsuario(
@@ -83,7 +83,7 @@ export class RutaRegistrarUsuarioComponent implements OnInit {
                     'Error registrando el usuario'
                   );
                 }
-              )
+              );
           }
         },
         error => {
@@ -95,11 +95,11 @@ export class RutaRegistrarUsuarioComponent implements OnInit {
       );
   }
 
-  volverMenuInicio() {
+  volverMenuInicio(): void {
     this._router.navigate(['/']);
   }
 
-  irMenuSalas() {
+  irMenuSalas(): void {
     this._router.navigate(['listar-salas']);
   }
 }

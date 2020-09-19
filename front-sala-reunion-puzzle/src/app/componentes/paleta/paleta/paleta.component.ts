@@ -9,46 +9,47 @@ import * as go from 'gojs';
 })
 export class PaletaComponent implements OnInit {
 
+  paletteNodeData = [
+    {key: 'Nuevo tema', descripcion: 'Sin descripcion', autor: 'Sin autor'}
+  ];
+
+  paletteDivClassName = 'paleta';
+
   constructor() {
   }
 
   ngOnInit(): void {
   }
 
-  crearPaleta() {
+  crearPaleta(): go.Palette {
     const $ = go.GraphObject.make;
     const paleta = $(go.Palette);
 
     // define the Node template
     paleta.nodeTemplate = $(
       go.Node,
-        'Horizontal',
-        $(
-          go.Shape,
-          {
-            fill: 'white',
-            height: 30,
-            width: 30
-          }
-        ),
-        $(
-          go.TextBlock,
-          {
-            margin: 8,
-            stroke: 'white'
-          },
-          new go.Binding(
-            'text',
-            'key'
-          )
+      'Horizontal',
+      $(
+        go.Shape,
+        {
+          fill: 'white',
+          height: 30,
+          width: 30
+        }
+      ),
+      $(
+        go.TextBlock,
+        {
+          margin: 8,
+          stroke: 'white'
+        },
+        new go.Binding(
+          'text',
+          'key'
         )
-      );
+      )
+    );
 
     return paleta;
   }
-
-  public paletteNodeData = [
-    {key: 'Nuevo tema', descripcion: 'Sin descripcion', autor: 'Sin autor'}
-  ];
-  public paletteDivClassName = 'paleta';
 }

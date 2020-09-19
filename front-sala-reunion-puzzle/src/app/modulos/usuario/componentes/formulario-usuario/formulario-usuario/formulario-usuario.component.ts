@@ -34,7 +34,7 @@ export class FormularioUsuarioComponent implements OnInit {
     this.verificarFormulario();
   }
 
-  private inicializarFormulario() {
+  private inicializarFormulario(): void {
     this.formularioUsuario = this._formBuilder
       .group({
         nombre: new FormControl(
@@ -48,7 +48,7 @@ export class FormularioUsuarioComponent implements OnInit {
       });
   }
 
-  private verificarCamposFormulario() {
+  private verificarCamposFormulario(): void {
     this.verificarCampoFormControl(
       'nombre',
       MENSAJES_VALIDACION_NOMBRE_USUARIO
@@ -56,10 +56,10 @@ export class FormularioUsuarioComponent implements OnInit {
     this.verificarCampoFormControl(
       'password',
       MENSAJES_VALIDACION_PASSWORD_USUARIO
-    )
+    );
   }
 
-  private verificarFormulario() {
+  private verificarFormulario(): void {
     this.formularioUsuario
       .valueChanges
       .subscribe(
@@ -71,10 +71,10 @@ export class FormularioUsuarioComponent implements OnInit {
             this.enviarRegistroValido.emit(false);
           }
         }
-      )
+      );
   }
 
-  verificarCampoFormControl(campo, mensajesValidacion) {
+  verificarCampoFormControl(campo, mensajesValidacion): void {
     const nombreCampo: AbstractControl = this.formularioUsuario.get(campo);
     nombreCampo
       .valueChanges
@@ -100,7 +100,7 @@ export class FormularioUsuarioComponent implements OnInit {
             data: {
               mensajes: mensajesValidacion
             }
-          })
+          });
         }
       );
   }

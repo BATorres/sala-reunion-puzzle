@@ -1,11 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {diagramaEditable} from '../../../../../componentes/diagrama-editable/diagrama-editable/diagrama-editable.component';
-import * as go from 'gojs';
 import {UsuarioSalaService} from '../../../../../servicios/usuario-sala.service';
 import {CargandoService} from '../../../../../servicios/cargando.service';
 import {DiagramaUsuarioService} from '../../../../../servicios/diagrama-usuario.service';
 import {DiagramaUsuarioInterface} from '../../../../../interfaces/diagrama-usuario.interface';
 import {UsuarioSalaInterface} from '../../../../../interfaces/usuario-sala.interface';
+import {DatosDiagramaNodoInterface} from '../../../../../interfaces/datos-diagrama-nodo.interface';
+import {DatosDiagramaLinkInterface} from '../../../../../interfaces/datos-diagrama-link.interface';
 
 @Component({
   selector: 'app-pantalla-interactiva-usuario',
@@ -19,6 +20,10 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
 
   idUsuarioSala: string;
 
+  datosDeTemas: DatosDiagramaNodoInterface[];
+
+  datosDeConexiones: DatosDiagramaLinkInterface[];
+
   constructor(
     private readonly _usuarioEnSalaService: UsuarioSalaService,
     private readonly _diagramaUsuarioService: DiagramaUsuarioService,
@@ -31,7 +36,7 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
     this.verificarDiagramaUsuario();
   }
 
-  verificarUsuarioEnSala() {
+  verificarUsuarioEnSala(): void {
     this._cargandoService.habilitarCargando();
     this._usuarioEnSalaService
       .buscarUsuarioEnSala(
@@ -39,7 +44,7 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
         localStorage.getItem('usuario')
       )
       .subscribe(
-        (usuariosEnSala: {usuarioSalas: UsuarioSalaInterface[]}) => {
+        (usuariosEnSala: { usuarioSalas: UsuarioSalaInterface[] }) => {
           const existeUsuarioSala: boolean = usuariosEnSala.usuarioSalas.length > 0;
 
           if (existeUsuarioSala) {
@@ -51,23 +56,32 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
           console.error({
             error,
             mensaje: 'Error consultado usuarios en sala'
-          })
+          });
         }
       );
   }
 
-  verificarDiagramaUsuario() {
-    return this._diagramaUsuarioService
+  verificarDiagramaUsuario(): void {
+    this._diagramaUsuarioService
       .buscarDiagramaUsuario(
         this.idSala,
         localStorage.getItem('usuario')
       )
       .subscribe(
-        (diagramaUsuario: { diagramaUsuarios: DiagramaUsuarioInterface[]}) => {
+        (diagramaUsuario: { diagramaUsuarios: DiagramaUsuarioInterface[] }) => {
           const tieneDiagramaGuardado: boolean = diagramaUsuario.diagramaUsuarios.length > 0;
           if (tieneDiagramaGuardado) {
-            const datosACargar = diagramaUsuario.diagramaUsuarios[0].diagrama.datos;
-            diagramaEditable.model = go.Model.fromJson(JSON.parse(datosACargar));
+            const datosGuardados = JSON.parse(JSON.parse(diagramaUsuario.diagramaUsuarios[0].diagrama.datos));
+            this.datosDeTemas = datosGuardados.nodeDataArray;
+            this.datosDeConexiones = datosGuardados.linkDataArray;
+          } else {
+            this.datosDeTemas = [
+              {key: 'Nodo', loc: '-57.899993896484375 -164', text: 'Tema 1', autor: 'Sin autor'},
+              {key: 'Nodo2', loc: '39.100006103515625 -25', text: 'Tema 2', autor: 'Sin autor'}
+            ];
+            this.datosDeConexiones = [
+              {category: 'Casualidad', from: 'Nodo2', to: 'Nodo'}
+            ];
           }
         },
         error => {
@@ -79,8 +93,8 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
       );
   }
 
-  pedirLaPalabra() {
-    return this._usuarioEnSalaService
+  pedirLaPalabra(): void {
+    this._usuarioEnSalaService
       .accionesUsuarioEnSala(
         this.idUsuarioSala,
         true,
@@ -88,9 +102,9 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
       );
   }
 
-  compartirPantalla() {
+  compartirPantalla(): void {
     this.guardarDiagramaUsuario();
-    return this._usuarioEnSalaService
+    this._usuarioEnSalaService
       .accionesUsuarioEnSala(
         this.idUsuarioSala,
         false,
@@ -98,8 +112,8 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
       );
   }
 
-  cancelar() {
-    return this._usuarioEnSalaService
+  cancelar(): void {
+    this._usuarioEnSalaService
       .accionesUsuarioEnSala(
         this.idUsuarioSala,
         false,
@@ -107,7 +121,7 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
       );
   }
 
-  guardarDiagramaUsuario() {
+  guardarDiagramaUsuario(): void {
     this._diagramaUsuarioService
       .guardarDiagrama(
         JSON.stringify(diagramaEditable.model.toJson()),

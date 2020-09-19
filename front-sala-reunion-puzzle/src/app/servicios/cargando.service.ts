@@ -7,16 +7,16 @@ import {CargandoServiceInterface} from '../interfaces/cargando-service.interface
   }
 )
 export class CargandoService implements CargandoServiceInterface {
-  estaCargando:boolean = false;
+  estaCargando = false;
 
   cambioEstado: EventEmitter<boolean> = new EventEmitter();
 
-  habilitarCargando() {
+  habilitarCargando(): void {
     this.estaCargando = true;
     this.cambioEstado.emit(true);
   }
 
-  deshabilitarCargando() {
+  deshabilitarCargando(): void {
     setTimeout(() => {
       this.estaCargando = false;
       this.cambioEstado.emit(false);

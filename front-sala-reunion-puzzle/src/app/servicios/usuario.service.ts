@@ -27,7 +27,7 @@ export class UsuarioService {
         query: FIND_ALL_USUARIOS,
         variables: {
           nombre: username,
-          password: password
+          password
         }
       })
       .pipe(
@@ -49,13 +49,13 @@ export class UsuarioService {
   registrarUsuario(
     username: string,
     password: string
-  ) {
+  ): any {
     return this._apollo
       .mutate({
         mutation: REGISTRAR_USUARIO,
         variables: {
           nombre: username,
-          password: password
+          password
         }
       });
   }
@@ -63,7 +63,7 @@ export class UsuarioService {
   verificarEsAdmin(id: string): Observable<boolean> {
     return this.findOne(id).pipe(
       map((usuario: { usuario: UsuarioInterface }) => {
-        return usuario.usuario.esAdmin
+        return usuario.usuario.esAdmin;
       })
     );
   }

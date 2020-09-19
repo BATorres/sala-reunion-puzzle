@@ -4,12 +4,12 @@ import {COLORES} from '../../../constantes/colores';
 import {crearNodo} from '../../../funciones/crear-nodo';
 import {crearGrupo} from '../../../funciones/crear-grupo';
 import {crearConexion} from '../../../funciones/crear-conexion';
-import {crearCasualidad} from '../../../funciones/crear-casualidad';
+import {crearCausalidad} from '../../../funciones/crear-causalidad';
 import {crearConfirmacion} from '../../../funciones/crear-confirmacion';
 import {crearContradiccion} from '../../../funciones/crear-contradiccion';
 import {nodoExpandido} from '../../../funciones/nodo-expandido';
 
-export var diagramaGlobal;
+export let diagramaGlobal;
 
 @Component({
   selector: 'app-diagrama-global',
@@ -19,7 +19,19 @@ export var diagramaGlobal;
 })
 export class DiagramaGlobalComponent implements OnInit {
 
-  constructor() { }
+  diagramNodeData = [
+    {key: 'Nodo', loc: '-57.899993896484375 -164', text: 'Tema 1', autor: 'Sin autor'},
+    {key: 'Nodo2', loc: '39.100006103515625 -25', text: 'Tema 2', autor: 'Sin autor'}
+  ];
+
+  diagramLinkData = [
+    {category: 'Casualidad', from: 'Nodo2', to: 'Nodo'}
+  ];
+
+  diagramDivClassName = 'diagramaGlobal';
+
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
@@ -62,7 +74,7 @@ export class DiagramaGlobalComponent implements OnInit {
     diagramaGlobal.linkTemplate = crearConexion($);
     diagramaGlobal.linkTemplateMap.add(
       'Casualidad',
-      crearCasualidad($)
+      crearCausalidad($)
     );
     diagramaGlobal.linkTemplateMap.add(
       'Confirmación',
@@ -75,14 +87,4 @@ export class DiagramaGlobalComponent implements OnInit {
 
     return diagramaGlobal;
   }
-
-  public diagramNodeData = [
-    {key: 'Nodo', loc: '-57.899993896484375 -164', text: 'Tema 1', descripcion: 'Sin descripcion', autor: 'Sin autor'},
-    {key: 'Nodo2', loc: '39.100006103515625 -25', text: 'Tema 2', descripcion: 'Sin descripcion', autor: 'Sin autor'}
-  ];
-  public diagramLinkData = [
-    {category: 'Casualidad', from: 'Nodo2', to: 'Nodo'}
-  ];
-  public diagramDivClassName: string = 'diagramaGlobal';
-
 }

@@ -14,5 +14,5 @@ export class NuevaSalaService extends Subscription {
                     nombre
                 }
             }
-        }`
+        }`;
 }

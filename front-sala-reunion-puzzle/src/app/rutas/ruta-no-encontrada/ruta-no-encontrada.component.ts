@@ -15,11 +15,11 @@ export class RutaNoEncontradaComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  irARutaAnterior() {
+  irARutaAnterior(): void {
     window.history.back();
   }
 
-  irAMenuPrincipal() {
+  irAMenuPrincipal(): void {
     this._router.navigate(['/']);
   }
 }

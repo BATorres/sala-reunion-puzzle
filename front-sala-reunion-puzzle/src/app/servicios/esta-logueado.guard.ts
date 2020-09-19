@@ -8,7 +8,7 @@ export class EstaLogueadoGuard implements CanActivate {
 
   estaLogueado: string;
 
-  canActivate(route: ActivatedRouteSnapshot) {
+  canActivate(route: ActivatedRouteSnapshot): boolean {
     this.estaLogueado = localStorage.getItem('usuario');
 
     if (this.estaLogueado) {

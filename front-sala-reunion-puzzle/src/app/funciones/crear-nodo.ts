@@ -2,7 +2,7 @@ import * as go from 'gojs';
 import {crearContextMenu} from './crear-context-menu';
 import {expandirNodo} from './expandir-nodo';
 
-export function crearNodo(graphObject) {
+export function crearNodo(graphObject): any {
   return graphObject(
     go.Node,
     'Auto',

@@ -31,7 +31,7 @@ export class RutaLoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  validarFormulario(usuario: UsuarioInterface) {
+  validarFormulario(usuario: UsuarioInterface): void {
     const reciboDatosUsuario = usuario;
     if (reciboDatosUsuario) {
       this.formularioValido = true;
@@ -41,7 +41,7 @@ export class RutaLoginComponent implements OnInit {
     }
   }
 
-  ingresarAlSistema() {
+  ingresarAlSistema(): void {
     this._usuarioService
       .findAll(
         this.usuarioALoguearse.nombre,
@@ -60,7 +60,7 @@ export class RutaLoginComponent implements OnInit {
               'error',
               'ERROR',
               'Error en el nombre o contraseña'
-            )
+            );
           }
         },
         error => {
@@ -69,14 +69,14 @@ export class RutaLoginComponent implements OnInit {
             mensaje: 'Error registrando nuevo usuario'
           });
         }
-      )
+      );
   }
 
-  volverMenuInicio() {
+  volverMenuInicio(): void {
     this._router.navigate(['/']);
   }
 
-  irMenuSalas() {
+  irMenuSalas(): void {
     this._router.navigate(['listar-salas']);
   }
 }

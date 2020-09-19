@@ -5,7 +5,7 @@ import {dibujarConexionConfirmacion} from './dibujar-conexion-confirmacion';
 import {dibujarConexionContradiccion} from './dibujar-conexion-contradiccion';
 import {eliminarNodoOConexion} from './eliminar-nodo-o-conexion';
 
-export function crearCasualidad(graphObject, esDiagramaEditable = false) {
+export function crearCausalidad(graphObject, esDiagramaEditable = false): any {
   if (esDiagramaEditable) {
     return graphObject(
       go.Link,
@@ -138,7 +138,7 @@ export function crearCasualidad(graphObject, esDiagramaEditable = false) {
             )
           )
       }
-    )
+    );
   } else {
     return graphObject(
       go.Link,
@@ -172,6 +172,6 @@ export function crearCasualidad(graphObject, esDiagramaEditable = false) {
           'key',
         ).makeTwoWay()
       ),
-    )
+    );
   }
 }

@@ -11,6 +11,8 @@ import {BuscarUsuariosEnSalaService} from '../../../../../servicios/query/buscar
 import {DiagramaUsuarioService} from '../../../../../servicios/diagrama-usuario.service';
 import {DiagramaUsuarioInterface} from '../../../../../interfaces/diagrama-usuario.interface';
 import {CargandoService} from '../../../../../servicios/cargando.service';
+import {DatosDiagramaNodoInterface} from '../../../../../interfaces/datos-diagrama-nodo.interface';
+import {DatosDiagramaLinkInterface} from '../../../../../interfaces/datos-diagrama-link.interface';
 
 @Component({
   selector: 'app-pantalla-interactiva-administrador',
@@ -25,6 +27,12 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
   existenUsuariosEnSala: boolean;
 
   usuariosEnSala: UsuarioSalaInterface[];
+
+  datosDeTemas: DatosDiagramaNodoInterface[];
+
+  datosDeConexiones: DatosDiagramaLinkInterface[];
+
+  archivoASubir;
 
   constructor(
     private readonly _nuevoUsuarioEnSalaService: NuevoUsuarioSalaService,
@@ -44,7 +52,7 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
     this.verificarDiagramaGlobal();
   }
 
-  setearUsuariosEnSala() {
+  setearUsuariosEnSala(): void {
     this._buscarUsuariosEnSalaService
       .watch({
         sala: this.idSala,
@@ -60,12 +68,12 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
           console.error({
             error,
             mensaje: 'Error consultado usuarios en sala'
-          })
+          });
         }
       );
   }
 
-  escucharNuevoUsuarioEnSala() {
+  escucharNuevoUsuarioEnSala(): void {
     this._nuevoUsuarioEnSalaService
       .subscribe()
       .subscribe(
@@ -78,60 +86,67 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
           console.error({
             error,
             mensaje: 'Error con el subscriptor de usuario sala'
-          })
+          });
         }
       );
   }
 
-  escucharAccionesUsuario() {
+  escucharAccionesUsuario(): void {
     this._escucharAccionesUsuario
       .subscribe()
       .subscribe(
         ({data}) => {
-          console.log('llega data', data);
           const accionesUsuarioSala: UsuarioSalaInterface = data.usuarioSala.node;
           const pidePalabraOCompartePantalla: boolean = accionesUsuarioSala.levantarMano || accionesUsuarioSala.compartirPantalla;
           let tituloToaster: string;
           let mensajeToaster: string;
           if (accionesUsuarioSala.levantarMano) {
             tituloToaster = 'PIDIENDO LA PALABRA';
-            mensajeToaster = `El usuario ${accionesUsuarioSala.usuario.nombre} está solicitando la palabra`
+            mensajeToaster = `El usuario ${accionesUsuarioSala.usuario.nombre} está solicitando la palabra`;
           }
           if (accionesUsuarioSala.compartirPantalla) {
             tituloToaster = 'COMPARTIENDO PANTALLA';
-            mensajeToaster = `El usuario ${accionesUsuarioSala.usuario.nombre} está compartiendo pantalla`
+            mensajeToaster = `El usuario ${accionesUsuarioSala.usuario.nombre} está compartiendo pantalla`;
           }
           if (pidePalabraOCompartePantalla) {
-            this._toasterService.pop(
+            return this._toasterService.pop(
               'info',
               `${tituloToaster}`,
               `${mensajeToaster}`
-            )
+            );
           }
         },
         error => {
           console.error({
             error,
             mensaje: 'Error con el subscriptor de acciones usuario'
-          })
+          });
         }
       );
   }
 
-  verificarDiagramaGlobal() {
+  verificarDiagramaGlobal(): void {
     this._cargandoService.habilitarCargando();
-    return this._diagramaUsuarioService
+    this._diagramaUsuarioService
       .buscarDiagramaGlobal(
         this.idSala
       )
       .subscribe(
-        (diagramaGlobal: {diagramaUsuarios: DiagramaUsuarioInterface[]}) => {
-          console.log('hay o no hay', diagramaGlobal)
+        (datosDiagramaGlobal: { diagramaUsuarios: DiagramaUsuarioInterface[] }) => {
           this._cargandoService.deshabilitarCargando();
-          const tieneDiagramaGuardado: boolean = diagramaGlobal.diagramaUsuarios.length > 0;
+          const tieneDiagramaGuardado: boolean = datosDiagramaGlobal.diagramaUsuarios.length > 0;
           if (tieneDiagramaGuardado) {
-            const datosACargar = diagramaGlobal.diagramaUsuarios[0].diagrama.datos;
-            diagramaEditable.model = go.Model.fromJson(JSON.parse(datosACargar));
+            const datosGuardados = JSON.parse(JSON.parse(datosDiagramaGlobal.diagramaUsuarios[0].diagrama.datos));
+            this.datosDeTemas = datosGuardados.nodeDataArray;
+            this.datosDeConexiones = datosGuardados.linkDataArray;
+          } else {
+            this.datosDeTemas = [
+              {key: 'Nodo', loc: '-57.899993896484375 -164', text: 'Tema 1', autor: 'Sin autor'},
+              {key: 'Nodo2', loc: '39.100006103515625 -25', text: 'Tema 2', autor: 'Sin autor'}
+            ];
+            this.datosDeConexiones = [
+              {category: 'Casualidad', from: 'Nodo2', to: 'Nodo'}
+            ];
           }
         },
         error => {
@@ -143,7 +158,7 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
       );
   }
 
-  guardarDiagramaGlobal() {
+  guardarDiagramaGlobal(): void {
     this._diagramaUsuarioService
       .guardarDiagramaGlobal(
         JSON.stringify(diagramaEditable.model.toJson()),
@@ -152,14 +167,14 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
       );
   }
 
-  cargarDatosCompartidos(idUsuario: string) {
-    return this._diagramaUsuarioService
+  cargarDatosCompartidos(idUsuario: string): void {
+    this._diagramaUsuarioService
       .buscarDiagramaUsuario(
         this.idSala,
         idUsuario
       )
       .subscribe(
-        (datosCompartidos: {diagramaUsuarios: DiagramaUsuarioInterface[]}) => {
+        (datosCompartidos: { diagramaUsuarios: DiagramaUsuarioInterface[] }) => {
           const diagramaCompartido: string = datosCompartidos.diagramaUsuarios[0].diagrama.datos;
           diagramaGlobal.model = go.Model.fromJson(JSON.parse(diagramaCompartido));
         },
@@ -169,6 +184,22 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
             mensaje: 'Error cargando datos compartidos'
           });
         }
-      )
+      );
+  }
+
+  seleccionarArchivo(evento): void {
+    this.archivoASubir = evento.target.files[0];
+    const reader: FileReader = new FileReader();
+    reader.addEventListener('load', (eventoArchivo) => {
+      const contenidoArchivo = eventoArchivo.target.result as string;
+      for (const linea of contenidoArchivo.split(/[\r\n]/)) {
+        const contenidoASetear = linea.split(';');
+        const tieneContenidoCompleto = contenidoASetear.length === 3;
+        if (tieneContenidoCompleto) {
+          console.log('lo que voa setear', tieneContenidoCompleto);
+        }
+      }
+    });
+    reader.readAsText(evento.target.files[0]);
   }
 }

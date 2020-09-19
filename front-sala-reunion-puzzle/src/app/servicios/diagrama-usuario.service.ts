@@ -22,7 +22,7 @@ export class DiagramaUsuarioService {
       .query<{ diagramaUsuarios: DiagramaUsuarioInterface[] }>({
         query: BUSCAR_DIAGRAMA_GLOBAL,
         variables: {
-          idSala: idSala,
+          idSala,
         }
       })
       .pipe(
@@ -38,8 +38,8 @@ export class DiagramaUsuarioService {
       .query<{ diagramaUsuarios: DiagramaUsuarioInterface[] }>({
         query: BUSCAR_DIAGRAMA_USUARIO,
         variables: {
-          idSala: idSala,
-          idUsuario: idUsuario
+          idSala,
+          idUsuario
         }
       })
       .pipe(
@@ -52,15 +52,15 @@ export class DiagramaUsuarioService {
     idSala: string,
     idUsuario: string,
     esDiagramaGlobal: boolean
-  ) {
+  ): any {
     return this._apollo
       .mutate({
         mutation: CREAR_DIAGRAMA,
         variables: {
-          datos: datos,
-          idSala: idSala,
-          idUsuario: idUsuario,
-          esDiagramaGlobal: esDiagramaGlobal
+          datos,
+          idSala,
+          idUsuario,
+          esDiagramaGlobal
         }
       })
       .subscribe(
@@ -69,21 +69,21 @@ export class DiagramaUsuarioService {
           console.error({
             error,
             mensaje: 'Error creando diagrama usuario'
-          })
+          });
         }
-      )
+      );
   }
 
   private actualizarDiagramaUsuario(
     datos: string,
     idDiagramaSala: string
-  ) {
+  ): any {
     return this._apollo
       .mutate({
         mutation: ACTUALIZAR_DIAGRAMA,
         variables: {
-          datos: datos,
-          idDiagramaSala: idDiagramaSala
+          datos,
+          idDiagramaSala
         }
       })
       .subscribe(
@@ -92,16 +92,16 @@ export class DiagramaUsuarioService {
           console.error({
             error,
             mensaje: 'Error actualizando diagrama usuario'
-          })
+          });
         }
-      )
+      );
   }
 
   guardarDiagrama(
     datos: string,
     idSala: string,
     idUsuario: string
-  ) {
+  ): any {
     return this.buscarDiagramaUsuario(
       idSala,
       idUsuario
@@ -121,17 +121,17 @@ export class DiagramaUsuarioService {
           this.actualizarDiagramaUsuario(
             datos,
             idDiagramaUsuario
-          )
+          );
         }
       }
-    )
+    );
   }
 
   guardarDiagramaGlobal(
     datos: string,
     idSala: string,
     idUsuario: string
-  ) {
+  ): any {
     return this.buscarDiagramaGlobal(
       idSala,
     ).subscribe(
@@ -150,9 +150,9 @@ export class DiagramaUsuarioService {
           this.actualizarDiagramaUsuario(
             datos,
             idDiagramaUsuario
-          )
+          );
         }
       }
-    )
+    );
   }
 }

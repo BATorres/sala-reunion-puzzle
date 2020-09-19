@@ -1,4 +1,4 @@
-export function expandirNodo(evento, objeto) {
+export function expandirNodo(evento, objeto): any {
   const nodo = objeto.part;
   if (nodo) {
     const diagrama = nodo.diagram;

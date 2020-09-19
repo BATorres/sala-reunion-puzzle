@@ -9,7 +9,7 @@ import {CargandoService} from './servicios/cargando.service';
 export class AppComponent implements OnInit{
   title = 'front-sala-reunion-puzzle';
 
-  bloqueado: boolean = false;
+  bloqueado = false;
 
   constructor(
     private readonly _cargandoService: CargandoService,
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit{
     this.escucharCambiosEnCargandoService();
   }
 
-  escucharCambiosEnCargandoService() {
+  escucharCambiosEnCargandoService(): void {
     this._cargandoService
       .cambioEstado
       .subscribe(

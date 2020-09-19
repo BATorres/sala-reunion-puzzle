@@ -22,18 +22,18 @@ export class RutaListarSalasComponent implements OnInit {
   existenSalas: boolean;
 
   constructor(
-    private readonly _router: Router,
-    private readonly _nuevaSalaService: NuevaSalaService,
-    private readonly _salaService: SalaService,
-    private readonly _usuarioService: UsuarioService,
-    private readonly _cargandoService: CargandoService,
+    private readonly router: Router,
+    private readonly nuevaSalaService: NuevaSalaService,
+    private readonly salaService: SalaService,
+    private readonly usuarioService: UsuarioService,
+    private readonly cargandoService: CargandoService,
     public matDialog: MatDialog,
   ) {
   }
 
   ngOnInit(): void {
     this.cargarSalas();
-    this._nuevaSalaService
+    this.nuevaSalaService
       .subscribe()
       .subscribe(
         ({data}) => {
@@ -44,24 +44,24 @@ export class RutaListarSalasComponent implements OnInit {
           console.error({
             error,
             mensaje: 'Error con el subscriptor de salas'
-          })
+          });
         }
       );
     this.verificarRolUsuario();
   }
 
-  cargarSalas() {
-    this._cargandoService.habilitarCargando();
-    this._salaService
+  cargarSalas(): void {
+    this.cargandoService.habilitarCargando();
+    this.salaService
       .findAll()
       .subscribe(
         (respuestaQuerySalas: {salas: SalaInterface[]}) => {
-          this._cargandoService.deshabilitarCargando();
+          this.cargandoService.deshabilitarCargando();
           this.salas = respuestaQuerySalas.salas;
           this.existenSalas = this.salas.length > 0;
         },
         error => {
-          this._cargandoService.deshabilitarCargando();
+          this.cargandoService.deshabilitarCargando();
           console.error({
             error,
             mensaje: 'Error buscando salas'
@@ -70,21 +70,21 @@ export class RutaListarSalasComponent implements OnInit {
       );
   }
 
-  buscarSala(busqueda: string) {
+  buscarSala(busqueda: string): void {
     const esBusquedaVacia: boolean = busqueda === '';
     if (esBusquedaVacia) {
       this.cargarSalas();
     } else {
-      this._salaService
+      this.salaService
         .buscarPorNombre(busqueda.trim())
         .subscribe(
           (respuestaQuerySalas: {salas: SalaInterface[]}) => {
-            this._cargandoService.deshabilitarCargando();
+            this.cargandoService.deshabilitarCargando();
             this.salas = respuestaQuerySalas.salas;
             this.existenSalas = this.salas.length > 0;
           },
           error => {
-            this._cargandoService.deshabilitarCargando();
+            this.cargandoService.deshabilitarCargando();
             console.error({
               error,
               mensaje: 'Error buscando salas'
@@ -94,8 +94,8 @@ export class RutaListarSalasComponent implements OnInit {
     }
   }
 
-  verificarRolUsuario() {
-    this._usuarioService
+  verificarRolUsuario(): void {
+    this.usuarioService
       .verificarEsAdmin(localStorage.getItem('usuario'))
       .subscribe(
         esUsuarioAdmin => {
@@ -110,7 +110,7 @@ export class RutaListarSalasComponent implements OnInit {
       );
   }
 
-  abrirModalCrearSala() {
+  abrirModalCrearSala(): void {
     const dialogRef: MatDialogRef<ModalCrearSalaComponent> = this.matDialog.open(
       ModalCrearSalaComponent,
       {
@@ -120,8 +120,8 @@ export class RutaListarSalasComponent implements OnInit {
     dialogRef.afterClosed();
   }
 
-  irASala(idSala: string) {
-    this._router
+  irASala(idSala: string): void {
+    this.router
       .navigate(
         [
           `/sala-reunion/${idSala}`

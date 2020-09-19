@@ -1,9 +1,9 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import * as go from 'gojs';
 import {crearNodo} from '../../../funciones/crear-nodo';
 import {crearGrupo} from '../../../funciones/crear-grupo';
 import {crearConexion} from '../../../funciones/crear-conexion';
-import {crearCasualidad} from '../../../funciones/crear-casualidad';
+import {crearCausalidad} from '../../../funciones/crear-causalidad';
 import {crearContradiccion} from '../../../funciones/crear-contradiccion';
 import {crearConfirmacion} from '../../../funciones/crear-confirmacion';
 import {eliminarNodoOConexion} from '../../../funciones/eliminar-nodo-o-conexion';
@@ -11,7 +11,7 @@ import {COLORES} from '../../../constantes/colores';
 import {crearEditarTexto} from '../../../funciones/crear-editar-texto';
 import {nodoExpandido} from '../../../funciones/nodo-expandido';
 
-export var diagramaEditable;
+export let diagramaEditable;
 
 @Component({
   selector: 'app-diagrama-editable',
@@ -20,6 +20,14 @@ export var diagramaEditable;
   encapsulation: ViewEncapsulation.None
 })
 export class DiagramaEditableComponent implements OnInit {
+
+  @Input()
+  diagramNodeData;
+
+  @Input()
+  diagramLinkData;
+
+  diagramDivClassName = 'diagramaEditable';
 
   constructor() {
   }
@@ -61,7 +69,7 @@ export class DiagramaEditableComponent implements OnInit {
     diagramaEditable.linkTemplate = crearConexion($);
     diagramaEditable.linkTemplateMap.add(
       'Casualidad',
-      crearCasualidad($, true)
+      crearCausalidad($, true)
     );
     diagramaEditable.linkTemplateMap.add(
       'Confirmación',
@@ -112,7 +120,7 @@ export class DiagramaEditableComponent implements OnInit {
           'Button',
           {
             click: cambiarColor,
-            '_buttonFillOver': 'transparent'
+            _buttonFillOver: 'transparent'
           },
           new go.Binding('ButtonBorder.fill', 'color', siguienteColor),
           $(
@@ -188,24 +196,30 @@ export class DiagramaEditableComponent implements OnInit {
       )
     );
 
-    function cambiarColor(evento, boton) {
+    function cambiarColor(evento, boton): void {
       const nodo = boton.part.adornedPart;
-      var forma = nodo.findObject('Nodo');
-      if (forma === null) return;
+      const forma = nodo.findObject('Nodo');
+      if (forma === null) {
+        return;
+      }
       nodo.diagram.startTransaction('Cambiar color');
       forma.fill = siguienteColor(forma.fill);
-      boton['_buttonFillNormal'] = siguienteColor(forma.fill);
+      boton._buttonFillNormal = siguienteColor(forma.fill);
       nodo.diagram.commitTransaction('Cambiar color');
     }
 
-    function siguienteColor(color) {
-      var indice = colores.indexOf(color);
-      if (indice < 0) return 'lightgray';
-      if (indice >= colores.length - 1) indice = 0;
+    function siguienteColor(color): string {
+      let indice = colores.indexOf(color);
+      if (indice < 0) {
+        return 'lightgray';
+      }
+      if (indice >= colores.length - 1) {
+        indice = 0;
+      }
       return colores[indice + 1];
     }
 
-    function dibujarConexion(nodo, categoria) {
+    function dibujarConexion(nodo, categoria): void {
       const tool = diagramaEditable.toolManager.linkingTool;
       diagramaEditable.model.setCategoryForLinkData(tool.archetypeLinkData, categoria);
       tool.startObject = nodo.port;
@@ -213,28 +227,19 @@ export class DiagramaEditableComponent implements OnInit {
       tool.doActivate();
     }
 
-    function dibujarConexionCasualidad(evento, boton) {
-      dibujarConexion(boton.part.adornedPart, 'Casualidad')
+    function dibujarConexionCasualidad(evento, boton): void {
+      dibujarConexion(boton.part.adornedPart, 'Casualidad');
     }
 
 
-    function dibujarConexionConfirmacion(evento, boton) {
-      dibujarConexion(boton.part.adornedPart, 'Confirmación')
+    function dibujarConexionConfirmacion(evento, boton): void {
+      dibujarConexion(boton.part.adornedPart, 'Confirmación');
     }
 
-    function dibujarConexionContradiccion(evento, boton) {
-      dibujarConexion(boton.part.adornedPart, 'Contradicción')
+    function dibujarConexionContradiccion(evento, boton): void {
+      dibujarConexion(boton.part.adornedPart, 'Contradicción');
     }
 
     return diagramaEditable;
   }
-
-  public diagramNodeData = [
-    {key: 'Nodo', loc: '-57.899993896484375 -164', text: 'Tema 1', descripcion: 'Sin descripcion', autor: 'Sin autor'},
-    {key: 'Nodo2', loc: '39.100006103515625 -25', text: 'Tema 2', descripcion: 'Sin descripcion', autor: 'Sin autor'}
-  ];
-  public diagramLinkData = [
-    {category: 'Casualidad', from: 'Nodo2', to: 'Nodo'}
-  ];
-  public diagramDivClassName: string = 'diagramaEditable';
 }

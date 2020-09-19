@@ -1,6 +1,6 @@
 import * as go from 'gojs';
 
-export function crearConexion(graphObject) {
+export function crearConexion(graphObject): any {
   return graphObject(
     go.Link,
     {
@@ -14,5 +14,5 @@ export function crearConexion(graphObject) {
         strokeWidth: 2,
       },
     )
-  )
+  );
 }

@@ -23,18 +23,18 @@ export class RutaSalaReunionComponent implements OnInit {
   nombreSala: string;
 
   constructor(
-    private readonly _activatedRoute: ActivatedRoute,
-    private readonly _usuarioService: UsuarioService,
-    private readonly _salaService: SalaService,
-    private readonly _usuarioSalaService: UsuarioSalaService,
-    private readonly _buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService,
-    private readonly _cargandoService: CargandoService
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly usuarioService: UsuarioService,
+    private readonly salaService: SalaService,
+    private readonly usuarioSalaService: UsuarioSalaService,
+    private readonly buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService,
+    private readonly cargandoService: CargandoService
   ) {
   }
 
   ngOnInit(): void {
-    this._cargandoService.habilitarCargando();
-    this._activatedRoute
+    this.cargandoService.habilitarCargando();
+    this.activatedRoute
       .params
       .subscribe(
         parametrosRuta => {
@@ -42,20 +42,20 @@ export class RutaSalaReunionComponent implements OnInit {
           this.verificarRolUsuario();
           this.setearNombreSala();
           this.verificarUsuarioEnSala();
-          this._cargandoService.deshabilitarCargando();
+          this.cargandoService.deshabilitarCargando();
         },
         error => {
-          this._cargandoService.deshabilitarCargando();
+          this.cargandoService.deshabilitarCargando();
           console.error({
             error,
             mensaje: 'Error cargando los parámetros de ruta'
-          })
+          });
         }
       );
   }
 
-  verificarRolUsuario() {
-    this._usuarioService
+  verificarRolUsuario(): void {
+    this.usuarioService
       .verificarEsAdmin(
         localStorage.getItem('usuario')
       )
@@ -72,8 +72,8 @@ export class RutaSalaReunionComponent implements OnInit {
       );
   }
 
-  verificarUsuarioEnSala() {
-    this._buscarUsuariosEnSalaService
+  verificarUsuarioEnSala(): void {
+    this.buscarUsuariosEnSalaService
       .watch({
         sala: this.idSala,
         usuario: localStorage.getItem('usuario')
@@ -85,17 +85,17 @@ export class RutaSalaReunionComponent implements OnInit {
 
           if (!this.esAdmin) {
             if (!this.existeUsuarioEnSala) {
-              this._usuarioSalaService.unirseASala(
+              this.usuarioSalaService.unirseASala(
                 this.idSala,
                 localStorage.getItem('usuario')
               );
             } else {
               const idUsuarioEnSala: string = usuario.data.usuarioSalas[0].id;
-              this._usuarioSalaService.accionesUsuarioEnSala(
+              this.usuarioSalaService.accionesUsuarioEnSala(
                 idUsuarioEnSala,
                 false,
                 false
-              )
+              );
             }
           }
         },
@@ -103,13 +103,13 @@ export class RutaSalaReunionComponent implements OnInit {
           console.error({
             error,
             mensaje: 'Error consultado usuarios en sala'
-          })
+          });
         }
-      )
+      );
   }
 
-  setearNombreSala() {
-    return this._salaService
+  setearNombreSala(): void {
+    this.salaService
       .findOne(
         this.idSala
       )
@@ -121,7 +121,7 @@ export class RutaSalaReunionComponent implements OnInit {
           console.error({
             error,
             mensaje: 'Error buscando sala'
-          })
+          });
         }
       );
   }

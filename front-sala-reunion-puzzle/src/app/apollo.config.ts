@@ -19,12 +19,12 @@ export class GraphQLModule {
     apollo: Apollo,
     httpLink: HttpLink
   ) {
-    const linkHttp: string = 'https://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev';
+    const linkHttp = 'https://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev';
     const http = httpLink.create({
       uri: linkHttp
     });
 
-    const linkWs: string = 'wss://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev';
+    const linkWs = 'wss://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev';
     const ws = new WebSocketLink({
       uri: linkWs,
       options: {
@@ -44,6 +44,6 @@ export class GraphQLModule {
     apollo.create({
       link,
       cache: new InMemoryCache()
-    })
+    });
   }
 }

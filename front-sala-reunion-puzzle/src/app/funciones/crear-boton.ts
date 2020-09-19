@@ -5,7 +5,7 @@ export function crearBoton(
   texto,
   accion,
   visibilidad
-) {
+): any {
   return graphObject(
     'ContextMenuButton',
     graphObject(

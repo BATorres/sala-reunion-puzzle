@@ -5,7 +5,7 @@ import {dibujarConexionConfirmacion} from './dibujar-conexion-confirmacion';
 import {dibujarConexionContradiccion} from './dibujar-conexion-contradiccion';
 import {eliminarNodoOConexion} from './eliminar-nodo-o-conexion';
 
-export function crearConfirmacion(graphObject, esDiagramaEditable = false) {
+export function crearConfirmacion(graphObject, esDiagramaEditable = false): any {
   if (esDiagramaEditable) {
     return graphObject(
       go.Link,
@@ -135,7 +135,7 @@ export function crearConfirmacion(graphObject, esDiagramaEditable = false) {
             )
           )
       }
-    )
+    );
   } else {
     return graphObject(
       go.Link,
@@ -166,6 +166,6 @@ export function crearConfirmacion(graphObject, esDiagramaEditable = false) {
           ).makeTwoWay()
         )
       ),
-    )
+    );
   }
 }

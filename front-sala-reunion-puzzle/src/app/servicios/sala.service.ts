@@ -47,11 +47,11 @@ export class SalaService {
       );
   }
 
-  crearSala(nombre: string) {
+  crearSala(nombre: string): any {
     return this._apollo
       .mutate({
         mutation: CREAR_SALA,
-        variables: { nombre: nombre }
+        variables: { nombre }
       });
   }
 }

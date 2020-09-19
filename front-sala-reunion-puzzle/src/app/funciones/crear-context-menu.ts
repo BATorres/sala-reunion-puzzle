@@ -1,6 +1,6 @@
 import {crearBoton} from './crear-boton';
 
-export function crearContextMenu(graphObject) {
+export function crearContextMenu(graphObject): any {
   return graphObject(
     'ContextMenu',
     crearBoton(
