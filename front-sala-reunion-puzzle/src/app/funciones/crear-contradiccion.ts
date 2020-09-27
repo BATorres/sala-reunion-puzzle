@@ -1,6 +1,6 @@
 import * as go from 'gojs';
 import {crearEditarTexto} from './crear-editar-texto';
-import {dibujarConexionCasualidad} from './dibujar-conexion-casualidad';
+import {dibujarConexionCausalidad} from './dibujar-conexion-causalidad';
 import {dibujarConexionConfirmacion} from './dibujar-conexion-confirmacion';
 import {dibujarConexionContradiccion} from './dibujar-conexion-contradiccion';
 import {eliminarNodoOConexion} from './eliminar-nodo-o-conexion';
@@ -70,7 +70,7 @@ export function crearContradiccion(graphObject, esDiagramaEditable = false): any
                 'Button',
                 {
                   name: 'casualidad',
-                  click: dibujarConexionCasualidad
+                  click: dibujarConexionCausalidad
                 },
                 graphObject(
                   go.Shape,

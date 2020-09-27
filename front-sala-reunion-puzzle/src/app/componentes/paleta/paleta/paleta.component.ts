@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import * as go from 'gojs';
 
 @Component({
@@ -9,9 +9,8 @@ import * as go from 'gojs';
 })
 export class PaletaComponent implements OnInit {
 
-  paletteNodeData = [
-    {key: 'Nuevo tema', descripcion: 'Sin descripcion', autor: 'Sin autor'}
-  ];
+  @Input()
+  paletteNodeData;
 
   paletteDivClassName = 'paleta';
 
@@ -45,7 +44,7 @@ export class PaletaComponent implements OnInit {
         },
         new go.Binding(
           'text',
-          'key'
+          'titulo'
         )
       )
     );

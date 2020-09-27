@@ -33,7 +33,7 @@ export function crearNodo(graphObject): any {
       },
       new go.Binding(
         'text',
-        'text'
+        'titulo'
       ).makeTwoWay(),
     ),
     graphObject(

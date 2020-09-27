@@ -36,23 +36,23 @@ export function nodoExpandido(graphObject): any {
           row: 0,
           column: 0,
           columnSpan: 2,
-          font: 'bold 12pt sans-serif',
           name: 'Texto',
           margin: 6,
           text: 'Nuevo tema'
         },
         new go.Binding(
           'text',
-          'text'
+          'titulo'
         ).makeTwoWay(),
       ),
       graphObject(
         go.TextBlock,
         {
           row: 1,
-          column: 0
+          column: 0,
+          font: 'bold 10pt sans-serif',
         },
-        'Descripcion: '
+        'Fuente:'
       ),
       graphObject(
         go.TextBlock,
@@ -62,16 +62,17 @@ export function nodoExpandido(graphObject): any {
         },
         new go.Binding(
           'text',
-          'descripcion'
+          'fuente'
         )
       ),
       graphObject(
         go.TextBlock,
         {
           row: 2,
-          column: 0
+          column: 0,
+          font: 'bold 10pt sans-serif',
         },
-        'Autor:'
+        'Resumen:'
       ),
       graphObject(
         go.TextBlock,
@@ -81,7 +82,47 @@ export function nodoExpandido(graphObject): any {
         },
         new go.Binding(
           'text',
-          'autor'
+          'resumen'
+        )
+      ),
+      graphObject(
+        go.TextBlock,
+        {
+          row: 3,
+          column: 0,
+          font: 'bold 10pt sans-serif',
+        },
+        'Tema:'
+      ),
+      graphObject(
+        go.TextBlock,
+        {
+          row: 3,
+          column: 1
+        },
+        new go.Binding(
+          'text',
+          'tema'
+        )
+      ),
+      graphObject(
+        go.TextBlock,
+        {
+          row: 4,
+          column: 0,
+          font: 'bold 10pt sans-serif',
+        },
+        'Actor:'
+      ),
+      graphObject(
+        go.TextBlock,
+        {
+          row: 4,
+          column: 1
+        },
+        new go.Binding(
+          'text',
+          'actor'
         )
       ),
     ),
