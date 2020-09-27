@@ -4,7 +4,9 @@
       <p-tabPanel header="Diagrama global">
         <div class="row">
           <div class="col-sm-2">
-            <app-paleta></app-paleta>
+            <app-paleta
+              [paletteNodeData]="datosActoresTemas"
+            ></app-paleta>
 
             <input
               id="archivoTemas"
@@ -24,7 +26,8 @@
 
             <button
               *ngIf="archivoASubir"
-              class="btn btn-success btn-block">
+              class="btn btn-success btn-block"
+              (click)="guardarArchivo()">
               <i class="fa fa-cloud-upload-alt"></i>
               Guardar archivo
             </button>

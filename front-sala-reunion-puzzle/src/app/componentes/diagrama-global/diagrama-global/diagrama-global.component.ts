@@ -25,7 +25,7 @@ export class DiagramaGlobalComponent implements OnInit {
   ];
 
   diagramLinkData = [
-    {category: 'Casualidad', from: 'Nodo2', to: 'Nodo'}
+    {category: 'Causalidad', from: 'Nodo2', to: 'Nodo'}
   ];
 
   diagramDivClassName = 'diagramaGlobal';

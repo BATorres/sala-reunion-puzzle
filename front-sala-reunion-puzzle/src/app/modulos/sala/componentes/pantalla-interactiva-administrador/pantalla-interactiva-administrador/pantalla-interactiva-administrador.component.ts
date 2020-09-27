@@ -13,6 +13,7 @@ import {DiagramaUsuarioInterface} from '../../../../../interfaces/diagrama-usuar
 import {CargandoService} from '../../../../../servicios/cargando.service';
 import {DatosDiagramaNodoInterface} from '../../../../../interfaces/datos-diagrama-nodo.interface';
 import {DatosDiagramaLinkInterface} from '../../../../../interfaces/datos-diagrama-link.interface';
+import {DatosActoresTemasInterface} from '../../../../../interfaces/datos-actores-temas.interface';
 
 @Component({
   selector: 'app-pantalla-interactiva-administrador',
@@ -33,6 +34,8 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
   datosDeConexiones: DatosDiagramaLinkInterface[];
 
   archivoASubir;
+
+  datosActoresTemas: DatosActoresTemasInterface[] = [];
 
   constructor(
     private readonly _nuevoUsuarioEnSalaService: NuevoUsuarioSalaService,
@@ -141,11 +144,27 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
             this.datosDeConexiones = datosGuardados.linkDataArray;
           } else {
             this.datosDeTemas = [
-              {key: 'Nodo', loc: '-57.899993896484375 -164', text: 'Tema 1', autor: 'Sin autor'},
-              {key: 'Nodo2', loc: '39.100006103515625 -25', text: 'Tema 2', autor: 'Sin autor'}
+              {
+                key: 'Nodo',
+                loc: '-57.899993896484375 -164',
+                titulo: 'Título 1',
+                fuente: 'Fuente 1',
+                resumen: 'Resumen 1',
+                tema: 'Tema 1',
+                actor: 'Sin actor'
+              },
+              {
+                key: 'Nodo2',
+                loc: '39.100006103515625 -25',
+                titulo: 'Título 2',
+                fuente: 'Fuente 2',
+                resumen: 'Resumen 2',
+                tema: 'Tema 2',
+                actor: 'Sin actor'
+              }
             ];
             this.datosDeConexiones = [
-              {category: 'Casualidad', from: 'Nodo2', to: 'Nodo'}
+              {category: 'Causalidad', from: 'Nodo2', to: 'Nodo'}
             ];
           }
         },
@@ -194,12 +213,23 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
       const contenidoArchivo = eventoArchivo.target.result as string;
       for (const linea of contenidoArchivo.split(/[\r\n]/)) {
         const contenidoASetear = linea.split(';');
-        const tieneContenidoCompleto = contenidoASetear.length === 3;
+        const tieneContenidoCompleto = contenidoASetear.length === 5;
         if (tieneContenidoCompleto) {
-          console.log('lo que voa setear', tieneContenidoCompleto);
+          const objetoSeteado: DatosActoresTemasInterface = {
+            titulo: contenidoASetear[0],
+            fuente: contenidoASetear[1],
+            resumen: contenidoASetear[2],
+            tema: contenidoASetear[3],
+            actor: contenidoASetear[4]
+          };
+          this.datosActoresTemas.push(objetoSeteado);
         }
       }
     });
     reader.readAsText(evento.target.files[0]);
+  }
+
+  guardarArchivo(): void {
+    console.log('datos', this.datosActoresTemas);
   }
 }

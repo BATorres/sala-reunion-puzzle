@@ -68,7 +68,7 @@ export class DiagramaEditableComponent implements OnInit {
     // creación de distintos tipos de enlaces
     diagramaEditable.linkTemplate = crearConexion($);
     diagramaEditable.linkTemplateMap.add(
-      'Casualidad',
+      'Causalidad',
       crearCausalidad($, true)
     );
     diagramaEditable.linkTemplateMap.add(
@@ -119,8 +119,8 @@ export class DiagramaEditableComponent implements OnInit {
         $(
           'Button',
           {
-            click: cambiarColor,
-            _buttonFillOver: 'transparent'
+            click: cambiarColorTema,
+            _buttonFillOver: 'white'
           },
           new go.Binding('ButtonBorder.fill', 'color', siguienteColor),
           $(
@@ -135,7 +135,7 @@ export class DiagramaEditableComponent implements OnInit {
         $(
           'Button',
           {
-            name: 'casualidad',
+            name: 'causalidad',
             click: dibujarConexionCasualidad,
           },
           $(
@@ -196,7 +196,7 @@ export class DiagramaEditableComponent implements OnInit {
       )
     );
 
-    function cambiarColor(evento, boton): void {
+    function cambiarColorTema(evento, boton): void {
       const nodo = boton.part.adornedPart;
       const forma = nodo.findObject('Nodo');
       if (forma === null) {
@@ -228,7 +228,7 @@ export class DiagramaEditableComponent implements OnInit {
     }
 
     function dibujarConexionCasualidad(evento, boton): void {
-      dibujarConexion(boton.part.adornedPart, 'Casualidad');
+      dibujarConexion(boton.part.adornedPart, 'Causalidad');
     }
 
 

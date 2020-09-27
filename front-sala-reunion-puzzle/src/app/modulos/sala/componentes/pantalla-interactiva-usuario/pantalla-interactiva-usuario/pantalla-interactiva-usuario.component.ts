@@ -76,11 +76,27 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
             this.datosDeConexiones = datosGuardados.linkDataArray;
           } else {
             this.datosDeTemas = [
-              {key: 'Nodo', loc: '-57.899993896484375 -164', text: 'Tema 1', autor: 'Sin autor'},
-              {key: 'Nodo2', loc: '39.100006103515625 -25', text: 'Tema 2', autor: 'Sin autor'}
+              {
+                key: 'Nodo',
+                loc: '-57.899993896484375 -164',
+                titulo: 'Título 1',
+                fuente: 'Fuente 1',
+                resumen: 'Resumen 1',
+                tema: 'Tema 1',
+                actor: 'Sin actor'
+              },
+              {
+                key: 'Nodo2',
+                loc: '39.100006103515625 -25',
+                titulo: 'Título 2',
+                fuente: 'Fuente 2',
+                resumen: 'Resumen 2',
+                tema: 'Tema 2',
+                actor: 'Sin actor'
+              }
             ];
             this.datosDeConexiones = [
-              {category: 'Casualidad', from: 'Nodo2', to: 'Nodo'}
+              {category: 'Causalidad', from: 'Nodo2', to: 'Nodo'}
             ];
           }
         },

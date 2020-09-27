@@ -1,6 +1,9 @@
 export interface DatosDiagramaNodoInterface {
   key?: string;
   loc?: string;
-  text?: string;
-  autor?: string;
+  titulo?: string;
+  fuente?: string;
+  resumen?: string;
+  tema?: string;
+  actor?: string;
 }
