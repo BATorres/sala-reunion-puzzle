@@ -16,6 +16,7 @@ type Sala {
   descripcion: String
   usuariosEnSala: [UsuarioSala] @relation
   diagramasPorUsuario: [DiagramaUsuario] @relation
+  temasDeSala: [TemaSala] @relation
 }
 
 type Usuario {
@@ -45,4 +46,16 @@ type DiagramaUsuario {
   diagrama: Diagrama!
   sala: Sala!
   usuario: Usuario
+}
+
+type TemaSala {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+  sala: Sala
 }

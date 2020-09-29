@@ -7,6 +7,9 @@ import {DiagramaUsuarioInterface} from '../../../../../interfaces/diagrama-usuar
 import {UsuarioSalaInterface} from '../../../../../interfaces/usuario-sala.interface';
 import {DatosDiagramaNodoInterface} from '../../../../../interfaces/datos-diagrama-nodo.interface';
 import {DatosDiagramaLinkInterface} from '../../../../../interfaces/datos-diagrama-link.interface';
+import {TemasSalaService} from '../../../../../servicios/temas-sala.service';
+import {EscucharTemasSalaService} from '../../../../../servicios/subscription/escuchar-temas-sala.service';
+import {TemaSalaInterface} from '../../../../../interfaces/tema-sala.interface';
 
 @Component({
   selector: 'app-pantalla-interactiva-usuario',
@@ -18,22 +21,29 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
   @Input()
   idSala: string;
 
+  @Input()
   idUsuarioSala: string;
 
   datosDeTemas: DatosDiagramaNodoInterface[];
 
   datosDeConexiones: DatosDiagramaLinkInterface[];
 
+  datosActoresTemas: TemaSalaInterface[];
+
   constructor(
     private readonly _usuarioEnSalaService: UsuarioSalaService,
     private readonly _diagramaUsuarioService: DiagramaUsuarioService,
-    private readonly _cargandoService: CargandoService
+    private readonly _cargandoService: CargandoService,
+    private readonly _temasSalaService: TemasSalaService,
+    private readonly _escucharTemasSalaService: EscucharTemasSalaService
   ) {
   }
 
   ngOnInit(): void {
     this.verificarUsuarioEnSala();
     this.verificarDiagramaUsuario();
+    this.verificarTemasDeSala();
+    this.escucharTemasEnSala();
   }
 
   verificarUsuarioEnSala(): void {
@@ -75,35 +85,71 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
             this.datosDeTemas = datosGuardados.nodeDataArray;
             this.datosDeConexiones = datosGuardados.linkDataArray;
           } else {
-            this.datosDeTemas = [
-              {
-                key: 'Nodo',
-                loc: '-57.899993896484375 -164',
-                titulo: 'Título 1',
-                fuente: 'Fuente 1',
-                resumen: 'Resumen 1',
-                tema: 'Tema 1',
-                actor: 'Sin actor'
-              },
-              {
-                key: 'Nodo2',
-                loc: '39.100006103515625 -25',
-                titulo: 'Título 2',
-                fuente: 'Fuente 2',
-                resumen: 'Resumen 2',
-                tema: 'Tema 2',
-                actor: 'Sin actor'
-              }
-            ];
-            this.datosDeConexiones = [
-              {category: 'Causalidad', from: 'Nodo2', to: 'Nodo'}
-            ];
+            this._diagramaUsuarioService
+              .buscarDiagramaGlobal(this.idSala)
+              .subscribe((datosDiagramaGlobal: { diagramaUsuarios: DiagramaUsuarioInterface[] }) => {
+                  this._cargandoService.deshabilitarCargando();
+                  const existeDiagramaGlobal: boolean = datosDiagramaGlobal.diagramaUsuarios.length > 0;
+                  if (existeDiagramaGlobal) {
+                    const datosGuardados = JSON.parse(JSON.parse(datosDiagramaGlobal.diagramaUsuarios[0].diagrama.datos));
+                    this.datosDeTemas = datosGuardados.nodeDataArray;
+                    this.datosDeConexiones = datosGuardados.linkDataArray;
+                  } else {
+                    this.datosDeTemas = [
+                      {
+                        key: 'Nodo',
+                        loc: '-57.899993896484375 -164',
+                        titulo: 'Título 1',
+                        fuente: 'Fuente 1',
+                        resumen: 'Resumen 1',
+                        tema: 'Tema 1',
+                        actor: 'Sin actor'
+                      },
+                      {
+                        key: 'Nodo2',
+                        loc: '39.100006103515625 -25',
+                        titulo: 'Título 2',
+                        fuente: 'Fuente 2',
+                        resumen: 'Resumen 2',
+                        tema: 'Tema 2',
+                        actor: 'Sin actor'
+                      }
+                    ];
+                    this.datosDeConexiones = [
+                      {category: 'Causalidad', from: 'Nodo2', to: 'Nodo'}
+                    ];
+                  }
+                },
+                error => {
+                  console.error({
+                    error,
+                    mensaje: 'Error verificando diagrama de usuario'
+                  });
+                }
+              );
           }
         },
         error => {
           console.error({
             error,
             mensaje: 'Error verificando diagrama de usuario'
+          });
+        }
+      );
+  }
+
+  verificarTemasDeSala(): void {
+    this._temasSalaService
+      .buscarTemasPorSala(
+        this.idSala
+      )
+      .subscribe((temaSalas: { temaSalas: TemaSalaInterface[] }) => {
+          this.datosActoresTemas = temaSalas.temaSalas;
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error buscando los temas de sala'
           });
         }
       );
@@ -143,6 +189,25 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
         JSON.stringify(diagramaEditable.model.toJson()),
         this.idSala,
         localStorage.getItem('usuario'),
+      );
+  }
+
+  escucharTemasEnSala(): void {
+    this._escucharTemasSalaService
+      .subscribe()
+      .subscribe(
+        ({data}) => {
+          const llegaTemaASala: boolean = data.temaSala.node.sala === this.idSala;
+          if (llegaTemaASala) {
+            console.log('data', data)
+          }
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error con el subscriptor de temas sala'
+          });
+        }
       );
   }
 }

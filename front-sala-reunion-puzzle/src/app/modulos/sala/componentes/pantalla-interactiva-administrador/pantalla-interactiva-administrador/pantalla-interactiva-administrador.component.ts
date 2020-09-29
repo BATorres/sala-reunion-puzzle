@@ -13,7 +13,8 @@ import {DiagramaUsuarioInterface} from '../../../../../interfaces/diagrama-usuar
 import {CargandoService} from '../../../../../servicios/cargando.service';
 import {DatosDiagramaNodoInterface} from '../../../../../interfaces/datos-diagrama-nodo.interface';
 import {DatosDiagramaLinkInterface} from '../../../../../interfaces/datos-diagrama-link.interface';
-import {DatosActoresTemasInterface} from '../../../../../interfaces/datos-actores-temas.interface';
+import {TemaSalaInterface} from '../../../../../interfaces/tema-sala.interface';
+import {TemasSalaService} from '../../../../../servicios/temas-sala.service';
 
 @Component({
   selector: 'app-pantalla-interactiva-administrador',
@@ -35,7 +36,7 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
 
   archivoASubir;
 
-  datosActoresTemas: DatosActoresTemasInterface[] = [];
+  datosActoresTemas: TemaSalaInterface[] = [];
 
   constructor(
     private readonly _nuevoUsuarioEnSalaService: NuevoUsuarioSalaService,
@@ -44,7 +45,9 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
     private readonly _usuarioEnSalaService: UsuarioSalaService,
     private readonly _buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService,
     private readonly _diagramaUsuarioService: DiagramaUsuarioService,
-    private readonly _cargandoService: CargandoService
+    private readonly _cargandoService: CargandoService,
+    private readonly _temasSalasService: TemasSalaService,
+    private readonly _temasSalaService: TemasSalaService,
   ) {
   }
 
@@ -53,6 +56,7 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
     this.escucharNuevoUsuarioEnSala();
     this.escucharAccionesUsuario();
     this.verificarDiagramaGlobal();
+    this.verificarTemasDeSala();
   }
 
   setearUsuariosEnSala(): void {
@@ -82,8 +86,11 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
       .subscribe(
         ({data}) => {
           const nuevoUsuarioEnSala: UsuarioSalaInterface = data.usuarioSala.node;
-          this.usuariosEnSala.unshift(nuevoUsuarioEnSala);
-          this.existenUsuariosEnSala = true;
+          const esNuevoUsuarioEnSala: boolean = nuevoUsuarioEnSala.sala.id === this.idSala;
+          if (esNuevoUsuarioEnSala) {
+            this.usuariosEnSala.unshift(nuevoUsuarioEnSala);
+            this.existenUsuariosEnSala = true;
+          }
         },
         error => {
           console.error({
@@ -215,12 +222,12 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
         const contenidoASetear = linea.split(';');
         const tieneContenidoCompleto = contenidoASetear.length === 5;
         if (tieneContenidoCompleto) {
-          const objetoSeteado: DatosActoresTemasInterface = {
+          const objetoSeteado: TemaSalaInterface = {
             titulo: contenidoASetear[0],
             fuente: contenidoASetear[1],
             resumen: contenidoASetear[2],
             tema: contenidoASetear[3],
-            actor: contenidoASetear[4]
+            actor: contenidoASetear[4],
           };
           this.datosActoresTemas.push(objetoSeteado);
         }
@@ -230,6 +237,40 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
   }
 
   guardarArchivo(): void {
-    console.log('datos', this.datosActoresTemas);
+    this._cargandoService.habilitarCargando();
+    this._temasSalasService
+      .guardarTemasDeSala(
+        this.idSala,
+        this.datosActoresTemas
+      )
+      .subscribe(
+        () => {
+          this._cargandoService.deshabilitarCargando();
+        },
+        error => {
+          this._cargandoService.deshabilitarCargando();
+          console.error({
+            error,
+            mensaje: 'Error guardando datos de temas'
+          });
+        }
+      );
+  }
+
+  verificarTemasDeSala(): void {
+    this._temasSalaService
+      .buscarTemasPorSala(
+        this.idSala
+      )
+      .subscribe((temaSalas: { temaSalas: TemaSalaInterface[] }) => {
+          this.datosActoresTemas = temaSalas.temaSalas;
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error buscando los temas de sala'
+          });
+        }
+      );
   }
 }

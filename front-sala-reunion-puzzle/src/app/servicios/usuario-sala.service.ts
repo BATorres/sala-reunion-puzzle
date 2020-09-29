@@ -34,7 +34,7 @@ export class UsuarioSalaService {
       );
   }
 
-  verificarUsuarioSala(
+  /*verificarUsuarioSala(
     idSala: string,
     idUsuario: string
   ): any {
@@ -75,12 +75,12 @@ export class UsuarioSalaService {
           });
         }
       );
-  }
+  }*/
 
   unirseASala(
     idSala: string,
     idUsuario: string
-  ): any {
+  ): Observable<any> {
     return this._apollo
       .mutate({
         mutation: UNIRSE_A_SALA,
@@ -88,24 +88,14 @@ export class UsuarioSalaService {
           idSala,
           idUsuario
         }
-      })
-      .subscribe(
-        () => {
-        },
-        error => {
-          console.error({
-            error,
-            mensaje: 'Error uniendo usuario en sala'
-          });
-        }
-      );
+      });
   }
 
   accionesUsuarioEnSala(
     idUsuarioSala: string,
     levantarMano: boolean,
     compartirPantalla: boolean
-  ): any {
+  ): Observable<any> {
     return this._apollo
       .mutate({
         mutation: ACCIONES_USUARIO_EN_SALA,
@@ -114,17 +104,7 @@ export class UsuarioSalaService {
           levantarMano,
           compartirPantalla
         }
-      })
-      .subscribe(
-        () => {
-        },
-        error => {
-          console.error({
-            error,
-            mensaje: 'Error con las acciones de usuario en sala'
-          });
-        }
-      );
+      });
   }
 }
 

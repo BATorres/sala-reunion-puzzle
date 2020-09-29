@@ -21,6 +21,8 @@ import {UsuarioSalaService} from './servicios/usuario-sala.service';
 import {UsuarioService} from './servicios/usuario.service';
 import {BuscarUsuariosEnSalaService} from './servicios/query/buscar-usuarios-en-sala.service';
 import {DiagramaUsuarioService} from './servicios/diagrama-usuario.service';
+import {TemasSalaService} from './servicios/temas-sala.service';
+import {EscucharTemasSalaService} from './servicios/subscription/escuchar-temas-sala.service';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import {DiagramaUsuarioService} from './servicios/diagrama-usuario.service';
     UsuarioSalaService,
     UsuarioService,
     BuscarUsuariosEnSalaService,
-    DiagramaUsuarioService
+    DiagramaUsuarioService,
+    TemasSalaService,
+    EscucharTemasSalaService
   ],
   bootstrap: [AppComponent]
 })

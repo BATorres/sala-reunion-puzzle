@@ -14,6 +14,10 @@ type AggregateSala {
   count: Int!
 }
 
+type AggregateTemaSala {
+  count: Int!
+}
+
 type AggregateUsuario {
   count: Int!
 }
@@ -471,6 +475,12 @@ type Mutation {
   upsertSala(where: SalaWhereUniqueInput!, create: SalaCreateInput!, update: SalaUpdateInput!): Sala!
   deleteSala(where: SalaWhereUniqueInput!): Sala
   deleteManySalas(where: SalaWhereInput): BatchPayload!
+  createTemaSala(data: TemaSalaCreateInput!): TemaSala!
+  updateTemaSala(data: TemaSalaUpdateInput!, where: TemaSalaWhereUniqueInput!): TemaSala
+  updateManyTemaSalas(data: TemaSalaUpdateManyMutationInput!, where: TemaSalaWhereInput): BatchPayload!
+  upsertTemaSala(where: TemaSalaWhereUniqueInput!, create: TemaSalaCreateInput!, update: TemaSalaUpdateInput!): TemaSala!
+  deleteTemaSala(where: TemaSalaWhereUniqueInput!): TemaSala
+  deleteManyTemaSalas(where: TemaSalaWhereInput): BatchPayload!
   createUsuario(data: UsuarioCreateInput!): Usuario!
   updateUsuario(data: UsuarioUpdateInput!, where: UsuarioWhereUniqueInput!): Usuario
   updateManyUsuarios(data: UsuarioUpdateManyMutationInput!, where: UsuarioWhereInput): BatchPayload!
@@ -512,6 +522,9 @@ type Query {
   sala(where: SalaWhereUniqueInput!): Sala
   salas(where: SalaWhereInput, orderBy: SalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Sala]!
   salasConnection(where: SalaWhereInput, orderBy: SalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SalaConnection!
+  temaSala(where: TemaSalaWhereUniqueInput!): TemaSala
+  temaSalas(where: TemaSalaWhereInput, orderBy: TemaSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TemaSala]!
+  temaSalasConnection(where: TemaSalaWhereInput, orderBy: TemaSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TemaSalaConnection!
   usuario(where: UsuarioWhereUniqueInput!): Usuario
   usuarios(where: UsuarioWhereInput, orderBy: UsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Usuario]!
   usuariosConnection(where: UsuarioWhereInput, orderBy: UsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UsuarioConnection!
@@ -529,6 +542,7 @@ type Sala {
   descripcion: String
   usuariosEnSala(where: UsuarioSalaWhereInput, orderBy: UsuarioSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UsuarioSala!]
   diagramasPorUsuario(where: DiagramaUsuarioWhereInput, orderBy: DiagramaUsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DiagramaUsuario!]
+  temasDeSala(where: TemaSalaWhereInput, orderBy: TemaSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TemaSala!]
 }
 
 type SalaConnection {
@@ -543,10 +557,16 @@ input SalaCreateInput {
   descripcion: String
   usuariosEnSala: UsuarioSalaCreateManyWithoutSalaInput
   diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutSalaInput
+  temasDeSala: TemaSalaCreateManyWithoutSalaInput
 }
 
 input SalaCreateOneWithoutDiagramasPorUsuarioInput {
   create: SalaCreateWithoutDiagramasPorUsuarioInput
+  connect: SalaWhereUniqueInput
+}
+
+input SalaCreateOneWithoutTemasDeSalaInput {
+  create: SalaCreateWithoutTemasDeSalaInput
   connect: SalaWhereUniqueInput
 }
 
@@ -560,6 +580,15 @@ input SalaCreateWithoutDiagramasPorUsuarioInput {
   nombre: String!
   descripcion: String
   usuariosEnSala: UsuarioSalaCreateManyWithoutSalaInput
+  temasDeSala: TemaSalaCreateManyWithoutSalaInput
+}
+
+input SalaCreateWithoutTemasDeSalaInput {
+  id: ID
+  nombre: String!
+  descripcion: String
+  usuariosEnSala: UsuarioSalaCreateManyWithoutSalaInput
+  diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutSalaInput
 }
 
 input SalaCreateWithoutUsuariosEnSalaInput {
@@ -567,6 +596,7 @@ input SalaCreateWithoutUsuariosEnSalaInput {
   nombre: String!
   descripcion: String
   diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutSalaInput
+  temasDeSala: TemaSalaCreateManyWithoutSalaInput
 }
 
 type SalaEdge {
@@ -618,6 +648,7 @@ input SalaUpdateInput {
   descripcion: String
   usuariosEnSala: UsuarioSalaUpdateManyWithoutSalaInput
   diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutSalaInput
+  temasDeSala: TemaSalaUpdateManyWithoutSalaInput
 }
 
 input SalaUpdateManyMutationInput {
@@ -639,21 +670,44 @@ input SalaUpdateOneRequiredWithoutUsuariosEnSalaInput {
   connect: SalaWhereUniqueInput
 }
 
+input SalaUpdateOneWithoutTemasDeSalaInput {
+  create: SalaCreateWithoutTemasDeSalaInput
+  update: SalaUpdateWithoutTemasDeSalaDataInput
+  upsert: SalaUpsertWithoutTemasDeSalaInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: SalaWhereUniqueInput
+}
+
 input SalaUpdateWithoutDiagramasPorUsuarioDataInput {
   nombre: String
   descripcion: String
   usuariosEnSala: UsuarioSalaUpdateManyWithoutSalaInput
+  temasDeSala: TemaSalaUpdateManyWithoutSalaInput
+}
+
+input SalaUpdateWithoutTemasDeSalaDataInput {
+  nombre: String
+  descripcion: String
+  usuariosEnSala: UsuarioSalaUpdateManyWithoutSalaInput
+  diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutSalaInput
 }
 
 input SalaUpdateWithoutUsuariosEnSalaDataInput {
   nombre: String
   descripcion: String
   diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutSalaInput
+  temasDeSala: TemaSalaUpdateManyWithoutSalaInput
 }
 
 input SalaUpsertWithoutDiagramasPorUsuarioInput {
   update: SalaUpdateWithoutDiagramasPorUsuarioDataInput!
   create: SalaCreateWithoutDiagramasPorUsuarioInput!
+}
+
+input SalaUpsertWithoutTemasDeSalaInput {
+  update: SalaUpdateWithoutTemasDeSalaDataInput!
+  create: SalaCreateWithoutTemasDeSalaInput!
 }
 
 input SalaUpsertWithoutUsuariosEnSalaInput {
@@ -726,6 +780,9 @@ input SalaWhereInput {
   diagramasPorUsuario_every: DiagramaUsuarioWhereInput
   diagramasPorUsuario_some: DiagramaUsuarioWhereInput
   diagramasPorUsuario_none: DiagramaUsuarioWhereInput
+  temasDeSala_every: TemaSalaWhereInput
+  temasDeSala_some: TemaSalaWhereInput
+  temasDeSala_none: TemaSalaWhereInput
   AND: [SalaWhereInput!]
   OR: [SalaWhereInput!]
   NOT: [SalaWhereInput!]
@@ -739,8 +796,382 @@ type Subscription {
   diagrama(where: DiagramaSubscriptionWhereInput): DiagramaSubscriptionPayload
   diagramaUsuario(where: DiagramaUsuarioSubscriptionWhereInput): DiagramaUsuarioSubscriptionPayload
   sala(where: SalaSubscriptionWhereInput): SalaSubscriptionPayload
+  temaSala(where: TemaSalaSubscriptionWhereInput): TemaSalaSubscriptionPayload
   usuario(where: UsuarioSubscriptionWhereInput): UsuarioSubscriptionPayload
   usuarioSala(where: UsuarioSalaSubscriptionWhereInput): UsuarioSalaSubscriptionPayload
+}
+
+type TemaSala {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+  sala: Sala
+}
+
+type TemaSalaConnection {
+  pageInfo: PageInfo!
+  edges: [TemaSalaEdge]!
+  aggregate: AggregateTemaSala!
+}
+
+input TemaSalaCreateInput {
+  id: ID
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+  sala: SalaCreateOneWithoutTemasDeSalaInput
+}
+
+input TemaSalaCreateManyWithoutSalaInput {
+  create: [TemaSalaCreateWithoutSalaInput!]
+  connect: [TemaSalaWhereUniqueInput!]
+}
+
+input TemaSalaCreateWithoutSalaInput {
+  id: ID
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+}
+
+type TemaSalaEdge {
+  node: TemaSala!
+  cursor: String!
+}
+
+enum TemaSalaOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  titulo_ASC
+  titulo_DESC
+  fuente_ASC
+  fuente_DESC
+  resumen_ASC
+  resumen_DESC
+  tema_ASC
+  tema_DESC
+  actor_ASC
+  actor_DESC
+}
+
+type TemaSalaPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+}
+
+input TemaSalaScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  titulo: String
+  titulo_not: String
+  titulo_in: [String!]
+  titulo_not_in: [String!]
+  titulo_lt: String
+  titulo_lte: String
+  titulo_gt: String
+  titulo_gte: String
+  titulo_contains: String
+  titulo_not_contains: String
+  titulo_starts_with: String
+  titulo_not_starts_with: String
+  titulo_ends_with: String
+  titulo_not_ends_with: String
+  fuente: String
+  fuente_not: String
+  fuente_in: [String!]
+  fuente_not_in: [String!]
+  fuente_lt: String
+  fuente_lte: String
+  fuente_gt: String
+  fuente_gte: String
+  fuente_contains: String
+  fuente_not_contains: String
+  fuente_starts_with: String
+  fuente_not_starts_with: String
+  fuente_ends_with: String
+  fuente_not_ends_with: String
+  resumen: String
+  resumen_not: String
+  resumen_in: [String!]
+  resumen_not_in: [String!]
+  resumen_lt: String
+  resumen_lte: String
+  resumen_gt: String
+  resumen_gte: String
+  resumen_contains: String
+  resumen_not_contains: String
+  resumen_starts_with: String
+  resumen_not_starts_with: String
+  resumen_ends_with: String
+  resumen_not_ends_with: String
+  tema: String
+  tema_not: String
+  tema_in: [String!]
+  tema_not_in: [String!]
+  tema_lt: String
+  tema_lte: String
+  tema_gt: String
+  tema_gte: String
+  tema_contains: String
+  tema_not_contains: String
+  tema_starts_with: String
+  tema_not_starts_with: String
+  tema_ends_with: String
+  tema_not_ends_with: String
+  actor: String
+  actor_not: String
+  actor_in: [String!]
+  actor_not_in: [String!]
+  actor_lt: String
+  actor_lte: String
+  actor_gt: String
+  actor_gte: String
+  actor_contains: String
+  actor_not_contains: String
+  actor_starts_with: String
+  actor_not_starts_with: String
+  actor_ends_with: String
+  actor_not_ends_with: String
+  AND: [TemaSalaScalarWhereInput!]
+  OR: [TemaSalaScalarWhereInput!]
+  NOT: [TemaSalaScalarWhereInput!]
+}
+
+type TemaSalaSubscriptionPayload {
+  mutation: MutationType!
+  node: TemaSala
+  updatedFields: [String!]
+  previousValues: TemaSalaPreviousValues
+}
+
+input TemaSalaSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: TemaSalaWhereInput
+  AND: [TemaSalaSubscriptionWhereInput!]
+  OR: [TemaSalaSubscriptionWhereInput!]
+  NOT: [TemaSalaSubscriptionWhereInput!]
+}
+
+input TemaSalaUpdateInput {
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+  sala: SalaUpdateOneWithoutTemasDeSalaInput
+}
+
+input TemaSalaUpdateManyDataInput {
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+}
+
+input TemaSalaUpdateManyMutationInput {
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+}
+
+input TemaSalaUpdateManyWithoutSalaInput {
+  create: [TemaSalaCreateWithoutSalaInput!]
+  delete: [TemaSalaWhereUniqueInput!]
+  connect: [TemaSalaWhereUniqueInput!]
+  set: [TemaSalaWhereUniqueInput!]
+  disconnect: [TemaSalaWhereUniqueInput!]
+  update: [TemaSalaUpdateWithWhereUniqueWithoutSalaInput!]
+  upsert: [TemaSalaUpsertWithWhereUniqueWithoutSalaInput!]
+  deleteMany: [TemaSalaScalarWhereInput!]
+  updateMany: [TemaSalaUpdateManyWithWhereNestedInput!]
+}
+
+input TemaSalaUpdateManyWithWhereNestedInput {
+  where: TemaSalaScalarWhereInput!
+  data: TemaSalaUpdateManyDataInput!
+}
+
+input TemaSalaUpdateWithoutSalaDataInput {
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+}
+
+input TemaSalaUpdateWithWhereUniqueWithoutSalaInput {
+  where: TemaSalaWhereUniqueInput!
+  data: TemaSalaUpdateWithoutSalaDataInput!
+}
+
+input TemaSalaUpsertWithWhereUniqueWithoutSalaInput {
+  where: TemaSalaWhereUniqueInput!
+  update: TemaSalaUpdateWithoutSalaDataInput!
+  create: TemaSalaCreateWithoutSalaInput!
+}
+
+input TemaSalaWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  titulo: String
+  titulo_not: String
+  titulo_in: [String!]
+  titulo_not_in: [String!]
+  titulo_lt: String
+  titulo_lte: String
+  titulo_gt: String
+  titulo_gte: String
+  titulo_contains: String
+  titulo_not_contains: String
+  titulo_starts_with: String
+  titulo_not_starts_with: String
+  titulo_ends_with: String
+  titulo_not_ends_with: String
+  fuente: String
+  fuente_not: String
+  fuente_in: [String!]
+  fuente_not_in: [String!]
+  fuente_lt: String
+  fuente_lte: String
+  fuente_gt: String
+  fuente_gte: String
+  fuente_contains: String
+  fuente_not_contains: String
+  fuente_starts_with: String
+  fuente_not_starts_with: String
+  fuente_ends_with: String
+  fuente_not_ends_with: String
+  resumen: String
+  resumen_not: String
+  resumen_in: [String!]
+  resumen_not_in: [String!]
+  resumen_lt: String
+  resumen_lte: String
+  resumen_gt: String
+  resumen_gte: String
+  resumen_contains: String
+  resumen_not_contains: String
+  resumen_starts_with: String
+  resumen_not_starts_with: String
+  resumen_ends_with: String
+  resumen_not_ends_with: String
+  tema: String
+  tema_not: String
+  tema_in: [String!]
+  tema_not_in: [String!]
+  tema_lt: String
+  tema_lte: String
+  tema_gt: String
+  tema_gte: String
+  tema_contains: String
+  tema_not_contains: String
+  tema_starts_with: String
+  tema_not_starts_with: String
+  tema_ends_with: String
+  tema_not_ends_with: String
+  actor: String
+  actor_not: String
+  actor_in: [String!]
+  actor_not_in: [String!]
+  actor_lt: String
+  actor_lte: String
+  actor_gt: String
+  actor_gte: String
+  actor_contains: String
+  actor_not_contains: String
+  actor_starts_with: String
+  actor_not_starts_with: String
+  actor_ends_with: String
+  actor_not_ends_with: String
+  sala: SalaWhereInput
+  AND: [TemaSalaWhereInput!]
+  OR: [TemaSalaWhereInput!]
+  NOT: [TemaSalaWhereInput!]
+}
+
+input TemaSalaWhereUniqueInput {
+  id: ID
 }
 
 type Usuario {

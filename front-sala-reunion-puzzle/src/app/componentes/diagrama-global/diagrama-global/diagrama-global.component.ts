@@ -20,8 +20,24 @@ export let diagramaGlobal;
 export class DiagramaGlobalComponent implements OnInit {
 
   diagramNodeData = [
-    {key: 'Nodo', loc: '-57.899993896484375 -164', text: 'Tema 1', autor: 'Sin autor'},
-    {key: 'Nodo2', loc: '39.100006103515625 -25', text: 'Tema 2', autor: 'Sin autor'}
+    {
+      key: 'Nodo',
+      loc: '-57.899993896484375 -164',
+      titulo: 'Título 1',
+      fuente: 'Fuente 1',
+      resumen: 'Resumen 1',
+      tema: 'Tema 1',
+      actor: 'Sin actor'
+    },
+    {
+      key: 'Nodo2',
+      loc: '39.100006103515625 -25',
+      titulo: 'Título 2',
+      fuente: 'Fuente 2',
+      resumen: 'Resumen 2',
+      tema: 'Tema 2',
+      actor: 'Sin actor'
+    }
   ];
 
   diagramLinkData = [
@@ -73,7 +89,7 @@ export class DiagramaGlobalComponent implements OnInit {
     // creación de distintos tipos de enlaces
     diagramaGlobal.linkTemplate = crearConexion($);
     diagramaGlobal.linkTemplateMap.add(
-      'Casualidad',
+      'Causalidad',
       crearCausalidad($)
     );
     diagramaGlobal.linkTemplateMap.add(

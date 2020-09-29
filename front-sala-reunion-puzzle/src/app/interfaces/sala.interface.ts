@@ -1,5 +1,6 @@
 import {UsuarioSalaInterface} from './usuario-sala.interface';
 import {DiagramaUsuario} from '../../servidor/generated/prisma-client';
+import {TemaSalaInterface} from './tema-sala.interface';
 
 export interface SalaInterface {
   id?: string;
@@ -7,4 +8,5 @@ export interface SalaInterface {
   descripcion?: string;
   usuariosEnSala?: UsuarioSalaInterface[];
   diagramasPorUsuario?: DiagramaUsuario[];
+  temasDeSala?: TemaSalaInterface[];
 }

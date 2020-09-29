@@ -16,36 +16,37 @@ export class RutaSalaReunionComponent implements OnInit {
 
   idSala: string;
 
-  esAdmin: boolean;
+  idUsuarioEnSala: string;
 
-  existeUsuarioEnSala: boolean;
+  esAdmin: boolean;
 
   nombreSala: string;
 
   constructor(
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly usuarioService: UsuarioService,
-    private readonly salaService: SalaService,
-    private readonly usuarioSalaService: UsuarioSalaService,
-    private readonly buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService,
-    private readonly cargandoService: CargandoService
+    private readonly _activatedRoute: ActivatedRoute,
+    private readonly _usuarioService: UsuarioService,
+    private readonly _salaService: SalaService,
+    private readonly _usuarioSalaService: UsuarioSalaService,
+    private readonly _buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService,
+    private readonly _cargandoService: CargandoService
   ) {
   }
 
   ngOnInit(): void {
-    this.cargandoService.habilitarCargando();
-    this.activatedRoute
+    this._cargandoService.habilitarCargando();
+    this._activatedRoute
       .params
       .subscribe(
         parametrosRuta => {
+          this.esAdmin = history.state.esAdmin;
           this.idSala = parametrosRuta.idSala;
           this.verificarRolUsuario();
           this.setearNombreSala();
           this.verificarUsuarioEnSala();
-          this.cargandoService.deshabilitarCargando();
+          this._cargandoService.deshabilitarCargando();
         },
         error => {
-          this.cargandoService.deshabilitarCargando();
+          this._cargandoService.deshabilitarCargando();
           console.error({
             error,
             mensaje: 'Error cargando los parámetros de ruta'
@@ -55,7 +56,7 @@ export class RutaSalaReunionComponent implements OnInit {
   }
 
   verificarRolUsuario(): void {
-    this.usuarioService
+    this._usuarioService
       .verificarEsAdmin(
         localStorage.getItem('usuario')
       )
@@ -73,7 +74,7 @@ export class RutaSalaReunionComponent implements OnInit {
   }
 
   verificarUsuarioEnSala(): void {
-    this.buscarUsuariosEnSalaService
+    this._buscarUsuariosEnSalaService
       .watch({
         sala: this.idSala,
         usuario: localStorage.getItem('usuario')
@@ -81,18 +82,31 @@ export class RutaSalaReunionComponent implements OnInit {
       .valueChanges
       .subscribe(
         (usuario) => {
-          this.existeUsuarioEnSala = usuario.data.usuarioSalas.length > 0;
+          const existeUsuarioEnSala: boolean = usuario.data.usuarioSalas.length > 0;
+          const existeIdUsuarioEnSala = this.idUsuarioEnSala !== undefined;
 
           if (!this.esAdmin) {
-            if (!this.existeUsuarioEnSala) {
-              this.usuarioSalaService.unirseASala(
-                this.idSala,
-                localStorage.getItem('usuario')
-              );
+            if (!existeUsuarioEnSala && !existeIdUsuarioEnSala) {
+              this._usuarioSalaService
+                .unirseASala(
+                  this.idSala,
+                  localStorage.getItem('usuario')
+                )
+                .subscribe(
+                  ({data}) => {
+                    this.idUsuarioEnSala = data.createUsuarioSala.id;
+                  },
+                  error => {
+                    console.error({
+                      error,
+                      mensaje: 'Error con las acciones de usuario en sala'
+                    });
+                  }
+                );
             } else {
-              const idUsuarioEnSala: string = usuario.data.usuarioSalas[0].id;
-              this.usuarioSalaService.accionesUsuarioEnSala(
-                idUsuarioEnSala,
+              this.idUsuarioEnSala = usuario.data.usuarioSalas[0].id;
+              this._usuarioSalaService.accionesUsuarioEnSala(
+                this.idUsuarioEnSala,
                 false,
                 false
               );
@@ -109,7 +123,7 @@ export class RutaSalaReunionComponent implements OnInit {
   }
 
   setearNombreSala(): void {
-    this.salaService
+    this._salaService
       .findOne(
         this.idSala
       )

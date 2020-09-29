@@ -17,3 +17,24 @@ export const CREAR_SALA = gql`
         }
     }
 `;
+
+export const ACTUALIZAR_SALA = gql`
+    mutation CrearSala(
+        $idSala: ID
+        $temasDeSala: [TemaSalaCreateWithoutSalaInput!]
+    ) {
+        updateSala(
+            where: {
+                id: $idSala
+            }
+            data: {
+                temasDeSala: {
+                    create: $temasDeSala
+                }
+            }
+        ) {
+            id
+            nombre
+        }
+    }
+`;
