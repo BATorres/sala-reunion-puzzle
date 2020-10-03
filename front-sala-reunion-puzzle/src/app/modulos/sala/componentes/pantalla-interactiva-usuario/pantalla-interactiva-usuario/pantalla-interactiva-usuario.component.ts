@@ -10,6 +10,7 @@ import {DatosDiagramaLinkInterface} from '../../../../../interfaces/datos-diagra
 import {TemasSalaService} from '../../../../../servicios/temas-sala.service';
 import {EscucharTemasSalaService} from '../../../../../servicios/subscription/escuchar-temas-sala.service';
 import {TemaSalaInterface} from '../../../../../interfaces/tema-sala.interface';
+import {SalaInterface} from '../../../../../interfaces/sala.interface';
 
 @Component({
   selector: 'app-pantalla-interactiva-usuario',
@@ -58,7 +59,6 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
           const existeUsuarioSala: boolean = usuariosEnSala.usuarioSalas.length > 0;
 
           if (existeUsuarioSala) {
-            this._cargandoService.deshabilitarCargando();
             this.idUsuarioSala = usuariosEnSala.usuarioSalas[0].id;
           }
         },
@@ -161,7 +161,13 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
         this.idUsuarioSala,
         true,
         false
-      );
+      )
+      .subscribe(() => {}, error => {
+        console.error({
+          error,
+          mensaje: 'Error pidiendo la palabra'
+        });
+      });
   }
 
   compartirPantalla(): void {
@@ -171,7 +177,13 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
         this.idUsuarioSala,
         false,
         true
-      );
+      )
+      .subscribe(() => {}, error => {
+        console.error({
+          error,
+          mensaje: 'Error compartiendo pantalla'
+        });
+      });
   }
 
   cancelar(): void {
@@ -180,7 +192,13 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
         this.idUsuarioSala,
         false,
         false
-      );
+      )
+      .subscribe(() => {}, error => {
+        console.error({
+          error,
+          mensaje: 'Error cancelando acciones en sala'
+        });
+      });
   }
 
   guardarDiagramaUsuario(): void {
@@ -197,9 +215,10 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
       .subscribe()
       .subscribe(
         ({data}) => {
-          const llegaTemaASala: boolean = data.temaSala.node.sala === this.idSala;
+          const datosTemas: TemaSalaInterface = data.temaSala.node;
+          const llegaTemaASala: boolean = (datosTemas.sala as SalaInterface).id === this.idSala;
           if (llegaTemaASala) {
-            console.log('data', data)
+            this.datosActoresTemas.unshift(datosTemas);
           }
         },
         error => {

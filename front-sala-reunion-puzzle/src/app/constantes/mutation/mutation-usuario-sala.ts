@@ -42,6 +42,8 @@ export const ACCIONES_USUARIO_EN_SALA = gql`
             }
         ) {
             id
+            levantarMano
+            compartirPantalla
         }
     }
 `;

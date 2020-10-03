@@ -8,7 +8,11 @@ import gql from 'graphql-tag';
 export class NuevaSalaService extends Subscription {
     document = gql`
         subscription {
-            sala {
+            sala(
+                where: {
+                    mutation_in: [CREATED]
+                }
+            ) {
                 node {
                     id
                     nombre

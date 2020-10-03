@@ -21,6 +21,7 @@ export class DiagramaUsuarioService {
     return this._apollo
       .query<{ diagramaUsuarios: DiagramaUsuarioInterface[] }>({
         query: BUSCAR_DIAGRAMA_GLOBAL,
+        fetchPolicy: 'network-only',
         variables: {
           idSala,
         }
@@ -37,6 +38,7 @@ export class DiagramaUsuarioService {
     return this._apollo
       .query<{ diagramaUsuarios: DiagramaUsuarioInterface[] }>({
         query: BUSCAR_DIAGRAMA_USUARIO,
+        fetchPolicy: 'network-only',
         variables: {
           idSala,
           idUsuario

@@ -19,6 +19,7 @@ export class TemasSalaService {
     return this._apollo
       .query<{ temaSalas: TemaSalaInterface[] }>({
         query: FIND_TEMAS_SALA,
+        fetchPolicy: 'network-only',
         variables: { idSala }
       })
       .pipe(

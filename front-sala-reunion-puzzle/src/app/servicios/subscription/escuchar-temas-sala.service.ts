@@ -19,6 +19,12 @@ export class EscucharTemasSalaService extends Subscription{
                         id
                         nombre
                     }
+                    titulo
+                    titulo
+                    fuente
+                    resumen
+                    tema
+                    actor
                 }
             }
         }`;

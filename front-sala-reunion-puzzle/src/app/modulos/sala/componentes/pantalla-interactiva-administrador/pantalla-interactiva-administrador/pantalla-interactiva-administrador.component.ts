@@ -61,13 +61,10 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
     this._usuarioEnSalaService
       .buscarUsuarioEnSala(
         this.idSala,
-        localStorage.getItem('usuario')
       )
       .subscribe(
         (usuariosEnSala: { usuarioSalas: UsuarioSalaInterface[] }) => {
-          console.log('sala', this.idSala)
           this.usuariosEnSala = usuariosEnSala.usuarioSalas;
-          console.log('datos', this.usuariosEnSala)
           this.existenUsuariosEnSala = this.usuariosEnSala.length > 0;
         },
         error => {
@@ -105,6 +102,7 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
       .subscribe()
       .subscribe(
         ({data}) => {
+          this.setearUsuariosEnSala();
           const accionesUsuarioSala: UsuarioSalaInterface = data.usuarioSala.node;
           const pidePalabraOCompartePantalla: boolean = accionesUsuarioSala.levantarMano || accionesUsuarioSala.compartirPantalla;
           let tituloToaster: string;
@@ -142,11 +140,9 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
       )
       .subscribe(
         (datosDiagramaGlobal: { diagramaUsuarios: DiagramaUsuarioInterface[] }) => {
-          console.log('escucha infinito')
           this._cargandoService.deshabilitarCargando();
           const tieneDiagramaGuardado: boolean = datosDiagramaGlobal.diagramaUsuarios.length > 0;
           if (tieneDiagramaGuardado) {
-            console.log('verificar diagrama usuario', tieneDiagramaGuardado)
             const datosGuardados = JSON.parse(JSON.parse(datosDiagramaGlobal.diagramaUsuarios[0].diagrama.datos));
             this.datosDeTemas = datosGuardados.nodeDataArray;
             this.datosDeConexiones = datosGuardados.linkDataArray;
