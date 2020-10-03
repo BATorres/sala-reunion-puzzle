@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -11,7 +11,7 @@ import {REGISTRAR_USUARIO} from '../constantes/mutation/mutation-usuario';
 })
 export class UsuarioService {
 
-  nombreUsuario: string;
+  evenEmmiterUsuario: EventEmitter<UsuarioInterface> = new EventEmitter<UsuarioInterface>();
 
   constructor(
     private readonly _apollo: Apollo,
@@ -25,10 +25,11 @@ export class UsuarioService {
     return this._apollo
       .query<{ usuarios: UsuarioInterface[] }>({
         query: FIND_ALL_USUARIOS,
+        fetchPolicy: 'network-only',
         variables: {
           nombre: username,
           password
-        }
+        },
       })
       .pipe(
         map(resultado => resultado.data)

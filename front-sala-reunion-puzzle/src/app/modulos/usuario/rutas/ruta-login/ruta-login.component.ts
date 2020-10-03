@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UsuarioInterface} from '../../../../interfaces/usuario.interface';
 import {Router} from '@angular/router';
 import {ToasterService} from 'angular2-toaster';
@@ -20,7 +20,7 @@ export class RutaLoginComponent implements OnInit {
   constructor(
     private readonly _router: Router,
     private readonly _usuarioService: UsuarioService,
-    private readonly _toasterService: ToasterService
+    private readonly _toasterService: ToasterService,
   ) {
     const existeUsuarioLogeado: string = localStorage.getItem('usuario');
     if (existeUsuarioLogeado) {
@@ -48,7 +48,7 @@ export class RutaLoginComponent implements OnInit {
         this.usuarioALoguearse.password
       )
       .subscribe(
-        (usuario: { usuarios: UsuarioInterface[]} ) => {
+        (usuario: { usuarios: UsuarioInterface[] }) => {
           this.esUsuarioYaRegistrado = usuario.usuarios.length > 0;
 
           if (this.esUsuarioYaRegistrado) {
@@ -77,6 +77,6 @@ export class RutaLoginComponent implements OnInit {
   }
 
   irMenuSalas(): void {
-    this._router.navigate(['listar-salas']);
+    this._router.navigate(['/app', 'listar-salas']);
   }
 }

@@ -5,7 +5,8 @@ import {CargandoService} from '../../../../servicios/cargando.service';
 import {SalaInterface} from '../../../../interfaces/sala.interface';
 import {UsuarioService} from '../../../../servicios/usuario.service';
 import {UsuarioSalaService} from '../../../../servicios/usuario-sala.service';
-import {BuscarUsuariosEnSalaService} from '../../../../servicios/query/buscar-usuarios-en-sala.service';
+import {UsuarioInterface} from '../../../../interfaces/usuario.interface';
+import {UsuarioSalaInterface} from '../../../../interfaces/usuario-sala.interface';
 
 @Component({
   selector: 'app-ruta-sala-reunion',
@@ -22,12 +23,13 @@ export class RutaSalaReunionComponent implements OnInit {
 
   nombreSala: string;
 
+  usuario: UsuarioInterface;
+
   constructor(
     private readonly _activatedRoute: ActivatedRoute,
     private readonly _usuarioService: UsuarioService,
     private readonly _salaService: SalaService,
     private readonly _usuarioSalaService: UsuarioSalaService,
-    private readonly _buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService,
     private readonly _cargandoService: CargandoService
   ) {
   }
@@ -53,6 +55,9 @@ export class RutaSalaReunionComponent implements OnInit {
           });
         }
       );
+    this._usuarioService.evenEmmiterUsuario.subscribe(respuesta => {
+      this.usuario = respuesta;
+    });
   }
 
   verificarRolUsuario(): void {
@@ -62,7 +67,7 @@ export class RutaSalaReunionComponent implements OnInit {
       )
       .subscribe(
         (esUsuarioAdmin: boolean) => {
-          this.esAdmin = esUsuarioAdmin;
+          return this.esAdmin = esUsuarioAdmin;
         },
         error => {
           console.error({
@@ -74,15 +79,14 @@ export class RutaSalaReunionComponent implements OnInit {
   }
 
   verificarUsuarioEnSala(): void {
-    this._buscarUsuariosEnSalaService
-      .watch({
-        sala: this.idSala,
-        usuario: localStorage.getItem('usuario')
-      })
-      .valueChanges
+    this._usuarioSalaService
+      .buscarUsuarioEnSala(
+        this.idSala,
+       localStorage.getItem('usuario')
+      )
       .subscribe(
-        (usuario) => {
-          const existeUsuarioEnSala: boolean = usuario.data.usuarioSalas.length > 0;
+        (usuarioEnSala: { usuarioSalas: UsuarioSalaInterface[] }) => {
+          const existeUsuarioEnSala: boolean = usuarioEnSala.usuarioSalas.length > 0;
           const existeIdUsuarioEnSala = this.idUsuarioEnSala !== undefined;
 
           if (!this.esAdmin) {
@@ -104,7 +108,7 @@ export class RutaSalaReunionComponent implements OnInit {
                   }
                 );
             } else {
-              this.idUsuarioEnSala = usuario.data.usuarioSalas[0].id;
+              this.idUsuarioEnSala = usuarioEnSala.usuarioSalas[0].id;
               this._usuarioSalaService.accionesUsuarioEnSala(
                 this.idUsuarioEnSala,
                 false,

@@ -3,8 +3,8 @@
     <i class="fa fa-puzzle-piece"></i>
     Sala de reunión
   </a>
-  <div *ngIf="estaLogueado">
-<!--    Bienvenido/a: {{usuario}}-->
+  <div *ngIf="usuario">
+    Bienvenido/a: {{usuario.nombre}}
     <button
       class="btn btn-outline-primary"
       (click)="salir()">

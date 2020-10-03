@@ -7,8 +7,6 @@ import {NuevaSalaService} from '../../../../servicios/subscription/nueva-sala.se
 import {SalaService} from '../../../../servicios/sala.service';
 import {CargandoService} from '../../../../servicios/cargando.service';
 import {UsuarioService} from '../../../../servicios/usuario.service';
-import {BuscarUsuariosEnSalaService} from '../../../../servicios/query/buscar-usuarios-en-sala.service';
-import {UsuarioSalaService} from '../../../../servicios/usuario-sala.service';
 
 @Component({
   selector: 'app-ruta-listar-salas',
@@ -23,6 +21,8 @@ export class RutaListarSalasComponent implements OnInit {
 
   existenSalas: boolean;
 
+  idUsuarioEnSala: string;
+
   constructor(
     private readonly _router: Router,
     private readonly _nuevaSalaService: NuevaSalaService,
@@ -35,11 +35,17 @@ export class RutaListarSalasComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarSalas();
+    this.escucharNuevaSala();
+    this.verificarRolUsuario();
+  }
+
+  escucharNuevaSala(): void {
     this._nuevaSalaService
       .subscribe()
       .subscribe(
         ({data}) => {
           const nuevaSala: SalaInterface = data.sala.node;
+          this.existenSalas = true;
           this.salas.unshift(nuevaSala);
         },
         error => {
@@ -49,7 +55,6 @@ export class RutaListarSalasComponent implements OnInit {
           });
         }
       );
-    this.verificarRolUsuario();
   }
 
   cargarSalas(): void {
@@ -57,7 +62,7 @@ export class RutaListarSalasComponent implements OnInit {
     this._salaService
       .findAll()
       .subscribe(
-        (respuestaQuerySalas: {salas: SalaInterface[]}) => {
+        (respuestaQuerySalas: { salas: SalaInterface[] }) => {
           this._cargandoService.deshabilitarCargando();
           this.salas = respuestaQuerySalas.salas;
           this.existenSalas = this.salas.length > 0;
@@ -80,7 +85,7 @@ export class RutaListarSalasComponent implements OnInit {
       this._salaService
         .buscarPorNombre(busqueda.trim())
         .subscribe(
-          (respuestaQuerySalas: {salas: SalaInterface[]}) => {
+          (respuestaQuerySalas: { salas: SalaInterface[] }) => {
             this._cargandoService.deshabilitarCargando();
             this.salas = respuestaQuerySalas.salas;
             this.existenSalas = this.salas.length > 0;
@@ -126,10 +131,11 @@ export class RutaListarSalasComponent implements OnInit {
     this._router
       .navigate(
         [
-          `/sala-reunion/${idSala}`
+          `/app/sala-reunion/${idSala}`
         ], {
           state: {
-            esAdmin: this.esAdmin
+            esAdmin: this.esAdmin,
+            idUsuarioSala: this.idUsuarioEnSala
           }
         }
       );

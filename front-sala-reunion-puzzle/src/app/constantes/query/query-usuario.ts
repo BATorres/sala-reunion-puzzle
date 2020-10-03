@@ -4,10 +4,14 @@ export const FIND_ALL_USUARIOS = gql`
     query BuscarUsuarios($nombre: String, $password: String) {
         usuarios(
             where: {
-                AND: [{
-                    nombre: $nombre,
-                    password: $password,
-                }]
+                AND: [
+                    {
+                        nombre: $nombre
+                    },
+                    {
+                        password: $password
+                    }
+                ]
             }
         ) {
             id
@@ -29,6 +33,20 @@ export const FIND_ONE_USUARIO = gql`
             id
             nombre
             esAdmin
+            usuariosEnSala {
+                id
+                sala {
+                    id
+                    nombre
+                }
+            }
+            diagramasPorUsuario {
+                id
+                sala {
+                    id
+                    nombre
+                }
+            }
         }
     }
 `;

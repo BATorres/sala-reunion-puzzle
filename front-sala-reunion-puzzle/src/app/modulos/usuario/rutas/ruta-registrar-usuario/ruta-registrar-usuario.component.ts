@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {ToasterService} from 'angular2-toaster';
 import {UsuarioInterface} from '../../../../interfaces/usuario.interface';
 import {UsuarioService} from '../../../../servicios/usuario.service';
+import {CargandoService} from '../../../../servicios/cargando.service';
 
 @Component({
   selector: 'app-ruta-registrar-usuario',
@@ -20,7 +21,8 @@ export class RutaRegistrarUsuarioComponent implements OnInit {
   constructor(
     private readonly _router: Router,
     private readonly _usuarioService: UsuarioService,
-    private readonly _toasterService: ToasterService
+    private readonly _toasterService: ToasterService,
+    private readonly _cargandoService: CargandoService
   ) {
     const existeUsuarioLogeado: string = localStorage.getItem('usuario');
     if (existeUsuarioLogeado) {
@@ -42,6 +44,7 @@ export class RutaRegistrarUsuarioComponent implements OnInit {
   }
 
   registrarUsuario(): void {
+    this._cargandoService.habilitarCargando();
     this._usuarioService
       .findAll(
         this.usuarioARegistrar.nombre,
@@ -63,7 +66,8 @@ export class RutaRegistrarUsuarioComponent implements OnInit {
                 this.usuarioARegistrar.password
               )
               .subscribe(
-                () => {
+                (respuestaMutation: {data: { createUsuario: {id: string}}}) => {
+                  this._cargandoService.deshabilitarCargando();
                   this._router.navigate(['login']);
 
                   this._toasterService.pop(
@@ -73,6 +77,7 @@ export class RutaRegistrarUsuarioComponent implements OnInit {
                   );
                 },
                 error => {
+                  this._cargandoService.deshabilitarCargando();
                   console.error({
                     error,
                     mensaje: 'Error registrando el nuevo usuario'
@@ -100,6 +105,6 @@ export class RutaRegistrarUsuarioComponent implements OnInit {
   }
 
   irMenuSalas(): void {
-    this._router.navigate(['listar-salas']);
+    this._router.navigate(['/app', 'listar-salas']);
   }
 }

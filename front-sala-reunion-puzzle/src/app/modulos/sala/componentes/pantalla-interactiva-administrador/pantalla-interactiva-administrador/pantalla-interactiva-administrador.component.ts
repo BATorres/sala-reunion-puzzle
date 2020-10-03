@@ -7,7 +7,6 @@ import {diagramaGlobal} from '../../../../../componentes/diagrama-global/diagram
 import * as go from 'gojs';
 import {diagramaEditable} from '../../../../../componentes/diagrama-editable/diagrama-editable/diagrama-editable.component';
 import {UsuarioSalaService} from '../../../../../servicios/usuario-sala.service';
-import {BuscarUsuariosEnSalaService} from '../../../../../servicios/query/buscar-usuarios-en-sala.service';
 import {DiagramaUsuarioService} from '../../../../../servicios/diagrama-usuario.service';
 import {DiagramaUsuarioInterface} from '../../../../../interfaces/diagrama-usuario.interface';
 import {CargandoService} from '../../../../../servicios/cargando.service';
@@ -43,7 +42,6 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
     private readonly _escucharAccionesUsuario: EscucharAccionesUsuarioService,
     private readonly _toasterService: ToasterService,
     private readonly _usuarioEnSalaService: UsuarioSalaService,
-    private readonly _buscarUsuariosEnSalaService: BuscarUsuariosEnSalaService,
     private readonly _diagramaUsuarioService: DiagramaUsuarioService,
     private readonly _cargandoService: CargandoService,
     private readonly _temasSalasService: TemasSalaService,
@@ -60,15 +58,16 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
   }
 
   setearUsuariosEnSala(): void {
-    this._buscarUsuariosEnSalaService
-      .watch({
-        sala: this.idSala,
-        usuario: localStorage.getItem('usuario')
-      })
-      .valueChanges
+    this._usuarioEnSalaService
+      .buscarUsuarioEnSala(
+        this.idSala,
+        localStorage.getItem('usuario')
+      )
       .subscribe(
-        (usuariosEnSala) => {
-          this.usuariosEnSala = usuariosEnSala.data.usuarioSalas;
+        (usuariosEnSala: { usuarioSalas: UsuarioSalaInterface[] }) => {
+          console.log('sala', this.idSala)
+          this.usuariosEnSala = usuariosEnSala.usuarioSalas;
+          console.log('datos', this.usuariosEnSala)
           this.existenUsuariosEnSala = this.usuariosEnSala.length > 0;
         },
         error => {
@@ -143,9 +142,11 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
       )
       .subscribe(
         (datosDiagramaGlobal: { diagramaUsuarios: DiagramaUsuarioInterface[] }) => {
+          console.log('escucha infinito')
           this._cargandoService.deshabilitarCargando();
           const tieneDiagramaGuardado: boolean = datosDiagramaGlobal.diagramaUsuarios.length > 0;
           if (tieneDiagramaGuardado) {
+            console.log('verificar diagrama usuario', tieneDiagramaGuardado)
             const datosGuardados = JSON.parse(JSON.parse(datosDiagramaGlobal.diagramaUsuarios[0].diagrama.datos));
             this.datosDeTemas = datosGuardados.nodeDataArray;
             this.datosDeConexiones = datosGuardados.linkDataArray;

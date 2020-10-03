@@ -35,7 +35,7 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
     private readonly _diagramaUsuarioService: DiagramaUsuarioService,
     private readonly _cargandoService: CargandoService,
     private readonly _temasSalaService: TemasSalaService,
-    private readonly _escucharTemasSalaService: EscucharTemasSalaService
+    private readonly _escucharTemasSalaService: EscucharTemasSalaService,
   ) {
   }
 

@@ -24,6 +24,7 @@ export class UsuarioSalaService {
     return this._apollo
       .query<{ usuarioSalas: UsuarioSalaInterface[] }>({
         query: BUSCAR_USUARIO_SALA,
+        fetchPolicy: 'network-only',
         variables: {
           idSala,
           idUsuario

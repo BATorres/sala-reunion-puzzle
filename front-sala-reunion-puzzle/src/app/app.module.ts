@@ -10,25 +10,20 @@ import {SalaModule} from './modulos/sala/sala.module';
 import {UsuarioModule} from './modulos/usuario/usuario.module';
 import {ToasterModule} from 'angular2-toaster';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {NuevoUsuarioSalaService} from './servicios/subscription/nuevo-usuario-sala.service';
-import {EscucharAccionesUsuarioService} from './servicios/subscription/escuchar-acciones-usuario.service';
 import {CabeceraModule} from './componentes/cabecera/cabecera.module';
 import {EstaLogueadoGuard} from './servicios/esta-logueado.guard';
-import {SalaService} from './servicios/sala.service';
 import {CargandoService} from './servicios/cargando.service';
 import {BlockUIModule} from 'primeng';
-import {UsuarioSalaService} from './servicios/usuario-sala.service';
-import {UsuarioService} from './servicios/usuario.service';
-import {BuscarUsuariosEnSalaService} from './servicios/query/buscar-usuarios-en-sala.service';
-import {DiagramaUsuarioService} from './servicios/diagrama-usuario.service';
-import {TemasSalaService} from './servicios/temas-sala.service';
-import {EscucharTemasSalaService} from './servicios/subscription/escuchar-temas-sala.service';
+import {SERVICIOS_SUBSCRIPTION} from './servicios/constantes/servicios-subscription';
+import { RutaAppComponent } from './rutas/ruta-app/ruta-app.component';
+import {SERVICIOS_GENERALES} from './servicios/constantes/servicios-generales';
 
 @NgModule({
   declarations: [
     AppComponent,
     RutaInicioComponent,
-    RutaNoEncontradaComponent
+    RutaNoEncontradaComponent,
+    RutaAppComponent
   ],
   imports: [
     BrowserModule,
@@ -42,17 +37,10 @@ import {EscucharTemasSalaService} from './servicios/subscription/escuchar-temas-
     BlockUIModule
   ],
   providers: [
-    NuevoUsuarioSalaService,
-    EscucharAccionesUsuarioService,
     EstaLogueadoGuard,
-    SalaService,
     CargandoService,
-    UsuarioSalaService,
-    UsuarioService,
-    BuscarUsuariosEnSalaService,
-    DiagramaUsuarioService,
-    TemasSalaService,
-    EscucharTemasSalaService
+    ...SERVICIOS_SUBSCRIPTION,
+    ...SERVICIOS_GENERALES,
   ],
   bootstrap: [AppComponent]
 })
