@@ -11,6 +11,8 @@ import {TemasSalaService} from '../../../../../servicios/temas-sala.service';
 import {EscucharTemasSalaService} from '../../../../../servicios/subscription/escuchar-temas-sala.service';
 import {TemaSalaInterface} from '../../../../../interfaces/tema-sala.interface';
 import {SalaInterface} from '../../../../../interfaces/sala.interface';
+import {diagramaGlobal} from '../../../../../componentes/diagrama-global/diagrama-global/diagrama-global.component';
+import * as go from 'gojs';
 
 @Component({
   selector: 'app-pantalla-interactiva-usuario',
@@ -43,6 +45,7 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
   ngOnInit(): void {
     this.verificarUsuarioEnSala();
     this.verificarDiagramaUsuario();
+    this.verificarDiagramaGlobal();
     this.verificarTemasDeSala();
     this.escucharTemasEnSala();
   }
@@ -66,6 +69,29 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
           console.error({
             error,
             mensaje: 'Error consultado usuarios en sala'
+          });
+        }
+      );
+  }
+
+  verificarDiagramaGlobal(): void {
+    this._diagramaUsuarioService
+      .buscarDiagramaGlobal(
+        this.idSala
+      )
+      .subscribe(
+        (datosDiagramaGlobal: { diagramaUsuarios: DiagramaUsuarioInterface[] }) => {
+          this._cargandoService.deshabilitarCargando();
+          const tieneDiagramaGuardado: boolean = datosDiagramaGlobal.diagramaUsuarios.length > 0;
+          if (tieneDiagramaGuardado) {
+            const datosGuardados = datosDiagramaGlobal.diagramaUsuarios[0].diagrama.datos;
+            diagramaGlobal.model = go.Model.fromJson(JSON.parse(datosGuardados));
+          }
+        },
+        error => {
+          console.error({
+            error,
+            mensaje: 'Error verificando diagrama de usuario'
           });
         }
       );
@@ -162,7 +188,8 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
         true,
         false
       )
-      .subscribe(() => {}, error => {
+      .subscribe(() => {
+      }, error => {
         console.error({
           error,
           mensaje: 'Error pidiendo la palabra'
@@ -178,7 +205,8 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
         false,
         true
       )
-      .subscribe(() => {}, error => {
+      .subscribe(() => {
+      }, error => {
         console.error({
           error,
           mensaje: 'Error compartiendo pantalla'
@@ -193,7 +221,8 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
         false,
         false
       )
-      .subscribe(() => {}, error => {
+      .subscribe(() => {
+      }, error => {
         console.error({
           error,
           mensaje: 'Error cancelando acciones en sala'
@@ -228,5 +257,12 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
           });
         }
       );
+  }
+
+  escucharCambiosTabView(evento): void {
+    const seleccionaIndiceDiagramaGlobal: boolean = evento.index === 1;
+    if (seleccionaIndiceDiagramaGlobal) {
+      this.verificarDiagramaGlobal();
+    }
   }
 }

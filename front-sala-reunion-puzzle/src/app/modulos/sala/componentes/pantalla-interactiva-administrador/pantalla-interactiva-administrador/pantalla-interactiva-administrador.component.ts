@@ -146,6 +146,7 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
             const datosGuardados = JSON.parse(JSON.parse(datosDiagramaGlobal.diagramaUsuarios[0].diagrama.datos));
             this.datosDeTemas = datosGuardados.nodeDataArray;
             this.datosDeConexiones = datosGuardados.linkDataArray;
+            diagramaGlobal.model = go.Model.fromJson(JSON.parse(datosDiagramaGlobal.diagramaUsuarios[0].diagrama.datos));
           } else {
             this.datosDeTemas = [
               {
@@ -269,5 +270,13 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
           });
         }
       );
+  }
+
+  escucharCambiosTabView(evento): void {
+    const seleccionaIndiceDiagramasCompartidos: boolean = evento.index === 1;
+    if (seleccionaIndiceDiagramasCompartidos) {
+      this.setearUsuariosEnSala();
+      this.verificarDiagramaGlobal();
+    }
   }
 }

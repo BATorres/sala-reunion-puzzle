@@ -4,11 +4,18 @@
     Sala de reunión
   </a>
   <div *ngIf="usuario">
-    Bienvenido/a: {{usuario.nombre}}
-    <button
-      class="btn btn-outline-primary"
-      (click)="salir()">
-      Salir
-    </button>
+    <div class="row">
+      <div class="col-sm-8">
+        Bienvenido/a: {{usuario.nombre}} <br>
+        <b>Rol:</b> {{usuario.esAdmin ? 'Administrador' : 'Participante'}}
+      </div>
+      <div class="col-sm-2">
+        <button
+          class="btn btn-outline-primary"
+          (click)="salir()">
+          Salir
+        </button>
+      </div>
+    </div>
   </div>
 </nav>
