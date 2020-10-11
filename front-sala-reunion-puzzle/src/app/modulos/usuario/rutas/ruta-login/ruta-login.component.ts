@@ -32,7 +32,7 @@ export class RutaLoginComponent implements OnInit {
   }
 
   validarFormulario(usuario: UsuarioInterface): void {
-    const reciboDatosUsuario = usuario;
+    const reciboDatosUsuario = usuario.nombre !== '' && usuario.password !== '';
     if (reciboDatosUsuario) {
       this.formularioValido = true;
       this.usuarioALoguearse = usuario;

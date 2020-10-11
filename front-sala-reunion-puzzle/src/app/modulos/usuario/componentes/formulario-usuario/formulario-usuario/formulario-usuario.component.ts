@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {
   MENSAJES_VALIDACION_NOMBRE_USUARIO, MENSAJES_VALIDACION_PASSWORD_USUARIO,
@@ -14,6 +14,9 @@ import {UsuarioInterface} from '../../../../../interfaces/usuario.interface';
 })
 export class FormularioUsuarioComponent implements OnInit {
 
+  @Input()
+  esFormularioRegistro;
+
   @Output()
   enviarRegistroValido: EventEmitter<UsuarioInterface | boolean> = new EventEmitter();
 
@@ -21,7 +24,8 @@ export class FormularioUsuarioComponent implements OnInit {
 
   mensajesError = {
     nombre: [],
-    password: []
+    password: [],
+    confirmarPassword: []
   };
 
   constructor(
@@ -44,8 +48,15 @@ export class FormularioUsuarioComponent implements OnInit {
         password: new FormControl(
           '',
           VALIDACIONES_PASSWORD_USUARIO
+        ),
+        confirmarPassword: new FormControl(
+          '',
+          VALIDACIONES_PASSWORD_USUARIO,
         )
-      });
+      },
+        {
+          validator: this.verificarPassword
+        });
   }
 
   private verificarCamposFormulario(): void {
@@ -57,6 +68,10 @@ export class FormularioUsuarioComponent implements OnInit {
       'password',
       MENSAJES_VALIDACION_PASSWORD_USUARIO
     );
+    this.verificarCampoFormControl(
+      'confirmarPassword',
+      MENSAJES_VALIDACION_PASSWORD_USUARIO
+    );
   }
 
   private verificarFormulario(): void {
@@ -65,7 +80,7 @@ export class FormularioUsuarioComponent implements OnInit {
       .subscribe(
         (valoresFormulario: UsuarioInterface) => {
           const esFormularioValido: boolean = this.formularioUsuario.valid;
-          if (esFormularioValido) {
+          if (esFormularioValido || !this.esFormularioRegistro) {
             this.enviarRegistroValido.emit(valoresFormulario);
           } else {
             this.enviarRegistroValido.emit(false);
@@ -103,5 +118,14 @@ export class FormularioUsuarioComponent implements OnInit {
           });
         }
       );
+  }
+
+  verificarPassword(control: AbstractControl): void {
+    const password: string = control.get('password').value;
+    const confirmarPassword: string = control.get('confirmarPassword').value;
+    const coincidenPasswords: boolean = password === confirmarPassword;
+    if (!coincidenPasswords) {
+      control.get('confirmarPassword').setErrors({noCoinciden: true});
+    }
   }
 }

@@ -36,6 +36,27 @@
           </mat-error>
         </mat-form-field>
       </div>
+
+      <div *ngIf="esFormularioRegistro" class="col-sm-12">
+        <mat-form-field>
+          <mat-label>Confirmar contraseña</mat-label>
+
+          <input
+            matInput
+            placeholder="Vuelva a ingresar su contraseña"
+            type="password"
+            formControlName="confirmarPassword"
+            required>
+
+          <mat-error *ngIf="mensajesError.confirmarPassword.length > 0">
+            <div *ngFor="let mensaje of mensajesError.confirmarPassword">{{mensaje}}</div>
+          </mat-error>
+
+          <mat-error *ngIf="formularioUsuario.controls['confirmarPassword'].hasError('noCoinciden')">
+            <div>La contraseña no coincide</div>
+          </mat-error>
+        </mat-form-field>
+      </div>
     </div>
   </fieldset>
   <ng-content></ng-content>
