@@ -5,13 +5,15 @@ import {Observable} from 'rxjs';
 import {DiagramaUsuarioInterface} from '../interfaces/diagrama-usuario.interface';
 import {map} from 'rxjs/operators';
 import {ACTUALIZAR_DIAGRAMA, CREAR_DIAGRAMA} from '../constantes/mutation/mutation-diagrama-usuario';
+import {Toast, ToasterService} from 'angular2-toaster';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DiagramaUsuarioService {
   constructor(
-    private readonly _apollo: Apollo
+    private readonly _apollo: Apollo,
+    private readonly _toasterService: ToasterService
   ) {
   }
 
@@ -154,6 +156,16 @@ export class DiagramaUsuarioService {
             idDiagramaUsuario
           );
         }
+        const toast: Toast = {
+          type: 'success',
+          title: 'ÉXITO',
+          body: 'El diagrama global se ha guardado correctamente',
+          showCloseButton: true,
+        };
+
+        this._toasterService.pop(
+          toast
+        );
       }
     );
   }

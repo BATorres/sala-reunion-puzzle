@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {UsuarioSalaInterface} from '../../../../../interfaces/usuario-sala.interface';
 import {NuevoUsuarioSalaService} from '../../../../../servicios/subscription/nuevo-usuario-sala.service';
 import {EscucharAccionesUsuarioService} from '../../../../../servicios/subscription/escuchar-acciones-usuario.service';
-import {ToasterService} from 'angular2-toaster';
+import {Toast, ToasterService} from 'angular2-toaster';
 import {diagramaGlobal} from '../../../../../componentes/diagrama-global/diagrama-global/diagrama-global.component';
 import * as go from 'gojs';
 import {diagramaEditable} from '../../../../../componentes/diagrama-editable/diagrama-editable/diagrama-editable.component';
@@ -109,17 +109,21 @@ export class PantallaInteractivaAdministradorComponent implements OnInit {
           let mensajeToaster: string;
           if (accionesUsuarioSala.levantarMano) {
             tituloToaster = 'PIDIENDO LA PALABRA';
-            mensajeToaster = `El usuario ${accionesUsuarioSala.usuario.nombre} está solicitando la palabra`;
+            mensajeToaster = `El usuario ${accionesUsuarioSala.usuario.nombre} está solicitando la palabra en la sala ${accionesUsuarioSala.sala.nombre}`;
           }
           if (accionesUsuarioSala.compartirPantalla) {
             tituloToaster = 'COMPARTIENDO PANTALLA';
-            mensajeToaster = `El usuario ${accionesUsuarioSala.usuario.nombre} está compartiendo pantalla`;
+            mensajeToaster = `El usuario ${accionesUsuarioSala.usuario.nombre} está compartiendo pantalla en la sala ${accionesUsuarioSala.sala.nombre}`;
           }
           if (pidePalabraOCompartePantalla) {
-            return this._toasterService.pop(
-              'info',
-              `${tituloToaster}`,
-              `${mensajeToaster}`
+            const toast: Toast = {
+              type: 'info',
+              title: `${tituloToaster}`,
+              body: `${mensajeToaster}`,
+              showCloseButton: true,
+            };
+            this._toasterService.pop(
+              toast
             );
           }
         },

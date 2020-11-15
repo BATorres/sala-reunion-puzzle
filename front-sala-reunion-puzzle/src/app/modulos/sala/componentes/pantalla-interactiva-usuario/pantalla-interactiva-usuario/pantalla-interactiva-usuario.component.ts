@@ -13,6 +13,7 @@ import {TemaSalaInterface} from '../../../../../interfaces/tema-sala.interface';
 import {SalaInterface} from '../../../../../interfaces/sala.interface';
 import {diagramaGlobal} from '../../../../../componentes/diagrama-global/diagrama-global/diagrama-global.component';
 import * as go from 'gojs';
+import {Toast, ToasterService} from 'angular2-toaster';
 
 @Component({
   selector: 'app-pantalla-interactiva-usuario',
@@ -39,6 +40,7 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
     private readonly _cargandoService: CargandoService,
     private readonly _temasSalaService: TemasSalaService,
     private readonly _escucharTemasSalaService: EscucharTemasSalaService,
+    private readonly _toasterService: ToasterService,
   ) {
   }
 
@@ -189,6 +191,16 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
         false
       )
       .subscribe(() => {
+        const toast: Toast = {
+          type: 'info',
+          title: 'PIDIENDO LA PALABRA',
+          body: 'Acaba de pedir la palabra',
+          showCloseButton: true,
+        };
+        this._toasterService
+          .pop(
+            toast
+          );
       }, error => {
         console.error({
           error,
@@ -206,6 +218,22 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
         true
       )
       .subscribe(() => {
+        const toastGuardarDatos: Toast = {
+          type: 'success',
+          title: 'ÉXITO',
+          body: 'Acaba de guardar correctamente el diagrama',
+          showCloseButton: true,
+        };
+        const toast: Toast = {
+          type: 'success',
+          title: 'COMPARTIR PANTALLA',
+          body: 'Los datos del diagrama se han guardado correctamente y están siendo compartidos',
+          showCloseButton: true,
+        };
+        this._toasterService
+          .pop(
+            toast
+          );
       }, error => {
         console.error({
           error,
@@ -222,6 +250,16 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
         false
       )
       .subscribe(() => {
+        const toast: Toast = {
+          type: 'warning',
+          title: 'CANCELAR',
+          body: 'Acaba de cancelar las acciones de la sala',
+          showCloseButton: true,
+        };
+        this._toasterService
+          .pop(
+            toast
+          );
       }, error => {
         console.error({
           error,
