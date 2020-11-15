@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SalaInterface} from '../../../../../interfaces/sala.interface';
-import {ToasterService} from 'angular2-toaster';
+import {Toast, ToasterService} from 'angular2-toaster';
 import {MatDialogRef} from '@angular/material/dialog';
 import {SalaService} from '../../../../../servicios/sala.service';
 import {CargandoService} from '../../../../../servicios/cargando.service';
@@ -44,11 +44,13 @@ export class ModalCrearSalaComponent implements OnInit {
         () => {
           this._cargandoService.deshabilitarCargando();
           this.matDialog.close(this.salaACrear);
-          this._toasterService.pop(
-            'success',
-            'ÉXITO',
-            'Sala creada exitosamente'
-          );
+          const toastCorrecto: Toast = {
+            type: 'success',
+            title: 'ÉXITO',
+            body: 'Sala creada exitosamente',
+            showCloseButton: true,
+          };
+          this._toasterService.pop(toastCorrecto);
         },
         error => {
           this._cargandoService.deshabilitarCargando();
@@ -56,11 +58,13 @@ export class ModalCrearSalaComponent implements OnInit {
             error,
             mensaje: 'Error creando la nueva sala'
           });
-          this._toasterService.pop(
-            'error',
-            'ERROR',
-            'Error creando la nueva sala'
-          );
+          const toastError: Toast = {
+            type: 'error',
+            title: 'ERROR',
+            body: 'Error creando la nueva sala',
+            showCloseButton: true,
+          };
+          this._toasterService.pop(toastError);
         }
       );
   }

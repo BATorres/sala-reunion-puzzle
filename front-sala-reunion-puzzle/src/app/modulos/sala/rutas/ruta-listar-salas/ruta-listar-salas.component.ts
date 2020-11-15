@@ -7,7 +7,6 @@ import {NuevaSalaService} from '../../../../servicios/subscription/nueva-sala.se
 import {SalaService} from '../../../../servicios/sala.service';
 import {CargandoService} from '../../../../servicios/cargando.service';
 import {UsuarioService} from '../../../../servicios/usuario.service';
-import {Sala} from '../../../../../servidor/generated/prisma-client';
 
 @Component({
   selector: 'app-ruta-listar-salas',
@@ -41,6 +40,7 @@ export class RutaListarSalasComponent implements OnInit {
   }
 
   escucharNuevaSala(): void {
+    this.cargarSalas();
     this._nuevaSalaService
       .subscribe()
       .subscribe(
@@ -53,7 +53,6 @@ export class RutaListarSalasComponent implements OnInit {
             ) !== -1;
           if (!nuevaSalaAgregada) {
             this.salas.unshift(nuevaSala);
-            this.cargarSalas();
           }
         },
         error => {

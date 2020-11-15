@@ -191,16 +191,13 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
         false
       )
       .subscribe(() => {
-        const toast: Toast = {
+        const toastPedirPalabra: Toast = {
           type: 'info',
           title: 'PIDIENDO LA PALABRA',
           body: 'Acaba de pedir la palabra',
           showCloseButton: true,
         };
-        this._toasterService
-          .pop(
-            toast
-          );
+        this._toasterService.pop(toastPedirPalabra);
       }, error => {
         console.error({
           error,
@@ -218,22 +215,13 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
         true
       )
       .subscribe(() => {
-        const toastGuardarDatos: Toast = {
-          type: 'success',
-          title: 'ÉXITO',
-          body: 'Acaba de guardar correctamente el diagrama',
-          showCloseButton: true,
-        };
-        const toast: Toast = {
+        const toastCompartirPantalla: Toast = {
           type: 'success',
           title: 'COMPARTIR PANTALLA',
           body: 'Los datos del diagrama se han guardado correctamente y están siendo compartidos',
           showCloseButton: true,
         };
-        this._toasterService
-          .pop(
-            toast
-          );
+        this._toasterService.pop(toastCompartirPantalla);
       }, error => {
         console.error({
           error,
@@ -250,16 +238,13 @@ export class PantallaInteractivaUsuarioComponent implements OnInit {
         false
       )
       .subscribe(() => {
-        const toast: Toast = {
+        const toastCancelar: Toast = {
           type: 'warning',
           title: 'CANCELAR',
           body: 'Acaba de cancelar las acciones de la sala',
           showCloseButton: true,
         };
-        this._toasterService
-          .pop(
-            toast
-          );
+        this._toasterService.pop(toastCancelar);
       }, error => {
         console.error({
           error,
