@@ -7,6 +7,7 @@ import {NuevaSalaService} from '../../../../servicios/subscription/nueva-sala.se
 import {SalaService} from '../../../../servicios/sala.service';
 import {CargandoService} from '../../../../servicios/cargando.service';
 import {UsuarioService} from '../../../../servicios/usuario.service';
+import {Sala} from '../../../../../servidor/generated/prisma-client';
 
 @Component({
   selector: 'app-ruta-listar-salas',
@@ -46,7 +47,14 @@ export class RutaListarSalasComponent implements OnInit {
         ({data}) => {
           const nuevaSala: SalaInterface = data.sala.node;
           this.existenSalas = true;
-          this.salas.unshift(nuevaSala);
+          const nuevaSalaAgregada: boolean = this.salas
+            .findIndex(
+              (salasDisponibles) => salasDisponibles.id === nuevaSala.id
+            ) !== -1;
+          if (!nuevaSalaAgregada) {
+            this.salas.unshift(nuevaSala);
+            this.cargarSalas();
+          }
         },
         error => {
           console.error({

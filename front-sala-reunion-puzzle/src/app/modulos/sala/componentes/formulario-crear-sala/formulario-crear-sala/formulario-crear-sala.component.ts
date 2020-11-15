@@ -23,7 +23,7 @@ export class FormularioCrearSalaComponent implements OnInit {
   };
 
   constructor(
-    private readonly _formBuilder: FormBuilder,
+    private readonly _formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
