@@ -1,0 +1,2778 @@
+# source: https://sala-reunion-c09c320c32.herokuapp.com/sala-reunion-puzzle/dev
+# timestamp: Sun Sep 27 2020 16:20:36 GMT-0500 (GMT-05:00)
+
+type AggregateDiagrama {
+  count: Int!
+}
+
+type AggregateDiagramaUsuario {
+  count: Int!
+}
+
+type AggregateSala {
+  count: Int!
+}
+
+type AggregateTemaSala {
+  count: Int!
+}
+
+type AggregateUsuario {
+  count: Int!
+}
+
+type AggregateUsuarioSala {
+  count: Int!
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+scalar DateTime
+
+type Diagrama implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  datos: String!
+  esDiagramaGlobal: Boolean!
+  diagramasPorUsuario(where: DiagramaUsuarioWhereInput, orderBy: DiagramaUsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DiagramaUsuario!]
+}
+
+"""A connection to a list of items."""
+type DiagramaConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [DiagramaEdge]!
+  aggregate: AggregateDiagrama!
+}
+
+input DiagramaCreateInput {
+  id: ID
+  datos: String!
+  esDiagramaGlobal: Boolean
+  diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutDiagramaInput
+}
+
+input DiagramaCreateOneWithoutDiagramasPorUsuarioInput {
+  create: DiagramaCreateWithoutDiagramasPorUsuarioInput
+  connect: DiagramaWhereUniqueInput
+}
+
+input DiagramaCreateWithoutDiagramasPorUsuarioInput {
+  id: ID
+  datos: String!
+  esDiagramaGlobal: Boolean
+}
+
+"""An edge in a connection."""
+type DiagramaEdge {
+  """The item at the end of the edge."""
+  node: Diagrama!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum DiagramaOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  datos_ASC
+  datos_DESC
+  esDiagramaGlobal_ASC
+  esDiagramaGlobal_DESC
+}
+
+type DiagramaPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  datos: String!
+  esDiagramaGlobal: Boolean!
+}
+
+type DiagramaSubscriptionPayload {
+  mutation: MutationType!
+  node: Diagrama
+  updatedFields: [String!]
+  previousValues: DiagramaPreviousValues
+}
+
+input DiagramaSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DiagramaSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [DiagramaSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [DiagramaSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: DiagramaWhereInput
+}
+
+input DiagramaUpdateInput {
+  datos: String
+  esDiagramaGlobal: Boolean
+  diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutDiagramaInput
+}
+
+input DiagramaUpdateManyMutationInput {
+  datos: String
+  esDiagramaGlobal: Boolean
+}
+
+input DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput {
+  create: DiagramaCreateWithoutDiagramasPorUsuarioInput
+  connect: DiagramaWhereUniqueInput
+  update: DiagramaUpdateWithoutDiagramasPorUsuarioDataInput
+  upsert: DiagramaUpsertWithoutDiagramasPorUsuarioInput
+}
+
+input DiagramaUpdateWithoutDiagramasPorUsuarioDataInput {
+  datos: String
+  esDiagramaGlobal: Boolean
+}
+
+input DiagramaUpsertWithoutDiagramasPorUsuarioInput {
+  update: DiagramaUpdateWithoutDiagramasPorUsuarioDataInput!
+  create: DiagramaCreateWithoutDiagramasPorUsuarioInput!
+}
+
+type DiagramaUsuario implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  diagrama: Diagrama!
+  sala: Sala!
+  usuario: Usuario
+}
+
+"""A connection to a list of items."""
+type DiagramaUsuarioConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [DiagramaUsuarioEdge]!
+  aggregate: AggregateDiagramaUsuario!
+}
+
+input DiagramaUsuarioCreateInput {
+  id: ID
+  diagrama: DiagramaCreateOneWithoutDiagramasPorUsuarioInput!
+  sala: SalaCreateOneWithoutDiagramasPorUsuarioInput!
+  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput
+}
+
+input DiagramaUsuarioCreateManyWithoutDiagramaInput {
+  create: [DiagramaUsuarioCreateWithoutDiagramaInput!]
+  connect: [DiagramaUsuarioWhereUniqueInput!]
+}
+
+input DiagramaUsuarioCreateManyWithoutSalaInput {
+  create: [DiagramaUsuarioCreateWithoutSalaInput!]
+  connect: [DiagramaUsuarioWhereUniqueInput!]
+}
+
+input DiagramaUsuarioCreateManyWithoutUsuarioInput {
+  create: [DiagramaUsuarioCreateWithoutUsuarioInput!]
+  connect: [DiagramaUsuarioWhereUniqueInput!]
+}
+
+input DiagramaUsuarioCreateWithoutDiagramaInput {
+  id: ID
+  sala: SalaCreateOneWithoutDiagramasPorUsuarioInput!
+  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput
+}
+
+input DiagramaUsuarioCreateWithoutSalaInput {
+  id: ID
+  diagrama: DiagramaCreateOneWithoutDiagramasPorUsuarioInput!
+  usuario: UsuarioCreateOneWithoutDiagramasPorUsuarioInput
+}
+
+input DiagramaUsuarioCreateWithoutUsuarioInput {
+  id: ID
+  diagrama: DiagramaCreateOneWithoutDiagramasPorUsuarioInput!
+  sala: SalaCreateOneWithoutDiagramasPorUsuarioInput!
+}
+
+"""An edge in a connection."""
+type DiagramaUsuarioEdge {
+  """The item at the end of the edge."""
+  node: DiagramaUsuario!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum DiagramaUsuarioOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type DiagramaUsuarioPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input DiagramaUsuarioScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DiagramaUsuarioScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [DiagramaUsuarioScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [DiagramaUsuarioScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type DiagramaUsuarioSubscriptionPayload {
+  mutation: MutationType!
+  node: DiagramaUsuario
+  updatedFields: [String!]
+  previousValues: DiagramaUsuarioPreviousValues
+}
+
+input DiagramaUsuarioSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DiagramaUsuarioSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [DiagramaUsuarioSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [DiagramaUsuarioSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: DiagramaUsuarioWhereInput
+}
+
+input DiagramaUsuarioUpdateInput {
+  diagrama: DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+  sala: SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+  usuario: UsuarioUpdateOneWithoutDiagramasPorUsuarioInput
+}
+
+input DiagramaUsuarioUpdateManyWithoutDiagramaInput {
+  create: [DiagramaUsuarioCreateWithoutDiagramaInput!]
+  connect: [DiagramaUsuarioWhereUniqueInput!]
+  set: [DiagramaUsuarioWhereUniqueInput!]
+  disconnect: [DiagramaUsuarioWhereUniqueInput!]
+  delete: [DiagramaUsuarioWhereUniqueInput!]
+  update: [DiagramaUsuarioUpdateWithWhereUniqueWithoutDiagramaInput!]
+  deleteMany: [DiagramaUsuarioScalarWhereInput!]
+  upsert: [DiagramaUsuarioUpsertWithWhereUniqueWithoutDiagramaInput!]
+}
+
+input DiagramaUsuarioUpdateManyWithoutSalaInput {
+  create: [DiagramaUsuarioCreateWithoutSalaInput!]
+  connect: [DiagramaUsuarioWhereUniqueInput!]
+  set: [DiagramaUsuarioWhereUniqueInput!]
+  disconnect: [DiagramaUsuarioWhereUniqueInput!]
+  delete: [DiagramaUsuarioWhereUniqueInput!]
+  update: [DiagramaUsuarioUpdateWithWhereUniqueWithoutSalaInput!]
+  deleteMany: [DiagramaUsuarioScalarWhereInput!]
+  upsert: [DiagramaUsuarioUpsertWithWhereUniqueWithoutSalaInput!]
+}
+
+input DiagramaUsuarioUpdateManyWithoutUsuarioInput {
+  create: [DiagramaUsuarioCreateWithoutUsuarioInput!]
+  connect: [DiagramaUsuarioWhereUniqueInput!]
+  set: [DiagramaUsuarioWhereUniqueInput!]
+  disconnect: [DiagramaUsuarioWhereUniqueInput!]
+  delete: [DiagramaUsuarioWhereUniqueInput!]
+  update: [DiagramaUsuarioUpdateWithWhereUniqueWithoutUsuarioInput!]
+  deleteMany: [DiagramaUsuarioScalarWhereInput!]
+  upsert: [DiagramaUsuarioUpsertWithWhereUniqueWithoutUsuarioInput!]
+}
+
+input DiagramaUsuarioUpdateWithoutDiagramaDataInput {
+  sala: SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+  usuario: UsuarioUpdateOneWithoutDiagramasPorUsuarioInput
+}
+
+input DiagramaUsuarioUpdateWithoutSalaDataInput {
+  diagrama: DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+  usuario: UsuarioUpdateOneWithoutDiagramasPorUsuarioInput
+}
+
+input DiagramaUsuarioUpdateWithoutUsuarioDataInput {
+  diagrama: DiagramaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+  sala: SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput
+}
+
+input DiagramaUsuarioUpdateWithWhereUniqueWithoutDiagramaInput {
+  where: DiagramaUsuarioWhereUniqueInput!
+  data: DiagramaUsuarioUpdateWithoutDiagramaDataInput!
+}
+
+input DiagramaUsuarioUpdateWithWhereUniqueWithoutSalaInput {
+  where: DiagramaUsuarioWhereUniqueInput!
+  data: DiagramaUsuarioUpdateWithoutSalaDataInput!
+}
+
+input DiagramaUsuarioUpdateWithWhereUniqueWithoutUsuarioInput {
+  where: DiagramaUsuarioWhereUniqueInput!
+  data: DiagramaUsuarioUpdateWithoutUsuarioDataInput!
+}
+
+input DiagramaUsuarioUpsertWithWhereUniqueWithoutDiagramaInput {
+  where: DiagramaUsuarioWhereUniqueInput!
+  update: DiagramaUsuarioUpdateWithoutDiagramaDataInput!
+  create: DiagramaUsuarioCreateWithoutDiagramaInput!
+}
+
+input DiagramaUsuarioUpsertWithWhereUniqueWithoutSalaInput {
+  where: DiagramaUsuarioWhereUniqueInput!
+  update: DiagramaUsuarioUpdateWithoutSalaDataInput!
+  create: DiagramaUsuarioCreateWithoutSalaInput!
+}
+
+input DiagramaUsuarioUpsertWithWhereUniqueWithoutUsuarioInput {
+  where: DiagramaUsuarioWhereUniqueInput!
+  update: DiagramaUsuarioUpdateWithoutUsuarioDataInput!
+  create: DiagramaUsuarioCreateWithoutUsuarioInput!
+}
+
+input DiagramaUsuarioWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DiagramaUsuarioWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [DiagramaUsuarioWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [DiagramaUsuarioWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  diagrama: DiagramaWhereInput
+  sala: SalaWhereInput
+  usuario: UsuarioWhereInput
+}
+
+input DiagramaUsuarioWhereUniqueInput {
+  id: ID
+}
+
+input DiagramaWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DiagramaWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [DiagramaWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [DiagramaWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  datos: String
+
+  """All values that are not equal to given value."""
+  datos_not: String
+
+  """All values that are contained in given list."""
+  datos_in: [String!]
+
+  """All values that are not contained in given list."""
+  datos_not_in: [String!]
+
+  """All values less than the given value."""
+  datos_lt: String
+
+  """All values less than or equal the given value."""
+  datos_lte: String
+
+  """All values greater than the given value."""
+  datos_gt: String
+
+  """All values greater than or equal the given value."""
+  datos_gte: String
+
+  """All values containing the given string."""
+  datos_contains: String
+
+  """All values not containing the given string."""
+  datos_not_contains: String
+
+  """All values starting with the given string."""
+  datos_starts_with: String
+
+  """All values not starting with the given string."""
+  datos_not_starts_with: String
+
+  """All values ending with the given string."""
+  datos_ends_with: String
+
+  """All values not ending with the given string."""
+  datos_not_ends_with: String
+  esDiagramaGlobal: Boolean
+
+  """All values that are not equal to given value."""
+  esDiagramaGlobal_not: Boolean
+  diagramasPorUsuario_every: DiagramaUsuarioWhereInput
+  diagramasPorUsuario_some: DiagramaUsuarioWhereInput
+  diagramasPorUsuario_none: DiagramaUsuarioWhereInput
+}
+
+input DiagramaWhereUniqueInput {
+  id: ID
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createUsuarioSala(data: UsuarioSalaCreateInput!): UsuarioSala!
+  createSala(data: SalaCreateInput!): Sala!
+  createUsuario(data: UsuarioCreateInput!): Usuario!
+  createDiagrama(data: DiagramaCreateInput!): Diagrama!
+  createDiagramaUsuario(data: DiagramaUsuarioCreateInput!): DiagramaUsuario!
+  createTemaSala(data: TemaSalaCreateInput!): TemaSala!
+  updateUsuarioSala(data: UsuarioSalaUpdateInput!, where: UsuarioSalaWhereUniqueInput!): UsuarioSala
+  updateSala(data: SalaUpdateInput!, where: SalaWhereUniqueInput!): Sala
+  updateUsuario(data: UsuarioUpdateInput!, where: UsuarioWhereUniqueInput!): Usuario
+  updateDiagrama(data: DiagramaUpdateInput!, where: DiagramaWhereUniqueInput!): Diagrama
+  updateDiagramaUsuario(data: DiagramaUsuarioUpdateInput!, where: DiagramaUsuarioWhereUniqueInput!): DiagramaUsuario
+  updateTemaSala(data: TemaSalaUpdateInput!, where: TemaSalaWhereUniqueInput!): TemaSala
+  deleteUsuarioSala(where: UsuarioSalaWhereUniqueInput!): UsuarioSala
+  deleteSala(where: SalaWhereUniqueInput!): Sala
+  deleteUsuario(where: UsuarioWhereUniqueInput!): Usuario
+  deleteDiagrama(where: DiagramaWhereUniqueInput!): Diagrama
+  deleteDiagramaUsuario(where: DiagramaUsuarioWhereUniqueInput!): DiagramaUsuario
+  deleteTemaSala(where: TemaSalaWhereUniqueInput!): TemaSala
+  upsertUsuarioSala(where: UsuarioSalaWhereUniqueInput!, create: UsuarioSalaCreateInput!, update: UsuarioSalaUpdateInput!): UsuarioSala!
+  upsertSala(where: SalaWhereUniqueInput!, create: SalaCreateInput!, update: SalaUpdateInput!): Sala!
+  upsertUsuario(where: UsuarioWhereUniqueInput!, create: UsuarioCreateInput!, update: UsuarioUpdateInput!): Usuario!
+  upsertDiagrama(where: DiagramaWhereUniqueInput!, create: DiagramaCreateInput!, update: DiagramaUpdateInput!): Diagrama!
+  upsertDiagramaUsuario(where: DiagramaUsuarioWhereUniqueInput!, create: DiagramaUsuarioCreateInput!, update: DiagramaUsuarioUpdateInput!): DiagramaUsuario!
+  upsertTemaSala(where: TemaSalaWhereUniqueInput!, create: TemaSalaCreateInput!, update: TemaSalaUpdateInput!): TemaSala!
+  updateManyUsuarioSalas(data: UsuarioSalaUpdateManyMutationInput!, where: UsuarioSalaWhereInput): BatchPayload!
+  updateManySalas(data: SalaUpdateManyMutationInput!, where: SalaWhereInput): BatchPayload!
+  updateManyUsuarios(data: UsuarioUpdateManyMutationInput!, where: UsuarioWhereInput): BatchPayload!
+  updateManyDiagramas(data: DiagramaUpdateManyMutationInput!, where: DiagramaWhereInput): BatchPayload!
+  updateManyTemaSalas(data: TemaSalaUpdateManyMutationInput!, where: TemaSalaWhereInput): BatchPayload!
+  deleteManyUsuarioSalas(where: UsuarioSalaWhereInput): BatchPayload!
+  deleteManySalas(where: SalaWhereInput): BatchPayload!
+  deleteManyUsuarios(where: UsuarioWhereInput): BatchPayload!
+  deleteManyDiagramas(where: DiagramaWhereInput): BatchPayload!
+  deleteManyDiagramaUsuarios(where: DiagramaUsuarioWhereInput): BatchPayload!
+  deleteManyTemaSalas(where: TemaSalaWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  usuarioSalas(where: UsuarioSalaWhereInput, orderBy: UsuarioSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UsuarioSala]!
+  salas(where: SalaWhereInput, orderBy: SalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Sala]!
+  usuarios(where: UsuarioWhereInput, orderBy: UsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Usuario]!
+  diagramas(where: DiagramaWhereInput, orderBy: DiagramaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Diagrama]!
+  diagramaUsuarios(where: DiagramaUsuarioWhereInput, orderBy: DiagramaUsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DiagramaUsuario]!
+  temaSalas(where: TemaSalaWhereInput, orderBy: TemaSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TemaSala]!
+  usuarioSala(where: UsuarioSalaWhereUniqueInput!): UsuarioSala
+  sala(where: SalaWhereUniqueInput!): Sala
+  usuario(where: UsuarioWhereUniqueInput!): Usuario
+  diagrama(where: DiagramaWhereUniqueInput!): Diagrama
+  diagramaUsuario(where: DiagramaUsuarioWhereUniqueInput!): DiagramaUsuario
+  temaSala(where: TemaSalaWhereUniqueInput!): TemaSala
+  usuarioSalasConnection(where: UsuarioSalaWhereInput, orderBy: UsuarioSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UsuarioSalaConnection!
+  salasConnection(where: SalaWhereInput, orderBy: SalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SalaConnection!
+  usuariosConnection(where: UsuarioWhereInput, orderBy: UsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UsuarioConnection!
+  diagramasConnection(where: DiagramaWhereInput, orderBy: DiagramaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DiagramaConnection!
+  diagramaUsuariosConnection(where: DiagramaUsuarioWhereInput, orderBy: DiagramaUsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DiagramaUsuarioConnection!
+  temaSalasConnection(where: TemaSalaWhereInput, orderBy: TemaSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TemaSalaConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Sala implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  nombre: String!
+  descripcion: String
+  usuariosEnSala(where: UsuarioSalaWhereInput, orderBy: UsuarioSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UsuarioSala!]
+  diagramasPorUsuario(where: DiagramaUsuarioWhereInput, orderBy: DiagramaUsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DiagramaUsuario!]
+  temasDeSala(where: TemaSalaWhereInput, orderBy: TemaSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TemaSala!]
+}
+
+"""A connection to a list of items."""
+type SalaConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [SalaEdge]!
+  aggregate: AggregateSala!
+}
+
+input SalaCreateInput {
+  id: ID
+  nombre: String!
+  descripcion: String
+  usuariosEnSala: UsuarioSalaCreateManyWithoutSalaInput
+  diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutSalaInput
+  temasDeSala: TemaSalaCreateManyWithoutSalaInput
+}
+
+input SalaCreateOneWithoutDiagramasPorUsuarioInput {
+  create: SalaCreateWithoutDiagramasPorUsuarioInput
+  connect: SalaWhereUniqueInput
+}
+
+input SalaCreateOneWithoutTemasDeSalaInput {
+  create: SalaCreateWithoutTemasDeSalaInput
+  connect: SalaWhereUniqueInput
+}
+
+input SalaCreateOneWithoutUsuariosEnSalaInput {
+  create: SalaCreateWithoutUsuariosEnSalaInput
+  connect: SalaWhereUniqueInput
+}
+
+input SalaCreateWithoutDiagramasPorUsuarioInput {
+  id: ID
+  nombre: String!
+  descripcion: String
+  usuariosEnSala: UsuarioSalaCreateManyWithoutSalaInput
+  temasDeSala: TemaSalaCreateManyWithoutSalaInput
+}
+
+input SalaCreateWithoutTemasDeSalaInput {
+  id: ID
+  nombre: String!
+  descripcion: String
+  usuariosEnSala: UsuarioSalaCreateManyWithoutSalaInput
+  diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutSalaInput
+}
+
+input SalaCreateWithoutUsuariosEnSalaInput {
+  id: ID
+  nombre: String!
+  descripcion: String
+  diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutSalaInput
+  temasDeSala: TemaSalaCreateManyWithoutSalaInput
+}
+
+"""An edge in a connection."""
+type SalaEdge {
+  """The item at the end of the edge."""
+  node: Sala!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum SalaOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  nombre_ASC
+  nombre_DESC
+  descripcion_ASC
+  descripcion_DESC
+}
+
+type SalaPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  nombre: String!
+  descripcion: String
+}
+
+type SalaSubscriptionPayload {
+  mutation: MutationType!
+  node: Sala
+  updatedFields: [String!]
+  previousValues: SalaPreviousValues
+}
+
+input SalaSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SalaSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SalaSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SalaSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: SalaWhereInput
+}
+
+input SalaUpdateInput {
+  nombre: String
+  descripcion: String
+  usuariosEnSala: UsuarioSalaUpdateManyWithoutSalaInput
+  diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutSalaInput
+  temasDeSala: TemaSalaUpdateManyWithoutSalaInput
+}
+
+input SalaUpdateManyMutationInput {
+  nombre: String
+  descripcion: String
+}
+
+input SalaUpdateOneRequiredWithoutDiagramasPorUsuarioInput {
+  create: SalaCreateWithoutDiagramasPorUsuarioInput
+  connect: SalaWhereUniqueInput
+  update: SalaUpdateWithoutDiagramasPorUsuarioDataInput
+  upsert: SalaUpsertWithoutDiagramasPorUsuarioInput
+}
+
+input SalaUpdateOneRequiredWithoutUsuariosEnSalaInput {
+  create: SalaCreateWithoutUsuariosEnSalaInput
+  connect: SalaWhereUniqueInput
+  update: SalaUpdateWithoutUsuariosEnSalaDataInput
+  upsert: SalaUpsertWithoutUsuariosEnSalaInput
+}
+
+input SalaUpdateOneWithoutTemasDeSalaInput {
+  create: SalaCreateWithoutTemasDeSalaInput
+  connect: SalaWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: SalaUpdateWithoutTemasDeSalaDataInput
+  upsert: SalaUpsertWithoutTemasDeSalaInput
+}
+
+input SalaUpdateWithoutDiagramasPorUsuarioDataInput {
+  nombre: String
+  descripcion: String
+  usuariosEnSala: UsuarioSalaUpdateManyWithoutSalaInput
+  temasDeSala: TemaSalaUpdateManyWithoutSalaInput
+}
+
+input SalaUpdateWithoutTemasDeSalaDataInput {
+  nombre: String
+  descripcion: String
+  usuariosEnSala: UsuarioSalaUpdateManyWithoutSalaInput
+  diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutSalaInput
+}
+
+input SalaUpdateWithoutUsuariosEnSalaDataInput {
+  nombre: String
+  descripcion: String
+  diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutSalaInput
+  temasDeSala: TemaSalaUpdateManyWithoutSalaInput
+}
+
+input SalaUpsertWithoutDiagramasPorUsuarioInput {
+  update: SalaUpdateWithoutDiagramasPorUsuarioDataInput!
+  create: SalaCreateWithoutDiagramasPorUsuarioInput!
+}
+
+input SalaUpsertWithoutTemasDeSalaInput {
+  update: SalaUpdateWithoutTemasDeSalaDataInput!
+  create: SalaCreateWithoutTemasDeSalaInput!
+}
+
+input SalaUpsertWithoutUsuariosEnSalaInput {
+  update: SalaUpdateWithoutUsuariosEnSalaDataInput!
+  create: SalaCreateWithoutUsuariosEnSalaInput!
+}
+
+input SalaWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SalaWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SalaWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SalaWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  nombre: String
+
+  """All values that are not equal to given value."""
+  nombre_not: String
+
+  """All values that are contained in given list."""
+  nombre_in: [String!]
+
+  """All values that are not contained in given list."""
+  nombre_not_in: [String!]
+
+  """All values less than the given value."""
+  nombre_lt: String
+
+  """All values less than or equal the given value."""
+  nombre_lte: String
+
+  """All values greater than the given value."""
+  nombre_gt: String
+
+  """All values greater than or equal the given value."""
+  nombre_gte: String
+
+  """All values containing the given string."""
+  nombre_contains: String
+
+  """All values not containing the given string."""
+  nombre_not_contains: String
+
+  """All values starting with the given string."""
+  nombre_starts_with: String
+
+  """All values not starting with the given string."""
+  nombre_not_starts_with: String
+
+  """All values ending with the given string."""
+  nombre_ends_with: String
+
+  """All values not ending with the given string."""
+  nombre_not_ends_with: String
+  descripcion: String
+
+  """All values that are not equal to given value."""
+  descripcion_not: String
+
+  """All values that are contained in given list."""
+  descripcion_in: [String!]
+
+  """All values that are not contained in given list."""
+  descripcion_not_in: [String!]
+
+  """All values less than the given value."""
+  descripcion_lt: String
+
+  """All values less than or equal the given value."""
+  descripcion_lte: String
+
+  """All values greater than the given value."""
+  descripcion_gt: String
+
+  """All values greater than or equal the given value."""
+  descripcion_gte: String
+
+  """All values containing the given string."""
+  descripcion_contains: String
+
+  """All values not containing the given string."""
+  descripcion_not_contains: String
+
+  """All values starting with the given string."""
+  descripcion_starts_with: String
+
+  """All values not starting with the given string."""
+  descripcion_not_starts_with: String
+
+  """All values ending with the given string."""
+  descripcion_ends_with: String
+
+  """All values not ending with the given string."""
+  descripcion_not_ends_with: String
+  usuariosEnSala_every: UsuarioSalaWhereInput
+  usuariosEnSala_some: UsuarioSalaWhereInput
+  usuariosEnSala_none: UsuarioSalaWhereInput
+  diagramasPorUsuario_every: DiagramaUsuarioWhereInput
+  diagramasPorUsuario_some: DiagramaUsuarioWhereInput
+  diagramasPorUsuario_none: DiagramaUsuarioWhereInput
+  temasDeSala_every: TemaSalaWhereInput
+  temasDeSala_some: TemaSalaWhereInput
+  temasDeSala_none: TemaSalaWhereInput
+}
+
+input SalaWhereUniqueInput {
+  id: ID
+}
+
+type Subscription {
+  usuarioSala(where: UsuarioSalaSubscriptionWhereInput): UsuarioSalaSubscriptionPayload
+  sala(where: SalaSubscriptionWhereInput): SalaSubscriptionPayload
+  usuario(where: UsuarioSubscriptionWhereInput): UsuarioSubscriptionPayload
+  diagrama(where: DiagramaSubscriptionWhereInput): DiagramaSubscriptionPayload
+  diagramaUsuario(where: DiagramaUsuarioSubscriptionWhereInput): DiagramaUsuarioSubscriptionPayload
+  temaSala(where: TemaSalaSubscriptionWhereInput): TemaSalaSubscriptionPayload
+}
+
+type TemaSala implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+  sala: Sala
+}
+
+"""A connection to a list of items."""
+type TemaSalaConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TemaSalaEdge]!
+  aggregate: AggregateTemaSala!
+}
+
+input TemaSalaCreateInput {
+  id: ID
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+  sala: SalaCreateOneWithoutTemasDeSalaInput
+}
+
+input TemaSalaCreateManyWithoutSalaInput {
+  create: [TemaSalaCreateWithoutSalaInput!]
+  connect: [TemaSalaWhereUniqueInput!]
+}
+
+input TemaSalaCreateWithoutSalaInput {
+  id: ID
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+}
+
+"""An edge in a connection."""
+type TemaSalaEdge {
+  """The item at the end of the edge."""
+  node: TemaSala!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum TemaSalaOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  titulo_ASC
+  titulo_DESC
+  fuente_ASC
+  fuente_DESC
+  resumen_ASC
+  resumen_DESC
+  tema_ASC
+  tema_DESC
+  actor_ASC
+  actor_DESC
+}
+
+type TemaSalaPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+}
+
+input TemaSalaScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TemaSalaScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TemaSalaScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TemaSalaScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  titulo: String
+
+  """All values that are not equal to given value."""
+  titulo_not: String
+
+  """All values that are contained in given list."""
+  titulo_in: [String!]
+
+  """All values that are not contained in given list."""
+  titulo_not_in: [String!]
+
+  """All values less than the given value."""
+  titulo_lt: String
+
+  """All values less than or equal the given value."""
+  titulo_lte: String
+
+  """All values greater than the given value."""
+  titulo_gt: String
+
+  """All values greater than or equal the given value."""
+  titulo_gte: String
+
+  """All values containing the given string."""
+  titulo_contains: String
+
+  """All values not containing the given string."""
+  titulo_not_contains: String
+
+  """All values starting with the given string."""
+  titulo_starts_with: String
+
+  """All values not starting with the given string."""
+  titulo_not_starts_with: String
+
+  """All values ending with the given string."""
+  titulo_ends_with: String
+
+  """All values not ending with the given string."""
+  titulo_not_ends_with: String
+  fuente: String
+
+  """All values that are not equal to given value."""
+  fuente_not: String
+
+  """All values that are contained in given list."""
+  fuente_in: [String!]
+
+  """All values that are not contained in given list."""
+  fuente_not_in: [String!]
+
+  """All values less than the given value."""
+  fuente_lt: String
+
+  """All values less than or equal the given value."""
+  fuente_lte: String
+
+  """All values greater than the given value."""
+  fuente_gt: String
+
+  """All values greater than or equal the given value."""
+  fuente_gte: String
+
+  """All values containing the given string."""
+  fuente_contains: String
+
+  """All values not containing the given string."""
+  fuente_not_contains: String
+
+  """All values starting with the given string."""
+  fuente_starts_with: String
+
+  """All values not starting with the given string."""
+  fuente_not_starts_with: String
+
+  """All values ending with the given string."""
+  fuente_ends_with: String
+
+  """All values not ending with the given string."""
+  fuente_not_ends_with: String
+  resumen: String
+
+  """All values that are not equal to given value."""
+  resumen_not: String
+
+  """All values that are contained in given list."""
+  resumen_in: [String!]
+
+  """All values that are not contained in given list."""
+  resumen_not_in: [String!]
+
+  """All values less than the given value."""
+  resumen_lt: String
+
+  """All values less than or equal the given value."""
+  resumen_lte: String
+
+  """All values greater than the given value."""
+  resumen_gt: String
+
+  """All values greater than or equal the given value."""
+  resumen_gte: String
+
+  """All values containing the given string."""
+  resumen_contains: String
+
+  """All values not containing the given string."""
+  resumen_not_contains: String
+
+  """All values starting with the given string."""
+  resumen_starts_with: String
+
+  """All values not starting with the given string."""
+  resumen_not_starts_with: String
+
+  """All values ending with the given string."""
+  resumen_ends_with: String
+
+  """All values not ending with the given string."""
+  resumen_not_ends_with: String
+  tema: String
+
+  """All values that are not equal to given value."""
+  tema_not: String
+
+  """All values that are contained in given list."""
+  tema_in: [String!]
+
+  """All values that are not contained in given list."""
+  tema_not_in: [String!]
+
+  """All values less than the given value."""
+  tema_lt: String
+
+  """All values less than or equal the given value."""
+  tema_lte: String
+
+  """All values greater than the given value."""
+  tema_gt: String
+
+  """All values greater than or equal the given value."""
+  tema_gte: String
+
+  """All values containing the given string."""
+  tema_contains: String
+
+  """All values not containing the given string."""
+  tema_not_contains: String
+
+  """All values starting with the given string."""
+  tema_starts_with: String
+
+  """All values not starting with the given string."""
+  tema_not_starts_with: String
+
+  """All values ending with the given string."""
+  tema_ends_with: String
+
+  """All values not ending with the given string."""
+  tema_not_ends_with: String
+  actor: String
+
+  """All values that are not equal to given value."""
+  actor_not: String
+
+  """All values that are contained in given list."""
+  actor_in: [String!]
+
+  """All values that are not contained in given list."""
+  actor_not_in: [String!]
+
+  """All values less than the given value."""
+  actor_lt: String
+
+  """All values less than or equal the given value."""
+  actor_lte: String
+
+  """All values greater than the given value."""
+  actor_gt: String
+
+  """All values greater than or equal the given value."""
+  actor_gte: String
+
+  """All values containing the given string."""
+  actor_contains: String
+
+  """All values not containing the given string."""
+  actor_not_contains: String
+
+  """All values starting with the given string."""
+  actor_starts_with: String
+
+  """All values not starting with the given string."""
+  actor_not_starts_with: String
+
+  """All values ending with the given string."""
+  actor_ends_with: String
+
+  """All values not ending with the given string."""
+  actor_not_ends_with: String
+}
+
+type TemaSalaSubscriptionPayload {
+  mutation: MutationType!
+  node: TemaSala
+  updatedFields: [String!]
+  previousValues: TemaSalaPreviousValues
+}
+
+input TemaSalaSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TemaSalaSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TemaSalaSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TemaSalaSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: TemaSalaWhereInput
+}
+
+input TemaSalaUpdateInput {
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+  sala: SalaUpdateOneWithoutTemasDeSalaInput
+}
+
+input TemaSalaUpdateManyDataInput {
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+}
+
+input TemaSalaUpdateManyMutationInput {
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+}
+
+input TemaSalaUpdateManyWithoutSalaInput {
+  create: [TemaSalaCreateWithoutSalaInput!]
+  connect: [TemaSalaWhereUniqueInput!]
+  set: [TemaSalaWhereUniqueInput!]
+  disconnect: [TemaSalaWhereUniqueInput!]
+  delete: [TemaSalaWhereUniqueInput!]
+  update: [TemaSalaUpdateWithWhereUniqueWithoutSalaInput!]
+  updateMany: [TemaSalaUpdateManyWithWhereNestedInput!]
+  deleteMany: [TemaSalaScalarWhereInput!]
+  upsert: [TemaSalaUpsertWithWhereUniqueWithoutSalaInput!]
+}
+
+input TemaSalaUpdateManyWithWhereNestedInput {
+  where: TemaSalaScalarWhereInput!
+  data: TemaSalaUpdateManyDataInput!
+}
+
+input TemaSalaUpdateWithoutSalaDataInput {
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+}
+
+input TemaSalaUpdateWithWhereUniqueWithoutSalaInput {
+  where: TemaSalaWhereUniqueInput!
+  data: TemaSalaUpdateWithoutSalaDataInput!
+}
+
+input TemaSalaUpsertWithWhereUniqueWithoutSalaInput {
+  where: TemaSalaWhereUniqueInput!
+  update: TemaSalaUpdateWithoutSalaDataInput!
+  create: TemaSalaCreateWithoutSalaInput!
+}
+
+input TemaSalaWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TemaSalaWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TemaSalaWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TemaSalaWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  titulo: String
+
+  """All values that are not equal to given value."""
+  titulo_not: String
+
+  """All values that are contained in given list."""
+  titulo_in: [String!]
+
+  """All values that are not contained in given list."""
+  titulo_not_in: [String!]
+
+  """All values less than the given value."""
+  titulo_lt: String
+
+  """All values less than or equal the given value."""
+  titulo_lte: String
+
+  """All values greater than the given value."""
+  titulo_gt: String
+
+  """All values greater than or equal the given value."""
+  titulo_gte: String
+
+  """All values containing the given string."""
+  titulo_contains: String
+
+  """All values not containing the given string."""
+  titulo_not_contains: String
+
+  """All values starting with the given string."""
+  titulo_starts_with: String
+
+  """All values not starting with the given string."""
+  titulo_not_starts_with: String
+
+  """All values ending with the given string."""
+  titulo_ends_with: String
+
+  """All values not ending with the given string."""
+  titulo_not_ends_with: String
+  fuente: String
+
+  """All values that are not equal to given value."""
+  fuente_not: String
+
+  """All values that are contained in given list."""
+  fuente_in: [String!]
+
+  """All values that are not contained in given list."""
+  fuente_not_in: [String!]
+
+  """All values less than the given value."""
+  fuente_lt: String
+
+  """All values less than or equal the given value."""
+  fuente_lte: String
+
+  """All values greater than the given value."""
+  fuente_gt: String
+
+  """All values greater than or equal the given value."""
+  fuente_gte: String
+
+  """All values containing the given string."""
+  fuente_contains: String
+
+  """All values not containing the given string."""
+  fuente_not_contains: String
+
+  """All values starting with the given string."""
+  fuente_starts_with: String
+
+  """All values not starting with the given string."""
+  fuente_not_starts_with: String
+
+  """All values ending with the given string."""
+  fuente_ends_with: String
+
+  """All values not ending with the given string."""
+  fuente_not_ends_with: String
+  resumen: String
+
+  """All values that are not equal to given value."""
+  resumen_not: String
+
+  """All values that are contained in given list."""
+  resumen_in: [String!]
+
+  """All values that are not contained in given list."""
+  resumen_not_in: [String!]
+
+  """All values less than the given value."""
+  resumen_lt: String
+
+  """All values less than or equal the given value."""
+  resumen_lte: String
+
+  """All values greater than the given value."""
+  resumen_gt: String
+
+  """All values greater than or equal the given value."""
+  resumen_gte: String
+
+  """All values containing the given string."""
+  resumen_contains: String
+
+  """All values not containing the given string."""
+  resumen_not_contains: String
+
+  """All values starting with the given string."""
+  resumen_starts_with: String
+
+  """All values not starting with the given string."""
+  resumen_not_starts_with: String
+
+  """All values ending with the given string."""
+  resumen_ends_with: String
+
+  """All values not ending with the given string."""
+  resumen_not_ends_with: String
+  tema: String
+
+  """All values that are not equal to given value."""
+  tema_not: String
+
+  """All values that are contained in given list."""
+  tema_in: [String!]
+
+  """All values that are not contained in given list."""
+  tema_not_in: [String!]
+
+  """All values less than the given value."""
+  tema_lt: String
+
+  """All values less than or equal the given value."""
+  tema_lte: String
+
+  """All values greater than the given value."""
+  tema_gt: String
+
+  """All values greater than or equal the given value."""
+  tema_gte: String
+
+  """All values containing the given string."""
+  tema_contains: String
+
+  """All values not containing the given string."""
+  tema_not_contains: String
+
+  """All values starting with the given string."""
+  tema_starts_with: String
+
+  """All values not starting with the given string."""
+  tema_not_starts_with: String
+
+  """All values ending with the given string."""
+  tema_ends_with: String
+
+  """All values not ending with the given string."""
+  tema_not_ends_with: String
+  actor: String
+
+  """All values that are not equal to given value."""
+  actor_not: String
+
+  """All values that are contained in given list."""
+  actor_in: [String!]
+
+  """All values that are not contained in given list."""
+  actor_not_in: [String!]
+
+  """All values less than the given value."""
+  actor_lt: String
+
+  """All values less than or equal the given value."""
+  actor_lte: String
+
+  """All values greater than the given value."""
+  actor_gt: String
+
+  """All values greater than or equal the given value."""
+  actor_gte: String
+
+  """All values containing the given string."""
+  actor_contains: String
+
+  """All values not containing the given string."""
+  actor_not_contains: String
+
+  """All values starting with the given string."""
+  actor_starts_with: String
+
+  """All values not starting with the given string."""
+  actor_not_starts_with: String
+
+  """All values ending with the given string."""
+  actor_ends_with: String
+
+  """All values not ending with the given string."""
+  actor_not_ends_with: String
+  sala: SalaWhereInput
+}
+
+input TemaSalaWhereUniqueInput {
+  id: ID
+}
+
+type Usuario implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  nombre: String!
+  password: String
+  esAdmin: Boolean!
+  usuariosEnSala(where: UsuarioSalaWhereInput, orderBy: UsuarioSalaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UsuarioSala!]
+  diagramasPorUsuario(where: DiagramaUsuarioWhereInput, orderBy: DiagramaUsuarioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DiagramaUsuario!]
+}
+
+"""A connection to a list of items."""
+type UsuarioConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UsuarioEdge]!
+  aggregate: AggregateUsuario!
+}
+
+input UsuarioCreateInput {
+  id: ID
+  nombre: String!
+  password: String
+  esAdmin: Boolean
+  usuariosEnSala: UsuarioSalaCreateManyWithoutUsuarioInput
+  diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutUsuarioInput
+}
+
+input UsuarioCreateOneWithoutDiagramasPorUsuarioInput {
+  create: UsuarioCreateWithoutDiagramasPorUsuarioInput
+  connect: UsuarioWhereUniqueInput
+}
+
+input UsuarioCreateOneWithoutUsuariosEnSalaInput {
+  create: UsuarioCreateWithoutUsuariosEnSalaInput
+  connect: UsuarioWhereUniqueInput
+}
+
+input UsuarioCreateWithoutDiagramasPorUsuarioInput {
+  id: ID
+  nombre: String!
+  password: String
+  esAdmin: Boolean
+  usuariosEnSala: UsuarioSalaCreateManyWithoutUsuarioInput
+}
+
+input UsuarioCreateWithoutUsuariosEnSalaInput {
+  id: ID
+  nombre: String!
+  password: String
+  esAdmin: Boolean
+  diagramasPorUsuario: DiagramaUsuarioCreateManyWithoutUsuarioInput
+}
+
+"""An edge in a connection."""
+type UsuarioEdge {
+  """The item at the end of the edge."""
+  node: Usuario!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum UsuarioOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  nombre_ASC
+  nombre_DESC
+  password_ASC
+  password_DESC
+  esAdmin_ASC
+  esAdmin_DESC
+}
+
+type UsuarioPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  nombre: String!
+  password: String
+  esAdmin: Boolean!
+}
+
+type UsuarioSala implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  levantarMano: Boolean!
+  compartirPantalla: Boolean!
+  usuario: Usuario
+  sala: Sala!
+}
+
+"""A connection to a list of items."""
+type UsuarioSalaConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UsuarioSalaEdge]!
+  aggregate: AggregateUsuarioSala!
+}
+
+input UsuarioSalaCreateInput {
+  id: ID
+  levantarMano: Boolean
+  compartirPantalla: Boolean
+  usuario: UsuarioCreateOneWithoutUsuariosEnSalaInput
+  sala: SalaCreateOneWithoutUsuariosEnSalaInput!
+}
+
+input UsuarioSalaCreateManyWithoutSalaInput {
+  create: [UsuarioSalaCreateWithoutSalaInput!]
+  connect: [UsuarioSalaWhereUniqueInput!]
+}
+
+input UsuarioSalaCreateManyWithoutUsuarioInput {
+  create: [UsuarioSalaCreateWithoutUsuarioInput!]
+  connect: [UsuarioSalaWhereUniqueInput!]
+}
+
+input UsuarioSalaCreateWithoutSalaInput {
+  id: ID
+  levantarMano: Boolean
+  compartirPantalla: Boolean
+  usuario: UsuarioCreateOneWithoutUsuariosEnSalaInput
+}
+
+input UsuarioSalaCreateWithoutUsuarioInput {
+  id: ID
+  levantarMano: Boolean
+  compartirPantalla: Boolean
+  sala: SalaCreateOneWithoutUsuariosEnSalaInput!
+}
+
+"""An edge in a connection."""
+type UsuarioSalaEdge {
+  """The item at the end of the edge."""
+  node: UsuarioSala!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum UsuarioSalaOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  levantarMano_ASC
+  levantarMano_DESC
+  compartirPantalla_ASC
+  compartirPantalla_DESC
+}
+
+type UsuarioSalaPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  levantarMano: Boolean!
+  compartirPantalla: Boolean!
+}
+
+input UsuarioSalaScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UsuarioSalaScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UsuarioSalaScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UsuarioSalaScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  levantarMano: Boolean
+
+  """All values that are not equal to given value."""
+  levantarMano_not: Boolean
+  compartirPantalla: Boolean
+
+  """All values that are not equal to given value."""
+  compartirPantalla_not: Boolean
+}
+
+type UsuarioSalaSubscriptionPayload {
+  mutation: MutationType!
+  node: UsuarioSala
+  updatedFields: [String!]
+  previousValues: UsuarioSalaPreviousValues
+}
+
+input UsuarioSalaSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UsuarioSalaSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UsuarioSalaSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UsuarioSalaSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UsuarioSalaWhereInput
+}
+
+input UsuarioSalaUpdateInput {
+  levantarMano: Boolean
+  compartirPantalla: Boolean
+  usuario: UsuarioUpdateOneWithoutUsuariosEnSalaInput
+  sala: SalaUpdateOneRequiredWithoutUsuariosEnSalaInput
+}
+
+input UsuarioSalaUpdateManyDataInput {
+  levantarMano: Boolean
+  compartirPantalla: Boolean
+}
+
+input UsuarioSalaUpdateManyMutationInput {
+  levantarMano: Boolean
+  compartirPantalla: Boolean
+}
+
+input UsuarioSalaUpdateManyWithoutSalaInput {
+  create: [UsuarioSalaCreateWithoutSalaInput!]
+  connect: [UsuarioSalaWhereUniqueInput!]
+  set: [UsuarioSalaWhereUniqueInput!]
+  disconnect: [UsuarioSalaWhereUniqueInput!]
+  delete: [UsuarioSalaWhereUniqueInput!]
+  update: [UsuarioSalaUpdateWithWhereUniqueWithoutSalaInput!]
+  updateMany: [UsuarioSalaUpdateManyWithWhereNestedInput!]
+  deleteMany: [UsuarioSalaScalarWhereInput!]
+  upsert: [UsuarioSalaUpsertWithWhereUniqueWithoutSalaInput!]
+}
+
+input UsuarioSalaUpdateManyWithoutUsuarioInput {
+  create: [UsuarioSalaCreateWithoutUsuarioInput!]
+  connect: [UsuarioSalaWhereUniqueInput!]
+  set: [UsuarioSalaWhereUniqueInput!]
+  disconnect: [UsuarioSalaWhereUniqueInput!]
+  delete: [UsuarioSalaWhereUniqueInput!]
+  update: [UsuarioSalaUpdateWithWhereUniqueWithoutUsuarioInput!]
+  updateMany: [UsuarioSalaUpdateManyWithWhereNestedInput!]
+  deleteMany: [UsuarioSalaScalarWhereInput!]
+  upsert: [UsuarioSalaUpsertWithWhereUniqueWithoutUsuarioInput!]
+}
+
+input UsuarioSalaUpdateManyWithWhereNestedInput {
+  where: UsuarioSalaScalarWhereInput!
+  data: UsuarioSalaUpdateManyDataInput!
+}
+
+input UsuarioSalaUpdateWithoutSalaDataInput {
+  levantarMano: Boolean
+  compartirPantalla: Boolean
+  usuario: UsuarioUpdateOneWithoutUsuariosEnSalaInput
+}
+
+input UsuarioSalaUpdateWithoutUsuarioDataInput {
+  levantarMano: Boolean
+  compartirPantalla: Boolean
+  sala: SalaUpdateOneRequiredWithoutUsuariosEnSalaInput
+}
+
+input UsuarioSalaUpdateWithWhereUniqueWithoutSalaInput {
+  where: UsuarioSalaWhereUniqueInput!
+  data: UsuarioSalaUpdateWithoutSalaDataInput!
+}
+
+input UsuarioSalaUpdateWithWhereUniqueWithoutUsuarioInput {
+  where: UsuarioSalaWhereUniqueInput!
+  data: UsuarioSalaUpdateWithoutUsuarioDataInput!
+}
+
+input UsuarioSalaUpsertWithWhereUniqueWithoutSalaInput {
+  where: UsuarioSalaWhereUniqueInput!
+  update: UsuarioSalaUpdateWithoutSalaDataInput!
+  create: UsuarioSalaCreateWithoutSalaInput!
+}
+
+input UsuarioSalaUpsertWithWhereUniqueWithoutUsuarioInput {
+  where: UsuarioSalaWhereUniqueInput!
+  update: UsuarioSalaUpdateWithoutUsuarioDataInput!
+  create: UsuarioSalaCreateWithoutUsuarioInput!
+}
+
+input UsuarioSalaWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UsuarioSalaWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UsuarioSalaWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UsuarioSalaWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  levantarMano: Boolean
+
+  """All values that are not equal to given value."""
+  levantarMano_not: Boolean
+  compartirPantalla: Boolean
+
+  """All values that are not equal to given value."""
+  compartirPantalla_not: Boolean
+  usuario: UsuarioWhereInput
+  sala: SalaWhereInput
+}
+
+input UsuarioSalaWhereUniqueInput {
+  id: ID
+}
+
+type UsuarioSubscriptionPayload {
+  mutation: MutationType!
+  node: Usuario
+  updatedFields: [String!]
+  previousValues: UsuarioPreviousValues
+}
+
+input UsuarioSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UsuarioSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UsuarioSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UsuarioSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UsuarioWhereInput
+}
+
+input UsuarioUpdateInput {
+  nombre: String
+  password: String
+  esAdmin: Boolean
+  usuariosEnSala: UsuarioSalaUpdateManyWithoutUsuarioInput
+  diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutUsuarioInput
+}
+
+input UsuarioUpdateManyMutationInput {
+  nombre: String
+  password: String
+  esAdmin: Boolean
+}
+
+input UsuarioUpdateOneWithoutDiagramasPorUsuarioInput {
+  create: UsuarioCreateWithoutDiagramasPorUsuarioInput
+  connect: UsuarioWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UsuarioUpdateWithoutDiagramasPorUsuarioDataInput
+  upsert: UsuarioUpsertWithoutDiagramasPorUsuarioInput
+}
+
+input UsuarioUpdateOneWithoutUsuariosEnSalaInput {
+  create: UsuarioCreateWithoutUsuariosEnSalaInput
+  connect: UsuarioWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UsuarioUpdateWithoutUsuariosEnSalaDataInput
+  upsert: UsuarioUpsertWithoutUsuariosEnSalaInput
+}
+
+input UsuarioUpdateWithoutDiagramasPorUsuarioDataInput {
+  nombre: String
+  password: String
+  esAdmin: Boolean
+  usuariosEnSala: UsuarioSalaUpdateManyWithoutUsuarioInput
+}
+
+input UsuarioUpdateWithoutUsuariosEnSalaDataInput {
+  nombre: String
+  password: String
+  esAdmin: Boolean
+  diagramasPorUsuario: DiagramaUsuarioUpdateManyWithoutUsuarioInput
+}
+
+input UsuarioUpsertWithoutDiagramasPorUsuarioInput {
+  update: UsuarioUpdateWithoutDiagramasPorUsuarioDataInput!
+  create: UsuarioCreateWithoutDiagramasPorUsuarioInput!
+}
+
+input UsuarioUpsertWithoutUsuariosEnSalaInput {
+  update: UsuarioUpdateWithoutUsuariosEnSalaDataInput!
+  create: UsuarioCreateWithoutUsuariosEnSalaInput!
+}
+
+input UsuarioWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UsuarioWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UsuarioWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UsuarioWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  nombre: String
+
+  """All values that are not equal to given value."""
+  nombre_not: String
+
+  """All values that are contained in given list."""
+  nombre_in: [String!]
+
+  """All values that are not contained in given list."""
+  nombre_not_in: [String!]
+
+  """All values less than the given value."""
+  nombre_lt: String
+
+  """All values less than or equal the given value."""
+  nombre_lte: String
+
+  """All values greater than the given value."""
+  nombre_gt: String
+
+  """All values greater than or equal the given value."""
+  nombre_gte: String
+
+  """All values containing the given string."""
+  nombre_contains: String
+
+  """All values not containing the given string."""
+  nombre_not_contains: String
+
+  """All values starting with the given string."""
+  nombre_starts_with: String
+
+  """All values not starting with the given string."""
+  nombre_not_starts_with: String
+
+  """All values ending with the given string."""
+  nombre_ends_with: String
+
+  """All values not ending with the given string."""
+  nombre_not_ends_with: String
+  password: String
+
+  """All values that are not equal to given value."""
+  password_not: String
+
+  """All values that are contained in given list."""
+  password_in: [String!]
+
+  """All values that are not contained in given list."""
+  password_not_in: [String!]
+
+  """All values less than the given value."""
+  password_lt: String
+
+  """All values less than or equal the given value."""
+  password_lte: String
+
+  """All values greater than the given value."""
+  password_gt: String
+
+  """All values greater than or equal the given value."""
+  password_gte: String
+
+  """All values containing the given string."""
+  password_contains: String
+
+  """All values not containing the given string."""
+  password_not_contains: String
+
+  """All values starting with the given string."""
+  password_starts_with: String
+
+  """All values not starting with the given string."""
+  password_not_starts_with: String
+
+  """All values ending with the given string."""
+  password_ends_with: String
+
+  """All values not ending with the given string."""
+  password_not_ends_with: String
+  esAdmin: Boolean
+
+  """All values that are not equal to given value."""
+  esAdmin_not: Boolean
+  usuariosEnSala_every: UsuarioSalaWhereInput
+  usuariosEnSala_some: UsuarioSalaWhereInput
+  usuariosEnSala_none: UsuarioSalaWhereInput
+  diagramasPorUsuario_every: DiagramaUsuarioWhereInput
+  diagramasPorUsuario_some: DiagramaUsuarioWhereInput
+  diagramasPorUsuario_none: DiagramaUsuarioWhereInput
+}
+
+input UsuarioWhereUniqueInput {
+  id: ID
+}

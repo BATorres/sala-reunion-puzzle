@@ -1,0 +1,119 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-1">
+      <img
+        class="imagen-titulo img-fluid mx-auto d-block"
+        src="../../../assets/imagenes/sala-de-reuniones.svg"
+      >
+    </div>
+
+    <div class="col-sm-11">
+      <h1>Salas disponibles</h1>
+      <small class="text-muted titulo-ayuda">
+        Únase a una sala de reunión para modificar el diagrama
+      </small>
+    </div>
+  </div>
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="#">
+          Inicio
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Lista de salas
+      </li>
+    </ol>
+  </nav>
+
+  <div class="row separacion-top-1">
+    <div class="col-sm-9">
+      <form class="form-inline" novalidate autocomplete="off">
+        <div class="col-sm-12">
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              aria-describedby="ayudaBusquedaSalas"
+              placeholder="Ingrese su búsqueda. EJ: Sala 1"
+              #busqueda
+            >
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary"
+                (click)="buscarSala(busqueda.value)"
+              >
+                <i class="fas fa-search"></i>
+                BUSCAR
+              </button>
+            </div>
+          </div>
+          <small
+            id="ayudaBusquedaSalas"
+            class="form-text text-muted"
+          >
+            Busque una sala por su nombre
+          </small>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-sm-3 separacion-bottom-1" *ngIf="esAdmin">
+      <button
+        class="btn btn-primary btn-block"
+        (click)="abrirModalCrearSala()"
+      >
+        <i class="fa fa-plus"></i>
+        AGREGAR SALA
+      </button>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row separacion-top-1">
+    <div *ngIf="!existenSalas; else mostrarSalas">
+      <div class="col-sm-12 mensaje-registros">
+        No existen registros
+      </div>
+    </div>
+
+    <ng-template #mostrarSalas>
+      <div
+        class="card-sala col-sm-3 separacion-top-1"
+        *ngFor="let sala of salas">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-4">
+                <img
+                  class="imagen-card card-img-left img-fluid mx-auto d-block"
+                  src="../../../assets/imagenes/puzzle-card.svg"
+                  href="sala-reunion"
+                >
+              </div>
+
+              <div class="col-sm-8">
+                <h3 class="card-title">
+                  {{sala.nombre}}
+                </h3>
+
+                <p class="card-text">
+                  {{sala.descripcion}}
+                </p>
+
+                <div
+                  class="btn btn-primary btn-block"
+                  (click)="irASala(sala.id)">
+                  IR A SALA
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

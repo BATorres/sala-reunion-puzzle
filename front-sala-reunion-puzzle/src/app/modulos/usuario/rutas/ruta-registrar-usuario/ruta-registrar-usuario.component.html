@@ -1,0 +1,37 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-4"></div>
+    <div class="contenido-formulario col-sm-4">
+      <div class="card">
+        <div class="titulo-formulario card-title">
+          REGISTRO
+        </div>
+        <div class="card-body">
+          <app-formulario-usuario
+            (enviarRegistroValido)="validarFormulario($event)"
+            [esFormularioRegistro]="true"
+          ></app-formulario-usuario>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="col-sm-12">
+                <button class="btn btn-success btn-block"
+                        [disabled]="!formularioValido"
+                        (click)="registrarUsuario()"
+                        type="submit">
+                  REGISTRAR
+                </button>
+
+                <button class="btn btn-info btn-block"
+                        (click)="volverMenuInicio()"
+                >
+                  CANCELAR
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

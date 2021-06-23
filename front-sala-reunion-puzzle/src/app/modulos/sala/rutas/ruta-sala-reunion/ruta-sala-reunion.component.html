@@ -1,0 +1,50 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-1">
+      <img
+        class="imagen-titulo img-fluid mx-auto d-block"
+        src="../../../assets/imagenes/puzzle-titulo.svg"
+      >
+    </div>
+
+    <div class="col-sm-11">
+      <h1>
+        Sala de reunión: {{nombreSala}}
+      </h1>
+
+      <small class="text-muted titulo-ayuda">
+        Interactue con el diagrama y los usuarios en la sala
+      </small>
+    </div>
+  </div>
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="#">
+          Inicio
+        </a>
+      </li>
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/app', 'listar-salas']" routerLinkActive="router-link-active">
+          Lista de salas
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Sala de reunión
+      </li>
+    </ol>
+  </nav>
+
+  <div *ngIf="esAdmin; else mostrarPantallaUsuario">
+    <app-pantalla-interactiva-administrador
+      [idSala]="idSala"
+    ></app-pantalla-interactiva-administrador>
+  </div>
+  <ng-template #mostrarPantallaUsuario>
+    <app-pantalla-interactiva-usuario
+      [idSala]="idSala"
+      [idUsuarioSala]="idUsuarioEnSala"
+    ></app-pantalla-interactiva-usuario>
+  </ng-template>
+</div>

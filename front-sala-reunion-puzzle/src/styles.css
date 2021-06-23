@@ -1,0 +1,66 @@
+/* You can add global styles to this file, and also import other style files */
+.centrado {
+  left: 33%;
+  position: fixed;
+  top: 33%;
+}
+
+.cargando-texto {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.spinner-border {
+  left: 50%;
+  top: 50%;
+  position: absolute;
+}
+
+.card-title {
+  text-align: center;
+}
+
+.imagen-card {
+  height: 75px;
+  width: auto;
+}
+
+.row > .col-sm-11 > h1 {
+  padding-top: 1rem;
+  text-align: left;
+  color: #007bff;
+  font-size: 2.5rem;
+}
+
+.titulo-ayuda {
+  font-size: 1rem;
+}
+
+.imagen-titulo {
+  height: 75px;
+  width: auto;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 4px;
+  border: 1px solid;
+  border-radius: 100%;
+}
+
+.contenido-formulario {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.titulo-formulario {
+  color: #007bff;
+  font-size: 1.5rem;
+  padding-top: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

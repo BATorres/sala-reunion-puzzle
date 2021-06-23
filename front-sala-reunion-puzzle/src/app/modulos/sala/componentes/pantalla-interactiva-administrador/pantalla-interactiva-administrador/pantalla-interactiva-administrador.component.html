@@ -1,0 +1,98 @@
+<div class="row separacion-top-1">
+  <div class="col-sm-12">
+    <p-tabView (onChange)="escucharCambiosTabView($event)">
+      <p-tabPanel header="Diagrama global">
+        <div class="row">
+          <div class="col-sm-2">
+            <app-paleta
+              [paletteNodeData]="datosActoresTemas"
+            ></app-paleta>
+
+            <input
+              id="archivoTemas"
+              class="inputfile"
+              type="file"
+              placeholder="Seleccione un archivo de temas"
+              accept=".txt"
+              (change)="seleccionarArchivo($event)"
+              hidden>
+
+            <label
+              id="seleccionar-archivo"
+              for="archivoTemas"
+              class="btn btn-info btn-block btn-lg">
+              Seleccione {{archivoASubir ? 'otro' : 'un'}} archivo
+            </label>
+
+            <button
+              *ngIf="archivoASubir"
+              class="btn btn-success btn-block"
+              (click)="guardarArchivo()">
+              <i class="fa fa-cloud-upload-alt"></i>
+              Guardar archivo
+            </button>
+
+            <button
+              class="btn btn-primary btn-block"
+              (click)="guardarDiagramaGlobal()">
+              <i class="fa fa-save"></i>
+              Guardar diagrama
+            </button>
+          </div>
+
+          <div class="col-sm-10">
+            <app-diagrama-editable
+              [diagramNodeData]="datosDeTemas"
+              [diagramLinkData]="datosDeConexiones"
+            ></app-diagrama-editable>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <p-tabPanel header="Diagrama compartido">
+        <div
+          class="row">
+          <div
+            class="col-sm-2"
+            *ngIf="!existenUsuariosEnSala"
+          >
+            <div class="row">
+              No existen usuarios en sala
+            </div>
+          </div>
+
+          <div
+            class="col-sm-2 scroll-usuarios"
+            *ngIf="existenUsuariosEnSala"
+          >
+            <div
+              class="row"
+              *ngFor="let usuarioEnSala of usuariosEnSala">
+              <div id="boton-usuario" class="col-sm-12">
+                <button
+                  class="btn btn-primary btn-block"
+                  (click)="cargarDatosCompartidos(usuarioEnSala.usuario.id)"
+                  [disabled]="!usuarioEnSala.compartirPantalla">
+                  <i
+                    class="fa"
+                    [ngClass]="{
+                      'fa-hand-paper': usuarioEnSala.levantarMano,
+                      'fa-satellite-dish': usuarioEnSala.compartirPantalla,
+                      'fa-lock': !usuarioEnSala.levantarMano && !usuarioEnSala.compartirPantalla
+                      }">
+                  </i>
+                  {{usuarioEnSala.usuario.nombre}}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-10">
+            <app-diagrama-global></app-diagrama-global>
+          </div>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>
+

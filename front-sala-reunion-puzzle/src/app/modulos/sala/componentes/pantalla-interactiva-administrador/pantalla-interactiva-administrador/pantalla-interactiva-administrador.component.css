@@ -1,0 +1,20 @@
+#boton-usuario {
+  padding-bottom: 10px;
+}
+
+#seleccionar-archivo {
+  font-size: 16px;
+}
+
+div.scroll-usuarios {
+  height: 550px;
+  overflow-y: auto;
+}
+
+@media screen and (max-width: 600px) {
+  div.scroll-usuarios {
+    height: 150px;
+    overflow-y: auto;
+  }
+}
+

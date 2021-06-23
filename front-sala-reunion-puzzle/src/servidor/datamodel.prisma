@@ -1,0 +1,61 @@
+type UsuarioSala {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  levantarMano: Boolean! @default(value: false)
+  compartirPantalla: Boolean! @default(value: false)
+  usuario: Usuario
+  sala: Sala!
+}
+
+type Sala {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  nombre: String!
+  descripcion: String
+  usuariosEnSala: [UsuarioSala] @relation
+  diagramasPorUsuario: [DiagramaUsuario] @relation
+  temasDeSala: [TemaSala] @relation
+}
+
+type Usuario {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  nombre: String!
+  password: String
+  esAdmin: Boolean! @default(value: false)
+  usuariosEnSala: [UsuarioSala] @relation
+  diagramasPorUsuario: [DiagramaUsuario] @relation
+}
+
+type Diagrama {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  datos: String!
+  esDiagramaGlobal: Boolean! @default(value: false)
+  diagramasPorUsuario: [DiagramaUsuario] @relation
+}
+
+type DiagramaUsuario {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  diagrama: Diagrama!
+  sala: Sala!
+  usuario: Usuario
+}
+
+type TemaSala {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  titulo: String
+  fuente: String
+  resumen: String
+  tema: String
+  actor: String
+  sala: Sala
+}

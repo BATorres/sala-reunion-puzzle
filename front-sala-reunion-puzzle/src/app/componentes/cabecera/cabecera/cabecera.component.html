@@ -1,0 +1,21 @@
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <i class="fa fa-puzzle-piece"></i>
+    Sala de reunión
+  </a>
+  <div *ngIf="usuario">
+    <div class="row">
+      <div class="col-sm-8">
+        Bienvenido/a: {{usuario.nombre}} <br>
+        <b>Rol:</b> {{usuario.esAdmin ? 'Administrador' : 'Participante'}}
+      </div>
+      <div class="col-sm-2">
+        <button
+          class="btn btn-outline-primary"
+          (click)="salir()">
+          Salir
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

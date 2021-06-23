@@ -1,0 +1,11 @@
+.paleta {
+  background-color: #555;
+  height: 430px;
+  width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+  .paleta {
+    height: 150px;
+  }
+}

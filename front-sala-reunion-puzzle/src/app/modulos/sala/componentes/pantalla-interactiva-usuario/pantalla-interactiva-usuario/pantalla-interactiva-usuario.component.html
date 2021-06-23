@@ -1,0 +1,48 @@
+<div class="row separacion-top-1">
+  <div class="col-sm-12">
+    <p-tabView (onChange)="escucharCambiosTabView($event)">
+      <p-tabPanel header="Mi diagrama">
+        <div class="row">
+          <div class="col-sm-2">
+            <app-paleta
+              [paletteNodeData]="datosActoresTemas"
+            ></app-paleta>
+
+            <button
+              class="btn btn-success btn-block"
+              (click)="pedirLaPalabra()">
+              <i class="fa fa-hand-paper"></i>
+              Pedir la palabra
+            </button>
+
+            <button
+              class="btn btn-info btn-block"
+              (click)="compartirPantalla()"
+            >
+              <i class="fa fa-satellite-dish"></i>
+              Compartir pantalla
+            </button>
+
+            <button
+              class="btn btn-danger btn-block"
+              (click)="cancelar()"
+            >
+              Cancelar
+            </button>
+          </div>
+
+          <div class="col-sm-10">
+            <app-diagrama-editable
+              [diagramNodeData]="datosDeTemas"
+              [diagramLinkData]="datosDeConexiones"
+            ></app-diagrama-editable>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <p-tabPanel header="Diagrama de sala">
+        <app-diagrama-global></app-diagrama-global>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>
